@@ -22,7 +22,7 @@ public class TestAssignProjectLeader {
 		add = new Address("City", "Street", 1);
 		com = new Company("SoftwareHuset", add);
 		ex = new Executive("name","Department1", com, "password");
-		em = new Employee("Anders", "password", com, "Project Department");
+		em = com.createEmployee("ANDE", "password", "Project Department");
 		d1 = new GregorianCalendar();
 		d2 = new GregorianCalendar();
 		d1.add(Calendar.YEAR, 1);
@@ -35,33 +35,26 @@ public class TestAssignProjectLeader {
 		com.executiveLogin("password");
 		assertTrue(com.executiveIsLoggedIn());
 		com.createProject("p1", d1, d2);
-		p1 = com.getSpecificProject("p1");
+		p1 = com.getProject("p1");
 		assertEquals(com.getProjects().size(), 1);
-		p1 = com.getSpecificProject(150001);
+		p1 = com.getProject(150001);
 		assertEquals(com.getProjects().size(), 1);
-		ex.assignProjectLeader(em, p1);
+		ex.assignProjectLeader("ANDE", p1.getID());
 		assertEquals(p1.getProjectLeader(), em);
-		p1 = com.getSpecificProject(150002);
+		p1 = com.getProject(150002);
 		assertNull(p1);
 	}
 
 	@Test
 	public void testNotLoggedIn() throws OperationNotAllowedException {
+		com.executiveLogin("password");
+		Project p1 = com.createProject("p1", d1, d2);
+		com.employeeLogout();
 		try {
-			com.createProject("p1", d1, d2);
+			ex.assignProjectLeader("ANDE", p1.getID());
 			fail("OperationNotAllowedOperationNotAllowedException OperationNotAllowedException should have been thrown");
 		} catch (OperationNotAllowedException e) {
-			assertEquals("Create project operation is not allowed if not executive.", e.getMessage());
-			assertEquals("Create project", e.getOperation());
-		}
-		
-		assertEquals(com.getProjects().size(), 0);
-		
-		try {
-			ex.assignProjectLeader(em, p1);
-			fail("OperationNotAllowedException exception");
-		} catch(OperationNotAllowedException e) {
-			assertEquals("Assign project leader is not allowed if not executive.", e.getMessage());
+			assertEquals("Assign project leader is not allowed if not executive", e.getMessage());
 			assertEquals("Assign project leader", e.getOperation());
 		}
 	}
@@ -73,24 +66,28 @@ public class TestAssignProjectLeader {
 		assertTrue(com.executiveIsLoggedIn());
 		
 		com.createProject("p1", d1, d2);
-		Project p1 = com.getSpecificProject("p1");
+		Project p1 = com.getProject("p1");
 		assertEquals(com.getProjects().size(),1);
 		
-		Employee em2 = null;
-		
 		try {
-			ex.assignProjectLeader(em2, p1);
+			ex.assignProjectLeader("ENDE", p1.getID());
 			fail("OperationNotAllowedException expected");
 		} catch(OperationNotAllowedException e) {
 			assertEquals("Employee not found", e.getMessage());
-			assertEquals("Employee not found", e.getOperation());
+			assertEquals("Get employee", e.getOperation());
 		}
 	}
 
 	@Test
 	public void testProjectNotFound() throws OperationNotAllowedException {
-		assertNull(com.getSpecificProject("p1"));
-		assertNull(com.getSpecificProject(150502));
+		com.executiveLogin("password");
+		try {
+			ex.assignProjectLeader("em", 150502);
+			fail("OperationNotAllowedException expected");
+		} catch(OperationNotAllowedException e) {
+			assertEquals("Employee not found", e.getMessage());
+			assertEquals("Get employee", e.getOperation());
+		}
 	}
 
 	@Test
@@ -99,12 +96,12 @@ public class TestAssignProjectLeader {
 		com.executiveLogin("password");
 		assertTrue(com.executiveIsLoggedIn());
 		com.createProject("p1", d1, d2);
-		Project p1 = com.getSpecificProject("p1");
+		Project p1 = com.getProject("p1");
 		assertEquals(com.getProjects().size(),1);
-		ex.assignProjectLeader(em, p1);
+		ex.assignProjectLeader("ANDE", p1.getID());
 		assertEquals(p1.getProjectLeader(), em);
-		Employee em2 = new Employee("Anders", "password", com, "Project 2 Department");
-		ex.assignProjectLeader(em2, p1);
+		Employee em2 = com.createEmployee("KAND", "password", "Project 2 Department");
+		ex.assignProjectLeader("KAND", p1.getID());
 		assertEquals(p1.getProjectLeader(), em2);
 	}
 }

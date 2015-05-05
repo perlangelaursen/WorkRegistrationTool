@@ -21,7 +21,9 @@ public class Employee {
 		this.department = department;
 	}
 	
-	public void assignEmployeeProject(Employee e, Project p) throws OperationNotAllowedException {
+	public void assignEmployeeProject(String employee, String project) throws OperationNotAllowedException {
+		Employee e = company.getEmployee(employee);
+		Project p = company.getProject(project);
 		checkIfLoggedInProjectLeader(p);
 		if(!p.getEmployees().contains(e)){
 			p.addEmployeeToProject(e);
@@ -40,14 +42,10 @@ public class Employee {
 	public void assignEmployeeActivity(String employee, String activity) throws OperationNotAllowedException {
 		Activity a = getActivity(activity);
 		checkIfLoggedInProjectLeader(a.getProject());
-		
 		Employee e = company.getEmployee(employee);
-		if (e == null){
-			throw new OperationNotAllowedException("Employee does not exist", "Assign employee to activity");
-		}
 		
 		Project p = a.getProject();
-		assignEmployeeProject(e, p);
+		assignEmployeeProject(e.getID(), p.getName());
 		a.addEmployeeToActivity(e);
 		e.addActivity(a);
 	}
@@ -80,8 +78,10 @@ public class Employee {
 		if(!activities.containsKey(a)){
 			throw new OperationNotAllowedException("Employee is not assigned to the chosen activity", "Register spent time");
 		}
-			activities.put(a, time);
-			a.setTime(this, time);
+		int oldTime = activities.get(a);
+		int newTime = oldTime+time;
+		activities.put(a, newTime);
+		a.setTime(this, newTime);
 	}
 
 	public String getDepartment() {
@@ -89,14 +89,14 @@ public class Employee {
 	}
 	
 	public Object viewProgress(String p, String a) throws OperationNotAllowedException {
-		Project project = company.getSpecificProject(p);
-		Activity activity = company.getSpecificProject(p).getActivity(a);
+		Project project = company.getProject(p);
+		Activity activity = company.getProject(p).getActivity(a);
 		checkIfLoggedInProjectLeader(project);
 		return activity.getAllSpentTime();
 	}
 	
 	public int viewProgress(String p) throws OperationNotAllowedException {
-		Project project = company.getSpecificProject(p);
+		Project project = company.getProject(p);
 		checkIfLoggedInProjectLeader(project);
 		
 		return project.getSpentTime();
@@ -319,7 +319,7 @@ public class Employee {
 	}
 	
 	public void editProjectStart(String project, int year, int month, int date) throws OperationNotAllowedException {
-		Project p = company.getSpecificProject(project);
+		Project p = company.getProject(project);
 		checkIfLoggedInProjectLeader(p);
 		
 		company.checkForInvalidDate(year, month-1, date);
@@ -329,7 +329,7 @@ public class Employee {
 	}
 
 	public void editProjectEnd(String project, int year, int month, int date) throws OperationNotAllowedException {
-		Project p = company.getSpecificProject(project);
+		Project p = company.getProject(project);
 		checkIfLoggedInProjectLeader(p);
 		
 		company.checkForInvalidDate(year, month-1, date);

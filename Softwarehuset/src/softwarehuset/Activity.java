@@ -26,10 +26,8 @@ public class Activity {
 	}
 
 	public void addEmployeeToActivity(Employee e) {
-		if (project.getEmployees().contains(e)) {
-			employees.put(e, 0);
-			assignedEmployees.add(e);
-		}
+		employees.put(e, 0);
+		assignedEmployees.add(e);
 	}
 
 	public String getName() {

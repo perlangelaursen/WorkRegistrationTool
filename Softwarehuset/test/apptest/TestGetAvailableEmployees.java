@@ -22,7 +22,6 @@ public class TestGetAvailableEmployees {
 		com = new Company("SoftwareHuset", add);
 		ex = new Executive("name","Department1", com, "password");
 		com.setExecutive(ex);
-		
 		em = com.createEmployee("ANDS", "password", "Project Department");
 		em2 = com.createEmployee("HENR", "password", "Project Department");
 		em3 = com.createEmployee("KLIS", "password", "Project Department");
@@ -45,8 +44,8 @@ public class TestGetAvailableEmployees {
 	
 	@Test
 	public void testAvaiableEmployeesOnePerson() throws OperationNotAllowedException {
-		
-		ex.assignProjectLeader(em, p1);
+		com.executiveLogin("password");
+		ex.assignProjectLeader("ANDS", p1.getID());
 		assertEquals(p1.getProjectLeader(), em);
 		
 		d1.set(2000, 3, 1);
@@ -56,7 +55,6 @@ public class TestGetAvailableEmployees {
 		
 		em.createActivity(p1, "activity1", d1, d2);
 		em.createActivity(p1, "activity2", d3, d4);
-		System.out.println(p1.getID());
 		em.assignEmployeeActivity(em2.getID(), p1.getID() + "-activity1");
 		em.assignEmployeeActivity(em2.getID(), p1.getID() + "-activity2");
 		
@@ -70,7 +68,8 @@ public class TestGetAvailableEmployees {
 	
 	@Test
 	public void testAvailableEmployeesThreePersons() throws OperationNotAllowedException {
-		ex.assignProjectLeader(em, p1);
+		com.executiveLogin("password");
+		ex.assignProjectLeader("ANDS", p1.getID());
 		assertEquals(p1.getProjectLeader(), em);
 		
 		d1.set(2000, 3, 1);
@@ -93,7 +92,8 @@ public class TestGetAvailableEmployees {
 	
 	@Test
 	public void testAvailableEmployeesOverlap() throws OperationNotAllowedException {
-		ex.assignProjectLeader(em, p1);
+		com.executiveLogin("password");
+		ex.assignProjectLeader("ANDS", p1.getID());
 		assertEquals(p1.getProjectLeader(), em);
 		
 		d1.set(2000, 3, 1);

@@ -33,7 +33,6 @@ public class Company {
 	public void executiveLogin(String password) {
 		if (password.equals(executive.getPassword())) {
 			executiveLoggedIn = true;
-			executive.setLoginStatus(executiveLoggedIn);
 		}
 	}
 
@@ -79,16 +78,25 @@ public class Company {
 		return projects;
 	}
 	
-	public Project getSpecificProject(String name){
+	public Project getProject(String name) throws OperationNotAllowedException{
+		Project project = null;
+		int counter = 0;
 		for (Project p : projects) {
 			if (p.getName().equals(name)) {
-				return p;
+				counter++;
+				project = p;
 			}
 		}
-		return null;
+		if(counter>1){
+			throw new OperationNotAllowedException("Several projects have the requested title. Search by ID instead.","Get project");
+		}
+		if (project == null){
+			throw new OperationNotAllowedException("Project could not be found","Get project"); 
+		}
+		return project;
 	}
 	
-	public Project getSpecificProject(int ID){
+	public Project getProject(int ID){
 		for (Project p : projects) {
 			if (p.getID() == ID) {
 				return p;
@@ -139,13 +147,17 @@ public class Company {
 		return counter;
 	} 
 	
-	public Employee getEmployee(String id) {
+	public Employee getEmployee(String id) throws OperationNotAllowedException {
+		Employee employee = null;
 		for(Employee e : employees) {
 			if(e.getID().equals(id)) {
-				return e;
+				employee = e;
 			}
 		}
-		return null;
+		if (employee == null){
+			throw new OperationNotAllowedException("Employee not found", "Get employee");
+		}
+		return employee;
 	}
 
 	public void clearProjects() {

@@ -46,7 +46,7 @@ public class TestAssignEmployeeToProjectAndActivity {
 		
 		projectLeader = company.createEmployee("ABCD", "password", "Department1");
 		
-		executive.assignProjectLeader(projectLeader,company.getSpecificProject("Project01"));
+		executive.assignProjectLeader("ABCD",p1.getID());
 		test1 = company.createEmployee("HFBJ", "password", "Department1");
 	}
 	
@@ -74,17 +74,17 @@ public class TestAssignEmployeeToProjectAndActivity {
 			
 		//test3 employee is not assigned to project p1
 		assertNull(p1.getEmployee("ANDS"));
-		projectLeader.assignEmployeeProject(test3, p1);
+		projectLeader.assignEmployeeProject(test3.getID(), p1.getName());
 		assertEquals(p1.getEmployee("ANDS"), test3);
 		
 		//Check a random not-employee is not assigned to project p1
 		assertNull(p1.getEmployee("STEF"));
 		
 		company.employeeLogin(projectLeader.getID(), "password");
-		projectLeader.assignEmployeeProject(test1, company.getSpecificProject("Project01"));
+		projectLeader.assignEmployeeProject(test1.getID(), "Project01");
 		// Check for ID and department
-		assertEquals(company.getSpecificProject("Project01").getEmployee("HFBJ").getID(), test1.getID());
-		assertEquals(company.getSpecificProject("Project01").getEmployee("HFBJ").getDepartment(), test1.getDepartment());
+		assertEquals(company.getProject("Project01").getEmployee("HFBJ").getID(), test1.getID());
+		assertEquals(company.getProject("Project01").getEmployee("HFBJ").getDepartment(), test1.getDepartment());
 	}
 	
 	@Test
@@ -98,7 +98,7 @@ public class TestAssignEmployeeToProjectAndActivity {
 		assertTrue(company.executiveIsLoggedIn());
 		
 		try {
-			test2.assignEmployeeProject(test1, company.getSpecificProject("Project01"));
+			test2.assignEmployeeProject(test1.getID(), "Project01");
 			fail("OperationNotAllowedException exception should have been thrown");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("Operation is not allowed if not project leader", e.getMessage());
@@ -111,7 +111,7 @@ public class TestAssignEmployeeToProjectAndActivity {
 		Employee test2 = company.createEmployee("KKKK", "password", "Department1");
 		company.employeeLogin("KKKK", "password");
 		try {
-			test2.assignEmployeeProject(test1, company.getSpecificProject("Project01"));
+			test2.assignEmployeeProject(test1.getID(), "Project01");
 			fail("OperationNotAllowedException exception should have been thrown");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("Operation is not allowed if not project leader", e.getMessage());
@@ -127,7 +127,7 @@ public class TestAssignEmployeeToProjectAndActivity {
 		end.set(2016, Calendar.JANUARY, 25);
 		
 		company.employeeLogin(projectLeader.getID(), "password");
-		projectLeader.createActivity(company.getSpecificProject("Project01"), "TestActivity", start, end);
+		projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end);
 		
 		Activity a = p1.getActivity(p1.getID()+"-TestActivity");
 		projectLeader.assignEmployeeActivity(test1.getID(), a.getName());
@@ -163,7 +163,7 @@ public class TestAssignEmployeeToProjectAndActivity {
 		end.set(2016, Calendar.JANUARY, 25);
 		
 		company.employeeLogin(projectLeader.getID(), "password");
-		projectLeader.createActivity(company.getSpecificProject("Project01"), "TestActivity", start, end);
+		projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end);
 		
 		Employee test2 = company.createEmployee("KKKK", "password", "Department1");
 		company.employeeLogin("KKKK", "password");
@@ -178,33 +178,34 @@ public class TestAssignEmployeeToProjectAndActivity {
 	}
 	
 	@Test
-	public void testAssignWrongEmployee() throws OperationNotAllowedException {
+	public void testEmployeeNotExist() throws OperationNotAllowedException {
 		GregorianCalendar start = new GregorianCalendar();
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(2016, Calendar.JANUARY, 23);
 		end.set(2016, Calendar.JANUARY, 25);
-		Employee test2 = new Employee("KKKK", "password", company, "Department1");
 		
 		company.employeeLogin(projectLeader.getID(), "password");
+		projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end);
+		
+		Activity a = p1.getActivity(p1.getID()+"-TestActivity");
 		
 		try {
-			projectLeader.createActivity(company.getSpecificProject("Project01"), "TestActivity", start, end);
-			Activity a = p1.getActivity(p1.getID()+"-TestActivity");
-			projectLeader.assignEmployeeActivity(test2.getID(), a.getName());
+			projectLeader.assignEmployeeActivity("NOON", a.getName());
 			fail("OperationNotAllowedException exception should have been thrown");
 		} catch (OperationNotAllowedException e) {
-			assertEquals("Employee does not exist", e.getMessage());
-			assertEquals("Assign employee to activity", e.getOperation());
+			assertEquals("Employee not found", e.getMessage());
+			assertEquals("Get employee", e.getOperation());
 		}
 	}
 	
 	@Test
-	public void testEmployeeNotExist() throws OperationNotAllowedException {
-		Employee test2 = company.createEmployee("LAVT", "password", "department");
-		
-		assertEquals(company.getEmployee("HFBJ"), test1);
-		assertEquals(company.getEmployee("LAVT"), test2);
-		assertNull(company.getEmployee("MIST"));
-		
+	public void testProjectNotExist() throws OperationNotAllowedException {
+		try {
+			projectLeader.assignEmployeeProject("HFBJ", "Wrong project");
+			fail("OperationNotAllowedException exception should have been thrown");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("Project could not be found", e.getMessage());
+			assertEquals("Get project", e.getOperation());
+		}
 	}
 }

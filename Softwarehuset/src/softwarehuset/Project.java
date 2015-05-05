@@ -121,7 +121,7 @@ public class Project {
 		}
 	}
 
-	public Report getSpecificReport(String name) throws OperationNotAllowedException {
+	public Report getReport(String name) throws OperationNotAllowedException {
 		if(com.getLoggedInEmployee() == null){
 			throw new OperationNotAllowedException("Get report is not allowed if not logged in", "Get report"); 
 		}

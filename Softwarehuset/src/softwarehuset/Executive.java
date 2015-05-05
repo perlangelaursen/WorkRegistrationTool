@@ -3,7 +3,6 @@ package softwarehuset;
 public class Executive {
 	private Company company;
 	private String name, department, password;
-	private boolean executiveLoggedIn = false;
 
 	public Executive(String name, String department, Company company, String password) {
 		this.name = name;
@@ -13,20 +12,16 @@ public class Executive {
 		this.password = password;
 	}
 
-	public void setLoginStatus(boolean b){
-		executiveLoggedIn = b;
-	}
 	public String getPassword(){
 		return password;
 	}
-	public void assignProjectLeader(Employee employee, Project specificProject) throws OperationNotAllowedException {
-		if(employee == null){
-			throw new OperationNotAllowedException("Employee not found", "Employee not found");
-		}
+	public void assignProjectLeader(String employee, int project) throws OperationNotAllowedException {
+		Employee e = company.getEmployee(employee);
+		Project p = company.getProject(project);
 		
-		if(!executiveLoggedIn){
-			throw new OperationNotAllowedException("Assign project leader is not allowed if not executive.", "Assign project leader");
+		if(!company.executiveIsLoggedIn()){
+			throw new OperationNotAllowedException("Assign project leader is not allowed if not executive", "Assign project leader");
 		}
-		specificProject.assignProjectLeader(employee);
+		p.assignProjectLeader(e);
 	}
 }

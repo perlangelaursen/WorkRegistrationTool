@@ -159,4 +159,26 @@ public class TestCreateProject {
 		int numberOfProjects = projects.size();
 		assertEquals(0, numberOfProjects);
 	}
+	
+	@Test
+	public void testCreateAndGetProjectsWithSameTitle() throws Exception {
+		// Create dates
+		GregorianCalendar start = new GregorianCalendar();
+		GregorianCalendar end = new GregorianCalendar();
+		start.set(2016, Calendar.JANUARY, 23);
+		end.set(2016, Calendar.FEBRUARY, 23);
+		company.createProject("Project01", start, end);
+		
+		// Create project with the same name:
+		company.createProject("Project01", start, end);
+
+		//Try to get the project
+		try {
+			company.getProject("Project01");
+			fail("OperationNotAllowedException exception should have been thrown");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("Several projects have the requested title. Search by ID instead.",e.getMessage());
+			assertEquals("Get project",e.getOperation());
+		}
+	}
 }

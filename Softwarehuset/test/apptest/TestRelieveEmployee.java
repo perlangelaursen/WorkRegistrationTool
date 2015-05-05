@@ -38,24 +38,24 @@ public class TestRelieveEmployee {
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(2016, Calendar.JANUARY, 23);
 		end.set(2016, Calendar.FEBRUARY, 23);
-		company.createProject("Project01", start, end);
-		company.createProject("Project02");
+		Project p1 = company.createProject("Project01", start, end);
+		Project p2 = company.createProject("Project02");
 				
 		projectLeader = company.createEmployee("BENR", "password", "RandD");
 				
-		executive.assignProjectLeader(projectLeader,company.getSpecificProject("Project01"));
+		executive.assignProjectLeader("BENR",p1.getID());
 		test1 = company.createEmployee("SAMU", "password", "RandD");
 		company.employeeLogin(projectLeader.getID(), "password");
-		projectLeader.assignEmployeeProject(test1, company.getSpecificProject("Project01"));
+		projectLeader.assignEmployeeProject(test1.getID(), "Project01");
 	}
 	
 	@Test
 	public void testRelieveEmployee01() throws OperationNotAllowedException {
-		assertEquals(1, company.getSpecificProject("Project01").getEmployees().size());
+		assertEquals(1, company.getProject("Project01").getEmployees().size());
 		
-		projectLeader.relieveEmployeeProject(test1, company.getSpecificProject("Project01"));
+		projectLeader.relieveEmployeeProject(test1, company.getProject("Project01"));
 		
-		assertEquals(0, company.getSpecificProject("Project01").getEmployees().size());
+		assertEquals(0, company.getProject("Project01").getEmployees().size());
 	}
 	
 	@Test
@@ -63,7 +63,7 @@ public class TestRelieveEmployee {
 		company.employeeLogout();
 		
 		try {
-			projectLeader.relieveEmployeeProject(test1, company.getSpecificProject("Project01"));
+			projectLeader.relieveEmployeeProject(test1, company.getProject("Project01"));
 			fail("OperationNotAllowedException exception should have been thrown");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("Operation is not allowed if not project leader",e.getMessage());
@@ -73,11 +73,11 @@ public class TestRelieveEmployee {
 	
 	@Test
 	public void testNotProjectLeader() throws OperationNotAllowedException {
-		assertEquals(1, company.getSpecificProject("Project01").getEmployees().size());
+		assertEquals(1, company.getProject("Project01").getEmployees().size());
 		Employee test2 = company.createEmployee("HANS", "password", "RandD");
 		company.employeeLogin(test2.getID(), "password");
 		try {
-			test2.relieveEmployeeProject(test1, company.getSpecificProject("Project01"));
+			test2.relieveEmployeeProject(test1, company.getProject("Project01"));
 			fail("OperationNotAllowedException exception should have been thrown");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("Operation is not allowed if not project leader",e.getMessage());

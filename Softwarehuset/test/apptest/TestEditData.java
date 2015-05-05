@@ -40,11 +40,11 @@ public class TestEditData {
 		
 		//Create employee and assign as project leader
 		projectLeader = company.createEmployee("ABCD", "password", "RandD");
-		executive.assignProjectLeader(projectLeader,company.getSpecificProject("Project01"));
+		executive.assignProjectLeader("ABCD",p1.getID());
 		
 		company.employeeLogin(projectLeader.getID(), "password");
-		company.getSpecificProject("Project01").createActivity("Activity01", start, end, company.getSpecificProject("Project01"));
-		projectLeader.assignEmployeeProject(projectLeader, p1);
+		company.getProject("Project01").createActivity("Activity01", start, end, company.getProject("Project01"));
+		projectLeader.assignEmployeeProject(projectLeader.getID(), p1.getName());
 		projectLeader.assignEmployeeActivity(projectLeader.getID(),p1.getID()+"-Activity01");
 		
 		}
@@ -100,15 +100,15 @@ public class TestEditData {
 		
 		GregorianCalendar start = new GregorianCalendar(2015, Calendar.JANUARY, 3);
 		projectLeader.editProjectStart("Project01", 2015, 1, 3);
-		assertEquals(company.getSpecificProject("Project01").getStart().get(Calendar.DAY_OF_MONTH), start.get(Calendar.DAY_OF_MONTH));
-		assertEquals(company.getSpecificProject("Project01").getStart().get(Calendar.MONTH), start.get(Calendar.MONTH));
-		assertEquals(company.getSpecificProject("Project01").getStart().get(Calendar.YEAR), start.get(Calendar.YEAR));
+		assertEquals(company.getProject("Project01").getStart().get(Calendar.DAY_OF_MONTH), start.get(Calendar.DAY_OF_MONTH));
+		assertEquals(company.getProject("Project01").getStart().get(Calendar.MONTH), start.get(Calendar.MONTH));
+		assertEquals(company.getProject("Project01").getStart().get(Calendar.YEAR), start.get(Calendar.YEAR));
 		
 		GregorianCalendar end = new GregorianCalendar(2015, Calendar.APRIL, 3);
 		projectLeader.editProjectEnd("Project01", 2015, 4, 3);
-		assertEquals(company.getSpecificProject("Project01").getEnd().get(Calendar.DAY_OF_MONTH), end.get(Calendar.DAY_OF_MONTH));
-		assertEquals(company.getSpecificProject("Project01").getEnd().get(Calendar.MONTH), end.get(Calendar.MONTH));
-		assertEquals(company.getSpecificProject("Project01").getEnd().get(Calendar.YEAR), end.get(Calendar.YEAR));
+		assertEquals(company.getProject("Project01").getEnd().get(Calendar.DAY_OF_MONTH), end.get(Calendar.DAY_OF_MONTH));
+		assertEquals(company.getProject("Project01").getEnd().get(Calendar.MONTH), end.get(Calendar.MONTH));
+		assertEquals(company.getProject("Project01").getEnd().get(Calendar.YEAR), end.get(Calendar.YEAR));
 		
 	}
 }

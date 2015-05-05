@@ -31,13 +31,13 @@ public class TestGetProgressForProjectAndActivity {
 		p2 = company.createProject("Project02", start, end);
 		
 		projectLeader = company.createEmployee("EFGH", "password", "RandD");
-		executive.assignProjectLeader(projectLeader,company.getSpecificProject("Project01"));
+		executive.assignProjectLeader("EFGH",p1.getID());
 		
 		test1 = company.createEmployee("ABCD", "password", "RandD");
 		company.employeeLogin(projectLeader.getID(), "password");
 		
-		company.getSpecificProject("Project01").createActivity("Activity01", start, end, company.getSpecificProject("Project01"));
-		projectLeader.assignEmployeeProject(projectLeader, company.getSpecificProject("Project01"));
+		company.getProject("Project01").createActivity("Activity01", start, end, company.getProject("Project01"));
+		projectLeader.assignEmployeeProject(projectLeader.getID(), "Project01");
 
 		projectLeader.assignEmployeeActivity(projectLeader.getID(), p1.getID()+"-Activity01");
 		projectLeader.registerSpentTime(p1.getID()+"-Activity01", 100);

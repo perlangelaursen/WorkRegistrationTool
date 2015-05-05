@@ -41,7 +41,7 @@ public class TestSeeRegisteredSpentTime {
 		company.employeeLogin("HABU", "empassword1");
 		
 		// Add employee to project and activity
-		projectLeader.assignEmployeeProject(employee, project);
+		projectLeader.assignEmployeeProject(employee.getID(), project.getName());
 		projectLeader.assignEmployeeActivity(employee.getID(), activity.getName());
 		projectLeader.assignEmployeeActivity(employee.getID(), activity2.getName());
 		projectLeader.assignEmployeeActivity(employee.getID(), activity3.getName());

@@ -42,7 +42,7 @@ public class TestPlanActivity {
 		p1 = company.createProject("Project01", start, end);
 		projectLeader = company.createEmployee("Test", "password", "RandD");
 		
-		executive.assignProjectLeader(projectLeader,company.getSpecificProject("Project01"));
+		executive.assignProjectLeader("Test",p1.getID());
 	}
 	
 	@Test
@@ -53,9 +53,9 @@ public class TestPlanActivity {
 		end.set(2016, Calendar.JANUARY, 25);
 		
 		company.employeeLogin(projectLeader.getID(), "password");
-		projectLeader.createActivity(company.getSpecificProject("Project01"), "TestActivity", start, end);
+		projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end);
 		
-		assertEquals(1, company.getSpecificProject("Project01").getActivities().size());
+		assertEquals(1, company.getProject("Project01").getActivities().size());
 		Activity a = p1.getActivity(p1.getID()+"-TestActivity");
 		assertEquals(p1.getID()+"-TestActivity", a.getName());
 		assertEquals(start, a.getStart());
@@ -71,14 +71,14 @@ public class TestPlanActivity {
 		
 		company.employeeLogin(projectLeader.getID(), "password");
 		try {
-			projectLeader.createActivity(company.getSpecificProject("Project01"), "TestActivity", start, end);
+			projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end);
 			fail("OperationNotAllowedException exception should have been thrown");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("Incorrect order of dates.",e.getMessage());
 			assertEquals("Create activity",e.getOperation());
 		}
 		
-		assertEquals(0, company.getSpecificProject("Project01").getActivities().size());
+		assertEquals(0, company.getProject("Project01").getActivities().size());
 	}
 	
 	@Test
@@ -90,7 +90,7 @@ public class TestPlanActivity {
 		
 		Employee test2 = new Employee("Test2", "password", company, "RandD");
 		try {
-			test2.createActivity(company.getSpecificProject("Project01"), "TestActivity", start, end);
+			test2.createActivity(company.getProject("Project01"), "TestActivity", start, end);
 			fail("OperationNotAllowedException exception should have been thrown");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("Operation is not allowed if not project leader", e.getMessage());

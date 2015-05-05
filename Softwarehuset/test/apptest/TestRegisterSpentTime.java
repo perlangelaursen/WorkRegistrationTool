@@ -52,7 +52,7 @@ public class TestRegisterSpentTime {
 	public void testRegisterSpentTime() throws OperationNotAllowedException {
 		company.employeeLogin("LAND", "empassword1");
 		// Add employee to project and activity
-		projectLeader.assignEmployeeProject(employee, project);
+		projectLeader.assignEmployeeProject("LAND", "Project01");
 		projectLeader.assignEmployeeActivity(employee.getID(), activity.getName());
 
 		// Register spent time
@@ -77,7 +77,7 @@ public class TestRegisterSpentTime {
 	public void testRegisterNegativeTime() throws OperationNotAllowedException {
 		company.employeeLogin("LAND", "empassword1");
 		// Add employee to project and activity
-		projectLeader.assignEmployeeProject(employee, project);
+		projectLeader.assignEmployeeProject("LAND", "Project01");
 		projectLeader.assignEmployeeActivity(employee.getID(), activity.getName());
 
 		// Try to register spent time

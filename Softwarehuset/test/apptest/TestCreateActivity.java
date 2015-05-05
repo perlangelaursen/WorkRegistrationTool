@@ -29,12 +29,12 @@ public class TestCreateActivity {
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(2016, Calendar.JANUARY, 23);
 		end.set(2016, Calendar.FEBRUARY, 23);
-		company.createProject("Project01", start, end);
-		company.createProject("Project02");
+		Project p1 = company.createProject("Project01", start, end);
+		Project p2 = company.createProject("Project02");
 		
 		projectLeader = company.createEmployee("BAMS", "password", "RanD");
 		
-		executive.assignProjectLeader(projectLeader,company.getSpecificProject("Project01"));
+		executive.assignProjectLeader("BAMS",p1.getID());
 		test1 = company.createEmployee("LAMP", "password", "RanD");
 	}
 	
@@ -46,10 +46,10 @@ public class TestCreateActivity {
 		start.set(2016, Calendar.JANUARY, 23);
 		end.set(2016, Calendar.JANUARY, 25);
 		
-		assertEquals(0, company.getSpecificProject("Project01").getActivities().size());
+		assertEquals(0, company.getProject("Project01").getActivities().size());
 		company.employeeLogin("BAMS", "password");
-		projectLeader.createActivity(company.getSpecificProject("Project01"), "TestActivity", start, end);
-		assertEquals(1, company.getSpecificProject("Project01").getActivities().size());
+		projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end);
+		assertEquals(1, company.getProject("Project01").getActivities().size());
 	}
 
 	//Logged in employee is not project leader
@@ -60,12 +60,12 @@ public class TestCreateActivity {
 		start.set(2016, Calendar.JANUARY, 23);
 		end.set(2016, Calendar.JANUARY, 25);
 		
-		assertEquals(0, company.getSpecificProject("Project01").getActivities().size());
+		assertEquals(0, company.getProject("Project01").getActivities().size());
 		
 		Employee test2 = company.createEmployee("JANU", "password", "RanD");
 		company.employeeLogin("JANU", "password");
 		try {
-			test2.createActivity(company.getSpecificProject("Project01"), "TestActivity", start, end);
+			test2.createActivity(company.getProject("Project01"), "TestActivity", start, end);
 			fail("OperationNotAllowedException exception should have been thrown");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("Operation is not allowed if not project leader", e.getMessage());
@@ -81,17 +81,17 @@ public class TestCreateActivity {
 		start.set(2016, Calendar.JANUARY, 29);
 		end.set(2016, Calendar.JANUARY, 25);
 		
-		assertEquals(0, company.getSpecificProject("Project01").getActivities().size());
+		assertEquals(0, company.getProject("Project01").getActivities().size());
 		company.employeeLogin("BAMS", "password");
 		try {
-			projectLeader.createActivity(company.getSpecificProject("Project01"), "TestActivity", start, end);
+			projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end);
 			fail("OperationNotAllowedException exception should have been thrown");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("Incorrect order of dates.",e.getMessage());
 			assertEquals("Create activity",e.getOperation());
 		}
 		
-		assertEquals(0, company.getSpecificProject("Project01").getActivities().size());
+		assertEquals(0, company.getProject("Project01").getActivities().size());
 	}
 	
 	//Not logged in
@@ -102,14 +102,14 @@ public class TestCreateActivity {
 		start.set(2016, Calendar.JANUARY, 23);
 		end.set(2016, Calendar.JANUARY, 25);
 		company.employeeLogin(projectLeader.getID(), "wrongpassword");
-		assertEquals(0, company.getSpecificProject("Project01").getActivities().size());
+		assertEquals(0, company.getProject("Project01").getActivities().size());
 		try {
-			projectLeader.createActivity(company.getSpecificProject("Project01"), "TestActivity", start, end);
+			projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end);
 			fail("OperationNotAllowedException exception should have been thrown");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("Operation is not allowed if not project leader", e.getMessage());
 			assertEquals("Project leader operation", e.getOperation());
 		}
-		assertEquals(0, company.getSpecificProject("Project01").getActivities().size());
+		assertEquals(0, company.getProject("Project01").getActivities().size());
 	}
 }
