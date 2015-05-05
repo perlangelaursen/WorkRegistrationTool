@@ -3,6 +3,7 @@ package cmdinterface;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -116,7 +117,7 @@ public class WRTcmdinterface {
 				System.out.println();
 				executiveScreen();
 			} catch (Exception e) {
-				System.out.println("End date cannot be before start date");
+				System.out.println(""+e.getMessage());
 				System.out.println("Project could not be created");
 				System.out.println();
 				createProject();
@@ -583,88 +584,85 @@ public class WRTcmdinterface {
 	}
 	
 	private GregorianCalendar checkEndDate() throws IOException {
-		int endDate, endMonth, endYear;
+		int endYear, endWeek, endDate, endMonth;
 		while (true) {
-			System.out.print("Enter End Date: ");
-			String date = input.readLine();
-			while (!date.matches("[0-9]+")) {
-				System.out.println("Date must be a number");
-				System.out.print("Enter End Date: ");
-				date = input.readLine();
-			}
-			endDate = Integer.parseInt(date);
-
-			System.out.print("Enter End Month: ");
-			String month = input.readLine();
-			while (!month.matches("[0-9]+")) {
-				System.out.println("Month must be a number");
-				System.out.print("Enter End Month: ");
-				month = input.readLine();
-			}
-			endMonth = Integer.parseInt(month);
-
-			System.out.print("Enter End Year: ");
+			System.out.print("Enter end year: ");
 			String year = input.readLine();
 			while (!year.matches("[0-9]+")) {
 				System.out.println("Year must be a number");
-				System.out.print("Enter End Year: ");
+				System.out.print("Enter start year: ");
 				year = input.readLine();
 			}
 			endYear = Integer.parseInt(year);
 
+			System.out.print("Enter end week: ");
+			String week = input.readLine();
+			while (!week.matches("[0-9]+")) {
+				System.out.println("Week must be a number");
+				System.out.print("Enter start week: ");
+				week = input.readLine();
+			}
+			endWeek = Integer.parseInt(week);
+
+			GregorianCalendar g = new GregorianCalendar();
+			g.clear();
+			g.set(Calendar.YEAR, endYear);
+			g.set(Calendar.WEEK_OF_YEAR, endWeek);
+			g.add(Calendar.DAY_OF_YEAR, 6);;
+			endMonth = g.get(Calendar.MONTH);
+			endDate = g.get(Calendar.DAY_OF_MONTH);
+			
 			try {
-				company.checkForInvalidDate(endYear, endMonth - 1, endDate);
+				company.checkForInvalidDate(endYear, endMonth,endDate);
 				System.out.println();
 				break;
 			} catch (Exception e) {
-				System.out.println("Invalid information");
+				System.out.println(""+e.getMessage());
 				System.out.println();
 			}
 		}
-		GregorianCalendar end = new GregorianCalendar(endYear, endMonth - 1, endDate, 0, 0, 0);
+		GregorianCalendar end = new GregorianCalendar(endYear, endMonth, endDate, 0, 0, 0);
 		return end;
 	}
 
 	private GregorianCalendar checkStartDate() throws IOException {
-		int startDate, startMonth, startYear;
+		int startYear, startWeek, startDate, startMonth;
 		while (true) {
-			System.out.print("Enter Start Date: ");
-			String date = input.readLine();
-			while (!date.matches("[0-9]+")) {
-				System.out.println("Date must be a number");
-				System.out.print("Enter Start Date: ");
-				date = input.readLine();
-			}
-			startDate = Integer.parseInt(date);
-
-			System.out.print("Enter Start Month: ");
-			String month = input.readLine();
-			while (!month.matches("[0-9]+")) {
-				System.out.println("Month must be a number");
-				System.out.print("Enter Start Month: ");
-				month = input.readLine();
-			}
-			startMonth = Integer.parseInt(month);
-
-			System.out.print("Enter Start Year: ");
+			System.out.print("Enter start year: ");
 			String year = input.readLine();
 			while (!year.matches("[0-9]+")) {
 				System.out.println("Year must be a number");
-				System.out.print("Enter Start Year: ");
+				System.out.print("Enter start year: ");
 				year = input.readLine();
 			}
 			startYear = Integer.parseInt(year);
 
+			System.out.print("Enter start week: ");
+			String week = input.readLine();
+			while (!week.matches("[0-9]+")) {
+				System.out.println("Week must be a number");
+				System.out.print("Enter start week: ");
+				week = input.readLine();
+			}
+			startWeek = Integer.parseInt(week);
+
+			GregorianCalendar g = new GregorianCalendar();
+			g.clear();
+			g.set(Calendar.YEAR, startYear);
+			g.set(Calendar.WEEK_OF_YEAR, startWeek);
+			startMonth = g.get(Calendar.MONTH);
+			startDate = g.get(Calendar.DAY_OF_MONTH);
+			
 			try {
-				company.checkForInvalidDate(startYear, startMonth - 1,startDate);
+				company.checkForInvalidDate(startYear, startMonth,startDate);
 				System.out.println();
 				break;
 			} catch (Exception e) {
-				System.out.println("Invalid information");
+				System.out.println(""+e.getMessage());
 				System.out.println();
 			}
 		}
-		GregorianCalendar start = new GregorianCalendar(startYear, startMonth - 1, startDate, 0, 0, 0);
+		GregorianCalendar start = new GregorianCalendar(startYear, startMonth, startDate, 0, 0, 0);
 		return start;
 	}
 }
