@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="Softwarehuset" project="Softwarehuset" tests="68" started="68" failures="1" errors="0" ignored="0">
+  <testsuite name="apptest.TestCreateProject" time="0.007">
+    <testcase name="testNewProjectPassedDates" classname="apptest.TestCreateProject" time="0.004"/>
+    <testcase name="testNewProjectLoggedOut" classname="apptest.TestCreateProject" time="0.001"/>
+    <testcase name="testNewProjectDateOrder" classname="apptest.TestCreateProject" time="0.0"/>
+    <testcase name="testNewProjectSuccess" classname="apptest.TestCreateProject" time="0.002"/>
+  </testsuite>
+  <testsuite name="apptest.TestGetAvailableEmployees" time="0.006">
+    <testcase name="testAvaiableEmployeesOnePerson" classname="apptest.TestGetAvailableEmployees" time="0.003"/>
+    <testcase name="testAvailableEmployeesOverlap" classname="apptest.TestGetAvailableEmployees" time="0.001"/>
+    <testcase name="testAvailableEmployeesThreePersons" classname="apptest.TestGetAvailableEmployees" time="0.002"/>
+  </testsuite>
+  <testsuite name="apptest.TestEditData" time="0.015">
+    <testcase name="testEditData" classname="apptest.TestEditData" time="0.012">
+      <failure>java.lang.AssertionError: expected: java.util.Date&lt;Mon Jan 25 00:00:00 CET 2016&gt; but was: java.util.Date&lt;Mon Jan 25 00:00:00 CET 2016&gt;&#13;
+	at org.junit.Assert.fail(Assert.java:88)&#13;
+	at org.junit.Assert.failNotEquals(Assert.java:743)&#13;
+	at org.junit.Assert.assertEquals(Assert.java:118)&#13;
+	at org.junit.Assert.assertEquals(Assert.java:144)&#13;
+	at apptest.TestEditData.testEditData(TestEditData.java:58)&#13;
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)&#13;
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)&#13;
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)&#13;
+	at java.lang.reflect.Method.invoke(Unknown Source)&#13;
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)&#13;
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)&#13;
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)&#13;
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)&#13;
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)&#13;
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)&#13;
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)&#13;
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)&#13;
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)&#13;
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)&#13;
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)&#13;
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)&#13;
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)&#13;
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)&#13;
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:50)&#13;
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)&#13;
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:459)&#13;
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:675)&#13;
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:382)&#13;
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)&#13;
+&#13;
+</failure>
+    </testcase>
+    <testcase name="testSetData" classname="apptest.TestEditData" time="0.001"/>
+    <testcase name="testEditDataWrongActivity" classname="apptest.TestEditData" time="0.0"/>
+    <testcase name="testEditDataInvalidDate" classname="apptest.TestEditData" time="0.002"/>
+  </testsuite>
+  <testsuite name="apptest.TestGetProgressForProjectAndActivity" time="0.003">
+    <testcase name="testProgressNotLoggedIn" classname="apptest.TestGetProgressForProjectAndActivity" time="0.001"/>
+    <testcase name="testProgressProject" classname="apptest.TestGetProgressForProjectAndActivity" time="0.0"/>
+    <testcase name="testProgressNotProjectLeader" classname="apptest.TestGetProgressForProjectAndActivity" time="0.001"/>
+    <testcase name="testProgressActivity" classname="apptest.TestGetProgressForProjectAndActivity" time="0.001"/>
+  </testsuite>
+  <testsuite name="apptest.TestPlanActivity" time="0.003">
+    <testcase name="testPlanActivityWrongDates" classname="apptest.TestPlanActivity" time="0.001"/>
+    <testcase name="testNotProjectLeader" classname="apptest.TestPlanActivity" time="0.0"/>
+    <testcase name="testPlanActivityRightDates" classname="apptest.TestPlanActivity" time="0.002"/>
+  </testsuite>
+  <testsuite name="apptest.TestAssignEmployeeToProjectAndActivity" time="0.003">
+    <testcase name="testNotLoggedInActivity" classname="apptest.TestAssignEmployeeToProjectAndActivity" time="0.001"/>
+    <testcase name="testAssignWrongEmployee" classname="apptest.TestAssignEmployeeToProjectAndActivity" time="0.0"/>
+    <testcase name="testNotProjectLeader" classname="apptest.TestAssignEmployeeToProjectAndActivity" time="0.0"/>
+    <testcase name="testAssignEmployeeProject" classname="apptest.TestAssignEmployeeToProjectAndActivity" time="0.001"/>
+    <testcase name="testNotProjectLeaderActivity" classname="apptest.TestAssignEmployeeToProjectAndActivity" time="0.0"/>
+    <testcase name="testEmployeeNotExist" classname="apptest.TestAssignEmployeeToProjectAndActivity" time="0.0"/>
+    <testcase name="testNotLoggedIn" classname="apptest.TestAssignEmployeeToProjectAndActivity" time="0.001"/>
+    <testcase name="testAssignEmployeeActivity" classname="apptest.TestAssignEmployeeToProjectAndActivity" time="0.0"/>
+  </testsuite>
+  <testsuite name="apptest.TestColleaguesAssistance" time="0.003">
+    <testcase name="testEmployeeNotLoggedIn" classname="apptest.TestColleaguesAssistance" time="0.001"/>
+    <testcase name="testRemoveSpecificAssistingEmployee" classname="apptest.TestColleaguesAssistance" time="0.0"/>
+    <testcase name="testAskColleague" classname="apptest.TestColleaguesAssistance" time="0.001"/>
+    <testcase name="testAssistanceNotFound" classname="apptest.TestColleaguesAssistance" time="0.0"/>
+    <testcase name="testEmployeeNotLoggedInRemoveSpecificAssistingEmployee" classname="apptest.TestColleaguesAssistance" time="0.001"/>
+  </testsuite>
+  <testsuite name="apptest.TestSeeRegisteredSpentTime" time="0.001">
+    <testcase name="testSeeRegisteredSpentTime" classname="apptest.TestSeeRegisteredSpentTime" time="0.0"/>
+    <testcase name="testSeeRegisteredSpentTimeOnWrongActivity" classname="apptest.TestSeeRegisteredSpentTime" time="0.001"/>
+  </testsuite>
+  <testsuite name="apptest.TestRegisterOtherTime" time="0.286">
+    <testcase name="testRegisterInvalidTimes" classname="apptest.TestRegisterOtherTime" time="0.001"/>
+    <testcase name="testRegisteronOccupiedDates2" classname="apptest.TestRegisterOtherTime" time="0.001"/>
+    <testcase name="testRegisteronOccupiedDates3" classname="apptest.TestRegisterOtherTime" time="0.0"/>
+    <testcase name="testRegisteronOccupiedDates4" classname="apptest.TestRegisterOtherTime" time="0.002"/>
+    <testcase name="testRegisteronOccupiedDates" classname="apptest.TestRegisterOtherTime" time="0.279"/>
+    <testcase name="testRegisterOtherTime2" classname="apptest.TestRegisterOtherTime" time="0.001"/>
+    <testcase name="testRegisterNonExistingDates" classname="apptest.TestRegisterOtherTime" time="0.001"/>
+    <testcase name="testRegisterOtherTime" classname="apptest.TestRegisterOtherTime" time="0.001"/>
+  </testsuite>
+  <testsuite name="apptest.TestAssignProjectLeader" time="0.002">
+    <testcase name="testChangeProjectLeader" classname="apptest.TestAssignProjectLeader" time="0.0"/>
+    <testcase name="testAssignProjectLeader" classname="apptest.TestAssignProjectLeader" time="0.001"/>
+    <testcase name="testProjectNotFound" classname="apptest.TestAssignProjectLeader" time="0.0"/>
+    <testcase name="testEmployeeNotFound" classname="apptest.TestAssignProjectLeader" time="0.0"/>
+    <testcase name="testNotLoggedIn" classname="apptest.TestAssignProjectLeader" time="0.001"/>
+  </testsuite>
+  <testsuite name="apptest.TestCreateActivity" time="0.001">
+    <testcase name="testCreateActivity01" classname="apptest.TestCreateActivity" time="0.0"/>
+    <testcase name="testCreateActivity02" classname="apptest.TestCreateActivity" time="0.001"/>
+    <testcase name="testCreateActivity03" classname="apptest.TestCreateActivity" time="0.0"/>
+    <testcase name="testCreateActivity04" classname="apptest.TestCreateActivity" time="0.0"/>
+  </testsuite>
+  <testsuite name="apptest.TestRegisterSpentTime" time="0.001">
+    <testcase name="testRegisterNegativeTime" classname="apptest.TestRegisterSpentTime" time="0.0"/>
+    <testcase name="testRegisterTimeforWrongActivity" classname="apptest.TestRegisterSpentTime" time="0.0"/>
+    <testcase name="testRegisterWithoutLoggingIn" classname="apptest.TestRegisterSpentTime" time="0.0"/>
+    <testcase name="testRegisterSpentTime" classname="apptest.TestRegisterSpentTime" time="0.001"/>
+  </testsuite>
+  <testsuite name="apptest.TestMakeReport" time="0.006">
+    <testcase name="testEditNullReport" classname="apptest.TestMakeReport" time="0.002"/>
+    <testcase name="testWriteReportNotLoggedIn" classname="apptest.TestMakeReport" time="0.001"/>
+    <testcase name="testWriteReportInvalidDate" classname="apptest.TestMakeReport" time="0.001"/>
+    <testcase name="testWriteReportNotProjectLeader" classname="apptest.TestMakeReport" time="0.0"/>
+    <testcase name="testWriteReport" classname="apptest.TestMakeReport" time="0.001"/>
+    <testcase name="testEditReport" classname="apptest.TestMakeReport" time="0.0"/>
+    <testcase name="testEditReportNotProjectLeader" classname="apptest.TestMakeReport" time="0.001"/>
+    <testcase name="testReadReportNotLoggedIn" classname="apptest.TestMakeReport" time="0.0"/>
+  </testsuite>
+  <testsuite name="apptest.TestRelieveEmployee" time="0.002">
+    <testcase name="testNotProjectLeader" classname="apptest.TestRelieveEmployee" time="0.001"/>
+    <testcase name="testRelieveEmployee01" classname="apptest.TestRelieveEmployee" time="0.0"/>
+    <testcase name="testNotLoggedIn" classname="apptest.TestRelieveEmployee" time="0.001"/>
+  </testsuite>
+  <testsuite name="apptest.TestStatistics" time="0.001">
+    <testcase name="testgetStatisticsNotLoggedIn" classname="apptest.TestStatistics" time="0.0"/>
+    <testcase name="testgetStatisticsPL" classname="apptest.TestStatistics" time="0.001"/>
+    <testcase name="testgetStatisticsNotPL" classname="apptest.TestStatistics" time="0.0"/>
+  </testsuite>
+</testrun>
