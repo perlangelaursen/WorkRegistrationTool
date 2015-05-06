@@ -74,29 +74,26 @@ public class WRTcmdinterface {
 		if (commands[0].toLowerCase().equals("add")
 				&& commands[1].toLowerCase().equals("employee")) {
 			addEmployee();
-		}
-
-		if (commands[0].toLowerCase().equals("create")
+		} else if (commands[0].toLowerCase().equals("create")
 				&& commands[1].toLowerCase().equals("project")) {
 			createProject();
-		}
-
-		if (commands[0].toLowerCase().equals("assign")
+		} else if (commands[0].toLowerCase().equals("assign")
 				&& commands[1].toLowerCase().equals("project")
 				&& commands[2].toLowerCase().equals("leader")) {
 			assignProjectLeader();
-		}
-
-		if (commands[0].toLowerCase().equals("log")
+		} else if (commands[0].toLowerCase().equals("log")
 				&& commands[1].toLowerCase().equals("out")) {
 			company.employeeLogout();
 			initialScreen();
-		}
-		if (commands[0].toLowerCase().equals("shut")
+		} else if (commands[0].toLowerCase().equals("shut")
 				&& commands[1].toLowerCase().equals("down")
 				&& commands[2].toLowerCase().equals("the")
 				&& commands[3].toLowerCase().equals("system")) {
 			System.exit(0);
+		} else {
+			System.out.println("Wrong Command");
+			System.out.println();
+			executiveScreen();
 		}
 
 	}
@@ -127,33 +124,39 @@ public class WRTcmdinterface {
 			}
 		}
 		boolean repeat = true;
-		while(repeat){
-		System.out.println("Do you want to add dates to project (Yes or No)?");
-		String choice = input.readLine();
-
-		if (choice.toLowerCase().equals("yes")) {
-			repeat = false;
-			GregorianCalendar start = checkStartDate();
-			GregorianCalendar end = checkEndDate();
-
-			try {
-				Project p = company.createProject(projectName, start, end);
-				System.out.println("Project created: " + p.getID());
-				System.out.println();
-				executiveScreen();
-			} catch (Exception e) {
-				System.out.println("" + e.getMessage());
-				System.out.println("Project could not be created");
-				System.out.println();
-				createProject();
+		while(repeat) {
+			System.out.println("Do you want to add dates to project (Yes or No)?");
+			String choice = input.readLine();
+	
+			if (choice.toLowerCase().equals("yes")) {
+				repeat = false;
+				GregorianCalendar start = checkStartDate();
+				GregorianCalendar end = checkEndDate();
+	
+				try {
+					Project p = company.createProject(projectName, start, end);
+					System.out.println("Project created: " + p.getID());
+					System.out.println();
+					executiveScreen();
+				} catch (Exception e) {
+					System.out.println("" + e.getMessage());
+					System.out.println("Project could not be created");
+					System.out.println();
+					createProject();
+				}
+			} else if (choice.toLowerCase().equals("no")) {
+				try {
+					Project p = company.createProject(projectName);
+					System.out.println("Project created: " + p.getID());
+					System.out.println();
+					repeat = false;
+					executiveScreen();
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+					System.out.println();
+					createProject();
+				}
 			}
-		} else if (choice.toLowerCase().equals("no")) {
-			repeat = false;
-			Project p = company.createProject(projectName);
-			System.out.println("Project created: " + p.getID());
-			System.out.println();
-			executiveScreen();
-		}
 		}
 	}
 
@@ -287,6 +290,7 @@ public class WRTcmdinterface {
 		System.out.println("- Create an activity");
 		System.out.println("- Get Project Statistics");
 		System.out.println("- Change Project Dates");
+		System.out.println("- Change Activity Dates");
 		System.out.println("- Relieve employee from project");
 		System.out.println("- See available employees");
 		System.out.println("- Create reports on project meetings");
@@ -302,10 +306,12 @@ public class WRTcmdinterface {
 			assignEmployeeActivity();
 		} else if (userChoice.toLowerCase().equals("create an activity")) {
 			createActivity(project);
-		} else if (userChoice.toLowerCase().equals("get Project Statistics")) {
+		} else if (userChoice.toLowerCase().equals("get project statistics")) {
 			getStatistics(project);
-		} else if (userChoice.toLowerCase().equals("change Project Dates")) {
+		} else if (userChoice.toLowerCase().equals("change Project dates")) {
 			changeProjectDates(project);
+		} else if (userChoice.toLowerCase().equals("change activity dates") ){
+			changeActivityDates(project);
 		} else if (userChoice.toLowerCase().equals(
 				"relieve employee from project")) {
 			relieveEmployeeProject(project);
@@ -325,6 +331,26 @@ public class WRTcmdinterface {
 		}
 	}
 
+	private void changeActivityDates(Project project) throws IOException,
+	OperationNotAllowedException {
+		// TODO Auto-generated method stub
+		System.out.print("Enter Activity ID: ");
+		String activityName = input.readLine();
+		String activity = project.getActivity(activityName).getName();
+		
+		GregorianCalendar start = checkStartDate();
+		GregorianCalendar end = checkEndDate();
+		
+		company.getLoggedInEmployee().editActivityStart(activity,
+				start.get(Calendar.YEAR),
+				start.get(Calendar.MONTH),
+				start.get(Calendar.DAY_OF_MONTH));
+		company.getLoggedInEmployee().editActivityEnd(activity,
+				end.get(Calendar.YEAR), end.get(Calendar.MONTH), end.get(Calendar.DAY_OF_MONTH));
+		
+		manageProjectScreen(p);
+	}
+
 	private void changeProjectDates(Project p) throws IOException,
 			OperationNotAllowedException {
 		String project = p.getName();
@@ -332,8 +358,13 @@ public class WRTcmdinterface {
 		GregorianCalendar start = checkStartDate();
 		GregorianCalendar end = checkEndDate();
 
-		company.getProject(project).setStart(start);
-		company.getProject(project).setEnd(end);
+		company.getLoggedInEmployee().editProjectStart(project,
+				start.get(Calendar.YEAR),
+				start.get(Calendar.MONTH),
+				start.get(Calendar.DAY_OF_MONTH));
+		company.getLoggedInEmployee().editProjectEnd(project,
+				end.get(Calendar.YEAR), end.get(Calendar.MONTH), end.get(Calendar.DAY_OF_MONTH));
+		
 
 		manageProjectScreen(p);
 	}
@@ -419,8 +450,7 @@ public class WRTcmdinterface {
 
 		try {
 			int time = company.getLoggedInEmployee().getSpentTime(activity);
-			System.out.println(activity + ": "
-					+ company.getLoggedInEmployee().getSpentTime(activity)+ " half hour(s)");
+			System.out.println(activity + ": " + time + " half hour(s)");
 			System.out.println();
 		} catch (Exception e) {
 			System.out.println("" + e.getMessage());
@@ -447,11 +477,11 @@ public class WRTcmdinterface {
 					company.getProject(project).getActivity(activity));
 			System.out.println("Assisting Employee Removed");
 		}
-
+		
 		employeeScreen();
 	}
 
-	private void askColleagueForAssistance() throws IOException,
+	private void askColleagueForAssistance() throws IOException, 
 			OperationNotAllowedException {
 		System.out.print("Enter Project Name: ");
 		String project = input.readLine();
@@ -461,14 +491,25 @@ public class WRTcmdinterface {
 
 		System.out.print("Enter Employee ID: ");
 		String id = input.readLine();
-		Employee em = company.getEmployee(id);
-
-		if (em != null) {
-			company.getLoggedInEmployee().requestAssistance(em,
-					company.getProject(project).getActivity(activity));
-			System.out.println("Employee added to assist.");
+		Employee em = null;
+		try {
+			em = company.getEmployee(id);
+		} catch (Exception e) {
+			System.out.println("" + e.getMessage());
+			System.out.println();
 		}
-
+			
+		if (em != null) {
+			try {
+				company.getLoggedInEmployee().requestAssistance(em,
+						company.getProject(project).getActivity(activity));
+				System.out.println("Employee added to assist.");
+			} catch (Exception e) {
+				System.out.println("" + e.getMessage());
+				System.out.println();
+			}
+		}
+			
 		employeeScreen();
 	}
 
@@ -743,7 +784,17 @@ public class WRTcmdinterface {
 				week = input.readLine();
 			}
 			startWeek = Integer.parseInt(week);
-
+			
+			boolean preRepeat;
+			try {
+				company.checkForInvalidWeek(startWeek);
+				preRepeat = false;
+			} catch (Exception e) {
+				System.out.println("" + e.getMessage());
+				System.out.println();
+				preRepeat = true;
+			}
+			
 			GregorianCalendar g = new GregorianCalendar();
 			g.clear();
 			g.set(Calendar.YEAR, startYear);
@@ -753,11 +804,11 @@ public class WRTcmdinterface {
 
 			try {
 				company.checkForInvalidDate(startYear, startMonth, startDate);
-				System.out.println();
-				repeat = false;
+				repeat = false||preRepeat;
 			} catch (Exception e) {
 				System.out.println("" + e.getMessage());
 				System.out.println();
+				repeat = true||preRepeat;
 			}
 		}
 		GregorianCalendar start = new GregorianCalendar(startYear, startMonth, startDate, 0, 0, 0);

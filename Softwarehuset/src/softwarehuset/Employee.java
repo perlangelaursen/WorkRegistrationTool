@@ -241,7 +241,11 @@ public class Employee {
 
 	public void requestAssistance(Employee selected, Activity specificActivity) throws OperationNotAllowedException {
 		if(company.getLoggedInEmployee() == this) {
-			specificActivity.assignAssistingEmployee(selected);
+			if (specificActivity != null) {
+				specificActivity.assignAssistingEmployee(selected);
+			} else {
+				throw new OperationNotAllowedException("Activity not found", "Need for Assistance");
+			}
 		} else {
 			throw new OperationNotAllowedException("User not logged in", "Need For Assistance");
 		}

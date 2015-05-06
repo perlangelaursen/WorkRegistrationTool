@@ -40,6 +40,11 @@ public class Company {
 		if (!executiveIsLoggedIn()) {
 			throw new OperationNotAllowedException("Create project operation is not allowed if not executive.", "Create project");
 		}
+		for (Project p : projects) {
+			if (name.equals(p.getName())) {
+				throw new OperationNotAllowedException("Name already exists","Create Project");
+			}
+		}
 		counter++;
 		Project p = new Project(name, this);
 		projects.add(p);
@@ -49,6 +54,12 @@ public class Company {
 	public Project createProject(String name, GregorianCalendar start, GregorianCalendar end) throws OperationNotAllowedException {
 		if (!executiveIsLoggedIn()) {
 			throw new OperationNotAllowedException("Create project operation is not allowed if not executive.", "Create project");
+		}
+		
+		for (Project p : projects) {
+			if (name.equals(p.getName())) {
+				throw new OperationNotAllowedException("Name already exists","Create Project");
+			}
 		}
 		
 		if (!start.after(getCurrentTime())){
@@ -183,6 +194,12 @@ public class Company {
 		int daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 		if (date < 1 || date > daysInMonth){
 			throw new OperationNotAllowedException("Invalid time input", "Choose date");
+		}
+	}
+	
+	public void checkForInvalidWeek(int week) throws OperationNotAllowedException {
+		if (week > 52 || week < 1) {
+			throw new OperationNotAllowedException("Invalid week", "Choose week");
 		}
 	}
 }
