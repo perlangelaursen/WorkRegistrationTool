@@ -20,3 +20,56 @@ user global configuration and to define the default location to store repositori
 not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
 EGit might behave differently since they see different configuration options.
 This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+!SESSION 2015-05-05 13:02:03.420 -----------------------------------------------
+eclipse.buildId=4.4.0.I20140606-1215
+java.version=1.8.0_20
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=da_DK
+Framework arguments:  -product org.eclipse.epp.package.standard.product -product org.eclipse.epp.package.standard.product -keyring /Users/annaolgaardnielsen/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.standard.product -data /Users/annaolgaardnielsen/Dropbox/DTU/Software Engineering 1/WorkRegistrationTool -product org.eclipse.epp.package.standard.product -keyring /Users/annaolgaardnielsen/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.resources 2 10035 2015-05-05 13:02:05.039
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.core.net 1 0 2015-05-05 13:02:05.401
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+!SESSION 2015-05-06 22:12:46.576 -----------------------------------------------
+eclipse.buildId=4.4.0.I20140606-1215
+java.version=1.8.0_20
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=da_DK
+Framework arguments:  -product org.eclipse.epp.package.standard.product -keyring /Users/annaolgaardnielsen/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.standard.product -keyring /Users/annaolgaardnielsen/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2015-05-06 22:13:06.490
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY com.mountainminds.eclemma.core 4 5004 2015-05-06 22:14:28.481
+!MESSAGE Execution data file can not be created (code 5004).
+!STACK 0
+java.io.IOException: No such file or directory
+	at java.io.UnixFileSystem.createFileExclusively(Native Method)
+	at java.io.File.createTempFile(File.java:2024)
+	at com.mountainminds.eclemma.internal.core.ExecutionDataFiles.newFile(ExecutionDataFiles.java:64)
+	at com.mountainminds.eclemma.internal.core.launching.AgentServer.run(AgentServer.java:120)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY com.mountainminds.eclemma.core 4 5004 2015-05-06 22:15:47.156
+!MESSAGE Execution data file can not be created (code 5004).
+!STACK 0
+java.io.IOException: No such file or directory
+	at java.io.UnixFileSystem.createFileExclusively(Native Method)
+	at java.io.File.createTempFile(File.java:2024)
+	at com.mountainminds.eclemma.internal.core.ExecutionDataFiles.newFile(ExecutionDataFiles.java:64)
+	at com.mountainminds.eclemma.internal.core.launching.AgentServer.run(AgentServer.java:120)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY com.mountainminds.eclemma.core 4 5004 2015-05-06 22:16:10.753
+!MESSAGE Execution data file can not be created (code 5004).
+!STACK 0
+java.io.IOException: No such file or directory
+	at java.io.UnixFileSystem.createFileExclusively(Native Method)
+	at java.io.File.createTempFile(File.java:2024)
+	at com.mountainminds.eclemma.internal.core.ExecutionDataFiles.newFile(ExecutionDataFiles.java:64)
+	at com.mountainminds.eclemma.internal.core.launching.AgentServer.run(AgentServer.java:120)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
