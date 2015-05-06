@@ -63,6 +63,7 @@ public class Company {
 		projects.add(p);
 		return p;
 	}
+	
 	public Employee createEmployee(String id, String password, String department) throws OperationNotAllowedException {
 		if (id.length() != 4) {
 			throw new OperationNotAllowedException("Employee ID must be the length of 4 letters","Create employee");
@@ -74,6 +75,7 @@ public class Company {
 		employees.add(e);
 		return e;
 	}
+	
 	public List<Project> getProjects() {
 		return projects;
 	}

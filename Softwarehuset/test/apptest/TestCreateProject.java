@@ -35,7 +35,7 @@ public class TestCreateProject {
 	
 	@Test
 	public void testNewProjectSuccess() throws OperationNotAllowedException {
-		// Create a project
+		// Create a project with start and end date
 		GregorianCalendar start = new GregorianCalendar();
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(2016, Calendar.JANUARY, 23);
@@ -43,7 +43,7 @@ public class TestCreateProject {
 		company.createProject("Project01", start, end);
 		company.createProject("Project02");
 
-		// See projects
+		// Check number of projects
 		List<Project> projects = (List<Project>) company.getProjects();
 		int numberOfProjects = projects.size();
 		assertEquals(2, numberOfProjects);
@@ -89,7 +89,7 @@ public class TestCreateProject {
 			assertEquals("Create project",e.getOperation());
 		}
 		
-		// See projects
+		// Check number of projects
 		List<Project> projects = (List<Project>) company.getProjects();
 		int numberOfProjects = projects.size();
 		assertEquals(0, numberOfProjects);
@@ -122,7 +122,7 @@ public class TestCreateProject {
 			assertEquals("Create project",e.getOperation());
 		}
 
-		// See projects
+		// Check number of projects
 		List<Project> projects = (List<Project>) company.getProjects();
 		int numberOfProjects = projects.size();
 		assertEquals(0, numberOfProjects);
@@ -154,12 +154,20 @@ public class TestCreateProject {
 			assertEquals("Create project",e.getOperation());
 		}
 
-		// See projects
+		// Check number of projects
 		List<Project> projects = (List<Project>) company.getProjects();
 		int numberOfProjects = projects.size();
 		assertEquals(0, numberOfProjects);
 	}
 	
+	/**
+	 * Tests the scenario where an employee searches for a project by its name
+	 * and several projects have that name (only the project's 5-digit ID is unique) 
+	 * <ol>
+	 * <li>The user searches for a project name that two projects have 
+	 * <li>An exception is thrown
+	 * </ol>
+	 */
 	@Test
 	public void testCreateAndGetProjectsWithSameTitle() throws Exception {
 		// Create dates

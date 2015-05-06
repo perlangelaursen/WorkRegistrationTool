@@ -3,9 +3,12 @@ package cmdinterface;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import softwarehuset.*;
 
@@ -33,7 +36,8 @@ public class WRTcmdinterface {
 
 	public static void main(String[] args) throws IOException,
 			OperationNotAllowedException {
-		// Setup
+		// Setup: PRLR is project leader of Project 3 (150001)
+			//AKMU is assigned to Project 3's activity 150001-Testing
 		company.executiveLogin("password");
 		e = company.createEmployee("PRLR", "password", "Software");
 		e2 = company.createEmployee("AKMU", "password", "Software");
@@ -43,6 +47,12 @@ public class WRTcmdinterface {
 		company.employeeLogout();
 		company.employeeLogin("PRLR", "password");
 		e.assignEmployeeProject("AKMU", "Project 3");
+		GregorianCalendar start = new GregorianCalendar();
+		GregorianCalendar end = new GregorianCalendar();
+		start.set(2016, Calendar.JANUARY, 23);
+		end.set(2016, Calendar.FEBRUARY, 23);
+		e.createActivity(p, "Testing", start, end);
+		e.assignEmployeeActivity("AKMU", "150001-Testing");
 		company.employeeLogout();
 
 		// Print initial UI
@@ -208,6 +218,8 @@ public class WRTcmdinterface {
 		System.out.println("Employee options");
 		System.out.println("- Ask colleague for assistance");
 		System.out.println("- Remove assisting colleague");
+		System.out.println("- See projects");
+		System.out.println("- See activities");
 		System.out.println("- Register spent time");
 		System.out.println("- Register vacation, sick-days and course attendance");
 		System.out.println("- See registered spent time");
@@ -218,19 +230,20 @@ public class WRTcmdinterface {
 		String userChoice = input.readLine();
 		if (userChoice.toLowerCase().equals("register spent time")) {
 			registerSpentTime();
-		} else if (userChoice.toLowerCase().equals(
-				"ask colleague for assistance")) {
+		} else if (userChoice.toLowerCase().equals("ask colleague for assistance")) {
 			askColleagueForAssistance();
-		} else if (userChoice.toLowerCase()
-				.equals("remove assisting colleague")) {
+		} else if (userChoice.toLowerCase().equals("remove assisting colleague")) {
 			removeAssistingColleague();
-		} else if (userChoice.toLowerCase().equals(
-				"register vacation, sick-days and course attendance")) {
+		} else if (userChoice.toLowerCase().equals("register vacation, sick-days and course attendance")) {
 			registerVSC();
 		} else if (userChoice.toLowerCase().equals("see registered spent time")) {
 			registeredSpentTime();
 		} else if (userChoice.toLowerCase().equals("manage projects")) {
 			manageProject();
+		} else if (userChoice.toLowerCase().equals("see projects")) {
+			seeProject();
+		} else if (userChoice.toLowerCase().equals("see activities")) {
+			seeActivities();
 		} else if (userChoice.toLowerCase().equals("log out")) {
 			company.employeeLogout();
 			initialScreen();
@@ -238,6 +251,26 @@ public class WRTcmdinterface {
 			System.out.println("Incorrect command. Try Again.\n");
 			employeeScreen();
 		}
+	}
+
+	private void seeProject() throws IOException, OperationNotAllowedException {
+		HashSet<Project> projects = company.getLoggedInEmployee().getProjects();
+		
+		for (Project p : projects) {
+			System.out.println("- "+p.getID()+": "+p.getName());
+			System.out.println();
+		}
+		employeeScreen();
+	}
+
+	private void seeActivities() throws IOException, OperationNotAllowedException {
+		Set<Activity> activities = company.getLoggedInEmployee().getActivities();
+		
+		for (Activity s : activities) {
+		    System.out.println("- "+ s.getName());
+		    System.out.println();
+		}
+		employeeScreen();
 	}
 
 	private void manageProject() throws IOException,

@@ -2,6 +2,7 @@ package softwarehuset;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ public class Employee {
 	private Company company;
 	private String id, password;
 	private String department;
+	private HashSet<Project> projects = new HashSet<>();
 	private HashMap<Activity, Integer> activities = new HashMap<>();
 	private HashMap<Activity, String> calendar = new HashMap<>();
 	
@@ -27,9 +29,13 @@ public class Employee {
 		checkIfLoggedInProjectLeader(p);
 		if(!p.getEmployees().contains(e)){
 			p.addEmployeeToProject(e);
+			e.addProject(p);
 		}
 	}
 	
+	private void addProject(Project p) {
+		projects.add(p);
+	}
 
 	public void createActivity(Project project, String activityName, GregorianCalendar start, GregorianCalendar end) throws OperationNotAllowedException {
 		checkIfLoggedInProjectLeader(project);
@@ -48,6 +54,7 @@ public class Employee {
 		assignEmployeeProject(e.getID(), p.getName());
 		a.addEmployeeToActivity(e);
 		e.addActivity(a);
+		e.addProject(p);
 	}
 	
 	private void addActivity(Activity a) {
@@ -336,6 +343,10 @@ public class Employee {
 		GregorianCalendar end = new GregorianCalendar();
 		end.set(year, month-1, date, 0, 0, 0);
 		p.setEnd(end);
+	}
+
+	public HashSet<Project> getProjects() {
+		return projects;
 	}
 	
 }

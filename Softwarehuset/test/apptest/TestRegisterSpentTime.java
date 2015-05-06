@@ -22,11 +22,11 @@ public class TestRegisterSpentTime {
 		Address address = new Address("City", "Street", 1);
 		company = new Company("Softwarehuset", address);
 		executive = new Executive("Name", "Department", company, "password");
+		company.executiveLogin("password");
 		projectLeader = company.createEmployee("LAND", "empassword1", "Department1");
 		employee = company.createEmployee("KANO", "empassword2", "Department1");
 
 		// Create project and assign project leader
-		company.executiveLogin("password");
 		project = company.createProject("Project01");
 		project.assignProjectLeader(projectLeader);
 

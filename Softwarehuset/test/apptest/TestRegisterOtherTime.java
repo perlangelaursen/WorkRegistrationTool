@@ -50,7 +50,7 @@ public class TestRegisterOtherTime {
 	}
 
 	/**
-	 * Tests the scenario where an employee registers invalid times
+	 * Tests the scenario where an employee registers invalid times (wrong order, or wrong time)
 	 * <ol>
 	 * <li>The employee is logged in
 	 * <li>The employee registers invalid times
@@ -232,7 +232,7 @@ public class TestRegisterOtherTime {
 	}
 	
 	/**
-	 * Tests the scenario where an employee registers vacation or course
+	 * Tests the scenarios where an employee registers vacation or course
 	 * attendance on occupied dates
 	 * <ol>
 	 * <li>The employee is logged in

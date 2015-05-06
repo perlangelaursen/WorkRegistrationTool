@@ -22,6 +22,7 @@ public class Executive {
 		if(!company.executiveIsLoggedIn()){
 			throw new OperationNotAllowedException("Assign project leader is not allowed if not executive", "Assign project leader");
 		}
+//		e.assignEmployeeProject(employee, project);
 		p.assignProjectLeader(e);
 	}
 }
