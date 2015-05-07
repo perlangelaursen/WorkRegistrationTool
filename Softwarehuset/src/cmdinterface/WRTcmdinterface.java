@@ -111,8 +111,7 @@ public class WRTcmdinterface {
 
 	}
 
-	private void createProject() throws IOException,
-			OperationNotAllowedException {
+	private void createProject() throws IOException, OperationNotAllowedException {
 		String projectName = "";
 		while (projectName.equals("")) {
 			System.out.print("Enter project name: ");
@@ -331,9 +330,7 @@ public class WRTcmdinterface {
 		}
 	}
 
-	private void changeActivityDates(Project project) throws IOException,
-	OperationNotAllowedException {
-		// TODO Auto-generated method stub
+	private void changeActivityDates(Project project) throws IOException, OperationNotAllowedException {
 		System.out.print("Enter Activity ID: ");
 		String activityName = input.readLine();
 		String activity = project.getActivity(activityName).getName();
@@ -713,18 +710,16 @@ public class WRTcmdinterface {
 		}
 	}
 
-	private GregorianCalendar checkEndDate() throws IOException {
-		int endYear = 0;
-		int endWeek = 0; 
-		int endDate = 0;
-		int endMonth = 0;
+	private GregorianCalendar checkEndDate() throws IOException, OperationNotAllowedException {
+		GregorianCalendar end = null;
+		int endYear, endWeek; 
 		boolean repeat = true;
 		while (repeat) {
 			System.out.print("Enter end year: ");
 			String year = input.readLine();
 			while (!year.matches("[0-9]+")) {
 				System.out.println("Year must be a number");
-				System.out.print("Enter start year: ");
+				System.out.print("Enter end year: ");
 				year = input.readLine();
 			}
 			endYear = Integer.parseInt(year);
@@ -733,38 +728,24 @@ public class WRTcmdinterface {
 			String week = input.readLine();
 			while (!week.matches("[0-9]+")) {
 				System.out.println("Week must be a number");
-				System.out.print("Enter start week: ");
+				System.out.print("Enter end week: ");
 				week = input.readLine();
 			}
 			endWeek = Integer.parseInt(week);
-
-			GregorianCalendar g = new GregorianCalendar();
-			g.clear();
-			g.set(Calendar.YEAR, endYear);
-			g.set(Calendar.WEEK_OF_YEAR, endWeek);
-			g.add(Calendar.DAY_OF_YEAR, 6);
-			;
-			endMonth = g.get(Calendar.MONTH);
-			endDate = g.get(Calendar.DAY_OF_MONTH);
-
-			try {
-				company.checkForInvalidDate(endYear, endMonth, endDate);
-				System.out.println();
+			try{
+				end = company.convertEndToDate(endYear, endWeek);
 				repeat = false;
-			} catch (Exception e) {
-				System.out.println("" + e.getMessage());
+			} catch(Exception e){
+				System.out.println(""+e.getMessage());
 				System.out.println();
 			}
 		}
-		GregorianCalendar end = new GregorianCalendar(endYear, endMonth, endDate, 0, 0, 0);
 		return end;
 	}
 
 	private GregorianCalendar checkStartDate() throws IOException {
-		int startYear = 0;
-		int startWeek = 0;
-		int startDate = 0;
-		int startMonth = 0;
+		GregorianCalendar start = null;
+		int startYear, startWeek; 
 		boolean repeat = true;
 		while (repeat) {
 			System.out.print("Enter start year: ");
@@ -784,34 +765,14 @@ public class WRTcmdinterface {
 				week = input.readLine();
 			}
 			startWeek = Integer.parseInt(week);
-			
-			boolean preRepeat;
-			try {
-				company.checkForInvalidWeek(startWeek);
-				preRepeat = false;
-			} catch (Exception e) {
-				System.out.println("" + e.getMessage());
+			try{
+				start = company.convertStartToDate(startYear, startWeek);
+				repeat = false;
+			} catch(Exception e){
+				System.out.println(""+e.getMessage());
 				System.out.println();
-				preRepeat = true;
-			}
-			
-			GregorianCalendar g = new GregorianCalendar();
-			g.clear();
-			g.set(Calendar.YEAR, startYear);
-			g.set(Calendar.WEEK_OF_YEAR, startWeek);
-			startMonth = g.get(Calendar.MONTH);
-			startDate = g.get(Calendar.DAY_OF_MONTH);
-
-			try {
-				company.checkForInvalidDate(startYear, startMonth, startDate);
-				repeat = false||preRepeat;
-			} catch (Exception e) {
-				System.out.println("" + e.getMessage());
-				System.out.println();
-				repeat = true||preRepeat;
 			}
 		}
-		GregorianCalendar start = new GregorianCalendar(startYear, startMonth, startDate, 0, 0, 0);
 		return start;
 	}
 }

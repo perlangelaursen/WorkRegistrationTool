@@ -240,16 +240,13 @@ public class Employee {
 	}
 
 	public void requestAssistance(Employee selected, Activity specificActivity) throws OperationNotAllowedException {
-		if(company.getLoggedInEmployee() == this) {
-			if (specificActivity != null) {
-				specificActivity.assignAssistingEmployee(selected);
-			} else {
-				throw new OperationNotAllowedException("Activity not found", "Need for Assistance");
-			}
-		} else {
+		if(company.getLoggedInEmployee() != this){
 			throw new OperationNotAllowedException("User not logged in", "Need For Assistance");
 		}
-		
+		if(specificActivity == null){
+			throw new OperationNotAllowedException("Activity not found", "Need for Assistance");
+		}
+		specificActivity.assignAssistingEmployee(selected);
 	}
 
 	public void removeAssistingEmployee(Employee selected, Activity a)

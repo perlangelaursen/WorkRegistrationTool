@@ -148,4 +148,28 @@ public class TestColleaguesAssistance {
 		asker.requestAssistance(selected, p1.getActivity(p1.getID()+"-A"));
 		assertNull(p1.getActivity(p1.getID()+"-A").getAssistingEmployee(wrong));
 	}
+	
+	@Test
+	public void testInvalidActivity() throws OperationNotAllowedException {
+		company.employeeLogin(projectLeader.getID(), "password");
+		Employee asker = company.createEmployee("HABC", "password", "RandD");
+		Employee selected = company.createEmployee("SJKO", "password", "RandD");
+		
+		projectLeader.assignEmployeeProject(asker.getID(), "Project01");
+		GregorianCalendar start = new GregorianCalendar();
+		GregorianCalendar end = new GregorianCalendar();
+		start.set(2016, Calendar.JANUARY, 23);
+		end.set(2016, Calendar.JANUARY, 24);
+		projectLeader.createActivity(company.getProject("Project01"), "A", start, end);
+		projectLeader.assignEmployeeActivity(asker.getID(), p1.getID()+"-A");
+		
+		company.employeeLogin(asker.getID(), asker.getPassword());
+		try {
+			asker.requestAssistance(selected, null);
+			fail("OperationNotAllowedException exception should have been thrown");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("Activity not found",e.getMessage());
+			assertEquals("Need for Assistance", e.getOperation());
+		}
+	}
 }
