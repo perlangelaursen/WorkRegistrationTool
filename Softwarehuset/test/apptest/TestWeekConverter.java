@@ -52,6 +52,12 @@ public class TestWeekConverter {
 		assertEquals(date.get(Calendar.YEAR), 2018);
 		assertEquals(date.get(Calendar.MONTH), Calendar.JANUARY);
 		assertEquals(date.get(Calendar.DAY_OF_MONTH), 1);
+		
+		// 2016, week 1 should return January 4th 2016
+		date = company.convertStartToDate(2016, 1);
+		assertEquals(date.get(Calendar.YEAR), 2016);
+		assertEquals(date.get(Calendar.MONTH), Calendar.JANUARY);
+		assertEquals(date.get(Calendar.DAY_OF_MONTH), 4);				
 	}
 
 	@Test

@@ -213,9 +213,10 @@ public class Company {
 		g.clear();
 		g.set(Calendar.YEAR, year);
 		g.set(Calendar.WEEK_OF_YEAR, week);
+		System.out.println(g.getTime());
 		int month = g.get(Calendar.MONTH);
 		int date = g.get(Calendar.DAY_OF_MONTH);
-		if(week==1 && date > 1){
+		if(week==1 && date > 6){
 			year--;
 		}
 		
@@ -224,6 +225,7 @@ public class Company {
 		day.set(year, month, date, 0, 0, 0);
 		return day;
 	}
+	
 	private int getMaxWeeks(int year, int week){
 		GregorianCalendar weeksInYear = new GregorianCalendar();
 		weeksInYear.set(Calendar.YEAR, year);
