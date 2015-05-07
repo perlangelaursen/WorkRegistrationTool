@@ -266,7 +266,7 @@ public class WRTcmdinterface {
 		System.out.println("- See spent time on project");
 		System.out.println("- See spent time on activity");
 		System.out.println("- See expected time on activity");
-		System.out.println("- Get Project Statistics");
+		System.out.println("- Get project statistics");
 		System.out.println("- Create reports on project meetings");
 		System.out.println("- View report from project meeting");
 		System.out.println("- See available employees"+"\n");		
@@ -443,7 +443,7 @@ public class WRTcmdinterface {
 		System.out.print("Enter expected time (in weeks): ");
 		String timeInput = input.readLine();
 		while (!timeInput.matches("[0-9]+")) {
-			System.out.println("Expected time must be a number greater than 0");
+			System.out.println("Expected time must be a positive number");
 			System.out.print("Enter expected time (in weeks): ");
 			timeInput = input.readLine();
 		}
@@ -682,11 +682,11 @@ public class WRTcmdinterface {
 			GregorianCalendar start = getStartDate();
 			GregorianCalendar end = getEndDate();
 
-			System.out.print("Enter expected time: ");
+			System.out.print("Enter expected time (in weeks): ");
 			String timeInput = input.readLine();
 			while (!timeInput.matches("[0-9]+")) {
-				System.out.println("Expected time must be a number");
-				System.out.print("Enter expected time: ");
+				System.out.println("Expected time must be a positive number");
+				System.out.print("Enter expected time (in weeks): ");
 				timeInput = input.readLine();
 			}
 			int time = Integer.parseInt(timeInput);

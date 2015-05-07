@@ -75,6 +75,15 @@ public class TestEditData {
 		}
 		assertEquals(5, p1.getActivity(p1.getID()+"-Activity01").getExpectedTime());
 		
+		//Try to create new activity with the same name under the same project
+		try {
+			projectLeader.createActivity(p1, "Activity01", date, date, 2);
+			fail("OperationNotAllowedException exception should have been thrown");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("The project already has an activity by that name", e.getMessage());
+			assertEquals("Set activity name", e.getOperation());
+		}
+		
 		//Change name of activity
 		projectLeader.changeActivityName(p1.getActivity(p1.getID()+"-Activity01"), "new name");
 		assertTrue(p1.getActivities().contains(p1.getActivity(p1.getID()+"-new name")));

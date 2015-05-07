@@ -76,11 +76,21 @@ public class Employee {
 		checkIfLoggedInProjectLeader(project);
 		company.checkDateOrder(start, end);
 		company.checkStartDateInFuture(start);
+		checkValidTime(time);
+		checkValidName(project, activityName);
 		Activity a = new Activity(activityName, start, end, time, project);
 		project.addActivity(a);
 		return a;
 	}
 	
+	private void checkValidName(Project project, String activityName) throws OperationNotAllowedException {
+		for(Activity a: project.getActivities()){
+			if(a.getName().equals(a.getProject().getID()+"-"+activityName)){
+				throw new OperationNotAllowedException("The project already has an activity by that name", "Set activity name");
+			}
+		}
+	}
+
 	private Activity getActivity(String activity) throws OperationNotAllowedException {
 		Activity a = null;
 		for (Project p: company.getProjects()){
@@ -365,6 +375,7 @@ public class Employee {
 
 	public void changeActivityName(Activity a, String name) throws OperationNotAllowedException {
 		checkIfLoggedInProjectLeader(a.getProject());
+		checkValidName(a.getProject(), name);
 		a.setName(name);
 	}
 
