@@ -280,10 +280,13 @@ public class Employee {
 	}
 
 	private void checkIfLoggedInProjectLeader(Project project) throws OperationNotAllowedException {
+		if(company.executiveIsLoggedIn()){
+			return;
+		}
 		if(project.getProjectLeader() != this){
 			throw new OperationNotAllowedException("Operation is not allowed if not project leader", "Project leader operation");
 		}
-		if(company.getLoggedInEmployee() != this){
+		if(company.getLoggedInEmployee() != this ){
 			throw new OperationNotAllowedException("Operation is not allowed if not project leader", "Project leader operation");
 		}
 	}

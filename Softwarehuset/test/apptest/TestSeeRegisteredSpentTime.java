@@ -27,7 +27,7 @@ public class TestSeeRegisteredSpentTime {
 
 		// Create project and assign project leader
 		project = company.createProject("Project01");
-		project.assignProjectLeader(projectLeader);
+		executive.assignProjectLeader("HABU", project.getID());
 
 		// Create activity
 		GregorianCalendar start = new GregorianCalendar();

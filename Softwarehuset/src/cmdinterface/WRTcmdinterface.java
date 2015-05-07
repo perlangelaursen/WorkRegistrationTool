@@ -43,7 +43,7 @@ public class WRTcmdinterface {
 		e2 = company.createEmployee("AKMU", "password", "Software");
 		p = company.createProject("Project 3");
 		p2 = company.createProject("Project 4");
-		p.assignProjectLeader(e);
+		executive.assignProjectLeader("PRLR", 150001);
 		company.employeeLogout();
 		company.employeeLogin("PRLR", "password");
 		e.assignEmployeeProject("AKMU", "Project 3");
@@ -260,8 +260,8 @@ public class WRTcmdinterface {
 		
 		for (Project p : projects) {
 			System.out.println("- "+p.getID()+": "+p.getName());
-			System.out.println();
 		}
+		System.out.println();
 		employeeScreen();
 	}
 
@@ -270,8 +270,8 @@ public class WRTcmdinterface {
 		
 		for (Activity s : activities) {
 		    System.out.println("- "+ s.getName());
-		    System.out.println();
 		}
+		System.out.println();
 		employeeScreen();
 	}
 

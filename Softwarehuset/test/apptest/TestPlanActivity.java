@@ -88,7 +88,9 @@ public class TestPlanActivity {
 		start.set(2016, Calendar.JANUARY, 23);
 		end.set(2016, Calendar.JANUARY, 25);
 		
-		Employee test2 = new Employee("Test2", "password", company, "RandD");
+		Employee test2 = company.createEmployee("AFIM", "password", "RandD");
+		company.employeeLogin(test2.getID(), test2.getPassword());
+
 		try {
 			test2.createActivity(company.getProject("Project01"), "TestActivity", start, end);
 			fail("OperationNotAllowedException exception should have been thrown");

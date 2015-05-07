@@ -100,15 +100,10 @@ public class TestAssignEmployeeToProjectAndActivity {
 
 	@Test
 	public void testNotLoggedIn() throws OperationNotAllowedException {
-		Employee test2 = company.createEmployee("HFBJ", "password",
-				"Department1");
+		Employee test2 = company.createEmployee("HFBJ", "password","Department1");
 
-		company.employeeLogin("HAVD", "password");
-		assertTrue(company.executiveIsLoggedIn());
-
-		company.employeeLogin("BAMS", "password2");
-		assertTrue(company.executiveIsLoggedIn());
-
+		company.employeeLogout();
+		
 		try {
 			test2.assignEmployeeProject(test1.getID(), p1.getName());
 			fail("OperationNotAllowedException exception should have been thrown");

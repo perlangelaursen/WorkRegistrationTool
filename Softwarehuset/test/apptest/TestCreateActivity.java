@@ -101,8 +101,7 @@ public class TestCreateActivity {
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(2016, Calendar.JANUARY, 23);
 		end.set(2016, Calendar.JANUARY, 25);
-		company.employeeLogin(projectLeader.getID(), "wrongpassword");
-		assertEquals(0, company.getProject("Project01").getActivities().size());
+		company.employeeLogout();
 		try {
 			projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end);
 			fail("OperationNotAllowedException exception should have been thrown");

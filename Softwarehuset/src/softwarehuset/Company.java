@@ -112,7 +112,7 @@ public class Company {
 		for(Employee e: employees){
 			if (e.getID().equals(id)){
 				if(e.getPassword().equals(password)){
-					executiveLoggedIn = false;
+					employeeLogout();
 					loggedInEmployee = e;
 					break;
 				}
