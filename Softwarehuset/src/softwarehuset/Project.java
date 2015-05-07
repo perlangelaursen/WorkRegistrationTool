@@ -85,7 +85,7 @@ public class Project {
 	public int getTotalSpentTime() {
 		int sum = 0;
 		for(Activity a : activities) {
-			sum=+a.getAllSpentTime();
+			sum+=a.getAllSpentTime();
 		}
 		return sum;
 	}
