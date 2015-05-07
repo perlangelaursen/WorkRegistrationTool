@@ -13,16 +13,15 @@ public class Company {
 	private Employee loggedInEmployee;
 	private List<Project> projects = new ArrayList<>();
 	private List<Employee> employees = new ArrayList<>();
-	private List<Employee> availableEmployees = new ArrayList<>();
 	private DateServer dateServer;
-	private int counter = 0;
+	private int projectCounter = 0;
 
 	public Company(String name, Address address) {
 		this.name = name;
 		this.address = address;
 		dateServer = new DateServer();
 	}
-	public void setExecutive(Executive executive) {
+	protected void setExecutive(Executive executive) {
 		this.executive = executive;
 	}
 
@@ -37,38 +36,20 @@ public class Company {
 	}
 
 	public Project createProject(String name) throws OperationNotAllowedException {
-		if (!executiveIsLoggedIn()) {
-			throw new OperationNotAllowedException("Create project operation is not allowed if not executive.", "Create project");
-		}	
+		checkExecutiveIsLoggedIn();	
 		checkIfValidProjectName(name);
-		counter++;
+		projectCounter++;
 		Project p = new Project(name, this);
 		projects.add(p);
 		return p;
 	}
-	private void checkIfValidProjectName(String name) throws OperationNotAllowedException {
-		for (Project p : projects) {
-			if (name.equals(p.getName())) {
-				throw new OperationNotAllowedException("Name already exists","Create project");
-			}
-		}
-	}
 	
 	public Project createProject(String name, GregorianCalendar start, GregorianCalendar end) throws OperationNotAllowedException {
-		if (!executiveIsLoggedIn()) {
-			throw new OperationNotAllowedException("Create project operation is not allowed if not executive.", "Create project");
-		}
-		
+		checkExecutiveIsLoggedIn();
 		checkIfValidProjectName(name);
-		
-		if (!start.after(getCurrentTime())){
-			throw new OperationNotAllowedException("The start date has already been passed", "Create project");
-		}
-		
-		if (start.after(end)){
-			throw new OperationNotAllowedException("The end date is set before the start date", "Create project");
-		}
-		counter++;
+		checkStartDateInFuture(start);
+		checkDateOrder(start, end);
+		projectCounter++;
 		Project p = new Project(name, start, end, this);
 		projects.add(p);
 		return p;
@@ -132,9 +113,10 @@ public class Company {
 		this.dateServer = dateServer;
 	}
 
-	public List<Employee> getAvailableEmployees(GregorianCalendar d1, GregorianCalendar d2) {
+	public List<Employee> getAvailableEmployees(GregorianCalendar start, GregorianCalendar end) {
+		List<Employee> availableEmployees = new ArrayList<>();
 		for (Employee e : employees) {
-			if (e.isAvailable(d1,d2)) {
+			if (e.isAvailable(start,end)) {
 				availableEmployees.add(e);
 			}
 		}
@@ -147,7 +129,7 @@ public class Company {
 	}
 
 	public int getProjectCounter() {
-		return counter;
+		return projectCounter;
 	} 
 	
 	public Employee getEmployee(String id) throws OperationNotAllowedException {
@@ -161,10 +143,6 @@ public class Company {
 			throw new OperationNotAllowedException("Employee not found", "Get employee");
 		}
 		return employee;
-	}
-
-	public void clearProjects() {
-		projects.clear();
 	}
 	
 	public void checkForInvalidDate(int year, int month, int date) throws OperationNotAllowedException {
@@ -188,54 +166,74 @@ public class Company {
 	}
 	
 	public GregorianCalendar convertEndToDate(int year, int week) throws OperationNotAllowedException {
-		checkValidWeek(year, week);
-		
-		GregorianCalendar g = new GregorianCalendar();
-		g.clear();
-		g.set(Calendar.YEAR, year);
-		g.set(Calendar.WEEK_OF_YEAR, week);
+		checkWeekExists(year, week);
+		GregorianCalendar g = setYearAndWeek(year, week);
 		g.add(Calendar.DAY_OF_YEAR, 6); //end of the week
 		int month = g.get(Calendar.MONTH);
 		int date = g.get(Calendar.DAY_OF_MONTH);
 		if(week== getMaxWeeks(year, week) && date < 7){
 			year++;
 		}
-		checkForInvalidDate(year, month, date);
-		GregorianCalendar day = new GregorianCalendar();
-		day.set(year, month, date, 0, 0, 0);
+		GregorianCalendar day = new GregorianCalendar(year, month, date, 0, 0, 0);
 		return day;
 	}
 	
 	public GregorianCalendar convertStartToDate(int year, int week) throws OperationNotAllowedException {
-		checkValidWeek(year, week);
-		
-		GregorianCalendar g = new GregorianCalendar();
-		g.clear();
-		g.set(Calendar.YEAR, year);
-		g.set(Calendar.WEEK_OF_YEAR, week);
-		System.out.println(g.getTime());
+		checkWeekExists(year, week);
+		GregorianCalendar g = setYearAndWeek(year, week);
 		int month = g.get(Calendar.MONTH);
 		int date = g.get(Calendar.DAY_OF_MONTH);
 		if(week==1 && date > 6){
 			year--;
 		}
-		
-		checkForInvalidDate(year, month, date);
-		GregorianCalendar day = new GregorianCalendar();
-		day.set(year, month, date, 0, 0, 0);
+		GregorianCalendar day = new GregorianCalendar(year, month, date, 0, 0, 0);
 		return day;
+	}
+	
+	private GregorianCalendar setYearAndWeek(int year, int week) {
+		GregorianCalendar g = new GregorianCalendar();
+		g.clear();
+		g.set(Calendar.YEAR, year);
+		g.set(Calendar.WEEK_OF_YEAR, week);
+		return g;
 	}
 	
 	private int getMaxWeeks(int year, int week){
 		GregorianCalendar weeksInYear = new GregorianCalendar();
 		weeksInYear.set(Calendar.YEAR, year);
 		return weeksInYear.getActualMaximum(Calendar.WEEK_OF_YEAR);
-		
 	}
-	private void checkValidWeek(int year, int week)	throws OperationNotAllowedException {
+	
+	private void checkWeekExists(int year, int week)	throws OperationNotAllowedException {
 		int maxWeeks = getMaxWeeks(year, week);
 		if (week > maxWeeks || week < 1) {
 			throw new OperationNotAllowedException("Invalid week", "Choose week");
+		}
+	}
+	
+	protected void checkStartDateInFuture(GregorianCalendar start) throws OperationNotAllowedException {
+		if (!start.after(getCurrentTime())){
+			throw new OperationNotAllowedException("The start date has already been passed", "Set project dates");
+		}
+	}
+
+	protected void checkDateOrder(GregorianCalendar start, GregorianCalendar end)	throws OperationNotAllowedException {
+		if (start.after(end)){
+			throw new OperationNotAllowedException("The end date is set before the start date", "Set project dates");
+		}
+	}
+	
+	private void checkExecutiveIsLoggedIn() throws OperationNotAllowedException {
+		if (!executiveIsLoggedIn()) {
+			throw new OperationNotAllowedException("Create project operation is not allowed if not executive.", "Create project");
+		}
+	}
+	
+	private void checkIfValidProjectName(String name) throws OperationNotAllowedException {
+		for (Project p : projects) {
+			if (name.equals(p.getName())) {
+				throw new OperationNotAllowedException("Name already exists","Create project");
+			}
 		}
 	}
 }

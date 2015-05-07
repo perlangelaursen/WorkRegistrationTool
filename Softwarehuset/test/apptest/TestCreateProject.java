@@ -120,7 +120,7 @@ public class TestCreateProject {
 			fail("OperationNotAllowedException exception should have been thrown");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("The end date is set before the start date",e.getMessage());
-			assertEquals("Create project",e.getOperation());
+			assertEquals("Set project dates",e.getOperation());
 		}
 
 		// Check number of projects
@@ -154,7 +154,7 @@ public class TestCreateProject {
 			fail("OperationNotAllowedException exception should have been thrown");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("The start date has already been passed",e.getMessage());
-			assertEquals("Create project",e.getOperation());
+			assertEquals("Set project dates",e.getOperation());
 		}
 
 		// Check number of projects

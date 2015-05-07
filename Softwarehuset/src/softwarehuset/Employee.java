@@ -23,6 +23,34 @@ public class Employee {
 		this.department = department;
 	}
 	
+	public String getID() {
+		return id;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public String getDepartment() {
+		return department;
+	}
+	
+	public HashSet<Project> getProjects() {
+		return projects;
+	}
+	
+	public Set<Activity> getActivities() {
+		return activities.keySet();
+	}
+	
+	private void addProject(Project p) {
+		projects.add(p);
+	}
+	
+	private void addActivity(Activity a) {
+		activities.put(a, 0);
+	}
+	
 	public void assignEmployeeProject(String employee, String project) throws OperationNotAllowedException {
 		Employee e = company.getEmployee(employee);
 		Project p = company.getProject(project);
@@ -33,45 +61,39 @@ public class Employee {
 		}
 	}
 	
-	private void addProject(Project p) {
-		projects.add(p);
+	public void assignEmployeeActivity(String employee, String activity) throws OperationNotAllowedException {
+		Activity a = getActivity(activity);
+		Employee e = company.getEmployee(employee);
+		Project p = a.getProject();
+		checkIfLoggedInProjectLeader(p);
+		assignEmployeeProject(e.getID(), p.getName());
+		a.addEmployee(e);
+		e.addActivity(a);
+		e.addProject(p);
 	}
 
 	public void createActivity(Project project, String activityName, GregorianCalendar start, GregorianCalendar end) throws OperationNotAllowedException {
 		checkIfLoggedInProjectLeader(project);
-		if(!end.after(start)){
-			throw new OperationNotAllowedException("Incorrect order of dates.",	"Create activity");
-		}
+		company.checkDateOrder(start, end);
+		company.checkStartDateInFuture(start);
 		project.createActivity(activityName, start, end, project);
 	}
-
-	public void assignEmployeeActivity(String employee, String activity) throws OperationNotAllowedException {
-		Activity a = getActivity(activity);
-		checkIfLoggedInProjectLeader(a.getProject());
-		Employee e = company.getEmployee(employee);
-		
-		Project p = a.getProject();
-		assignEmployeeProject(e.getID(), p.getName());
-		a.addEmployeeToActivity(e);
-		e.addActivity(a);
-		e.addProject(p);
-	}
 	
-	private void addActivity(Activity a) {
-		activities.put(a, 0);
+	private Activity getActivity(String activity) throws OperationNotAllowedException {
+		Activity a = null;
+		for (Project p: company.getProjects()){
+			a = p.getActivity(activity);
+			break;
+		}
+		if (a == null){
+			throw new OperationNotAllowedException("Activity does not exist", "Edit activity");
+		}
+		return a;
 	}
 
 	public void relieveEmployeeProject(Employee e, Project project) throws OperationNotAllowedException {
 		checkIfLoggedInProjectLeader(project);
 		project.relieveEmployee(e);
-	}
-
-	public String getID() {
-		return id;
-	}
-
-	public String getPassword() {
-		return password;
 	}
 
 	public void registerSpentTime(String activity, int time) throws OperationNotAllowedException {
@@ -91,9 +113,6 @@ public class Employee {
 		a.setTime(this, newTime);
 	}
 
-	public String getDepartment() {
-		return department;
-	}
 	
 	public Object viewProgress(String p, String a) throws OperationNotAllowedException {
 		Project project = company.getProject(p);
@@ -105,23 +124,20 @@ public class Employee {
 	public int viewProgress(String p) throws OperationNotAllowedException {
 		Project project = company.getProject(p);
 		checkIfLoggedInProjectLeader(project);
-		
-		return project.getSpentTime();
+		return project.getTotalSpentTime();
 	}
 
 	public List<String> getStatisticsProject(Project project) throws OperationNotAllowedException {
 		checkIfLoggedInProjectLeader(project);
-		
 		List<String> statistics = new ArrayList<String>();
 		project.getProjectDetails(statistics);
 		return statistics;
 	}
 	public void writeReport(Project project, String name, int year, int month, int date) throws OperationNotAllowedException{
+		checkIfLoggedInProjectLeader(project);
 		company.checkForInvalidDate(year, month-1, date);
 		GregorianCalendar day = new GregorianCalendar();
 		day.set(year, month, date, 0, 0, 0);
-		
-		checkIfLoggedInProjectLeader(project);
 		Report report = new Report(project, name, day);
 		project.addReport(report);
 	}
@@ -135,7 +151,7 @@ public class Employee {
 			throw new OperationNotAllowedException("Cannot register vacation in the past", "Register other time");
 		}
 
-        updateCalendar(vacation);
+        addActivityToCalendar(vacation);
 		calendar.put(vacation, "Vacation");
 	}
 
@@ -148,7 +164,7 @@ public class Employee {
 			throw new OperationNotAllowedException("Cannot register sick days in the future", "Register other time");
 		}
 		
-        updateCalendar(sick);
+        addActivityToCalendar(sick);
 		calendar.put(sick, "Sick");
 	}
 	
@@ -161,21 +177,29 @@ public class Employee {
 			throw new OperationNotAllowedException("Cannot register course attendance in the past", "Register other time");
 		}
 		
-		updateCalendar(course);
+		addActivityToCalendar(course);
 		calendar.put(course, "Course");
 	}
 
-	private void updateCalendar(Activity a) {
+	private void addActivityToCalendar(Activity a) {
 		ArrayList<Activity> removes = new ArrayList<>();
+		getOverlappingActivities(a, removes);
+		removeAndAddOverlappingActivities(a, removes);
+	}
+
+	private void removeAndAddOverlappingActivities(Activity a,ArrayList<Activity> removes) {
+		for(Activity activity: removes){
+			calendar.remove(activity);
+			overWriteOverlappingActivities(a, activity);
+		}
+	}
+
+	private void getOverlappingActivities(Activity a,ArrayList<Activity> removes) {
 		for(Activity activity: calendar.keySet()){
 			if(a.isOverlapping(activity)){
             	removes.add(activity);
             }
 		}
-		for(Activity activity: removes){
-			calendar.remove(activity);
-			updateOldPlans(a, activity);
-			}
 	}
 
 	public Activity createPersonalActivity(int year, int month, int date, int year2, int month2, int date2, String type)throws OperationNotAllowedException {
@@ -183,15 +207,12 @@ public class Employee {
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(year, month, date, 0,0,0);
 		end.set(year2, month2, date2, 0,0,0);
+		company.checkDateOrder(start, end);
 		Activity activity = new Activity(start, end, type);
-		
-		if (start.after(end)){
-			throw new OperationNotAllowedException("End date cannot be before start date", "Register other time");
-		}
 		return activity;
 	}
 
-	public void updateOldPlans(Activity newActivity, Activity oldActivity) {
+	public void overWriteOverlappingActivities(Activity newActivity, Activity oldActivity) {
 		GregorianCalendar newStart = new GregorianCalendar();
 		GregorianCalendar newEnd = new GregorianCalendar();
 		GregorianCalendar start = newActivity.getStart();
@@ -230,15 +251,19 @@ public class Employee {
 	}
 
 	public boolean isAvailable(GregorianCalendar start, GregorianCalendar end) {
+		int overlaps = 0;
 		Activity act = new Activity(start, end, "work");
 		for (Activity a : activities.keySet()) {
 			if (a.isOverlapping(act)) {
-				return false; 
+				overlaps++; 
 			}
+		}
+		if (overlaps == 20){
+			return false;
 		}
 		return true;
 	}
-
+	
 	public void requestAssistance(Employee selected, Activity specificActivity) throws OperationNotAllowedException {
 		if(company.getLoggedInEmployee() != this){
 			throw new OperationNotAllowedException("User not logged in", "Need For Assistance");
@@ -249,8 +274,7 @@ public class Employee {
 		specificActivity.assignAssistingEmployee(selected);
 	}
 
-	public void removeAssistingEmployee(Employee selected, Activity a)
-	throws OperationNotAllowedException {
+	public void removeAssistingEmployee(Employee selected, Activity a) throws OperationNotAllowedException {
 		if(company.getLoggedInEmployee() == this) {
 			a.removeAssistingEmployee(selected);
 		} else {
@@ -278,7 +302,39 @@ public class Employee {
 		checkIfLoggedInProjectLeader(report.getProject());
 		report.setContent(content);
 	}
+	
 
+	public void changeActivityStart(String activity, GregorianCalendar start) throws OperationNotAllowedException {
+		Activity a = getActivity(activity);
+		checkIfLoggedInProjectLeader(a.getProject());
+		company.checkDateOrder(start, a.getEnd());
+		company.checkStartDateInFuture(start);
+		a.setStart(start);
+	}
+
+	public void changeActivityEnd(String activity, GregorianCalendar end) throws OperationNotAllowedException {
+		Activity a = getActivity(activity);
+		checkIfLoggedInProjectLeader(a.getProject());
+		company.checkDateOrder(a.getStart(), end);
+		a.setEnd(end);
+	}
+	
+	public void changeProjectStart(String project, GregorianCalendar start) throws OperationNotAllowedException {
+		Project p = company.getProject(project);
+		checkIfLoggedInProjectLeader(p);
+		company.checkDateOrder(start, p.getEnd());
+		company.checkStartDateInFuture(start);
+		p.setStart(start);
+		
+	}
+
+	public void changeProjectEnd(String project, GregorianCalendar end) throws OperationNotAllowedException {
+		Project p = company.getProject(project);
+		checkIfLoggedInProjectLeader(p);
+		company.checkDateOrder(p.getStart(), end);
+		p.setEnd(end);
+	}
+	
 	private void checkIfLoggedInProjectLeader(Project project) throws OperationNotAllowedException {
 		if(company.executiveIsLoggedIn()){
 			return;
@@ -290,67 +346,4 @@ public class Employee {
 			throw new OperationNotAllowedException("Operation is not allowed if not project leader", "Project leader operation");
 		}
 	}
-	
-	public Set<Activity> getActivities() {
-		return activities.keySet();
-	}
-
-	public void editActivityStart(String activity, int year, int month, int date) throws OperationNotAllowedException {
-		Activity a = getActivity(activity);
-		checkIfLoggedInProjectLeader(a.getProject());
-		
-		company.checkForInvalidDate(year, month-1, date);
-		GregorianCalendar start = new GregorianCalendar();
-		start.set(year, month-1, date, 0, 0, 0);
-		a.setStart(start);
-	}
-
-	public void editActivityEnd(String activity, int year, int month, int date) throws OperationNotAllowedException {
-		Activity a = getActivity(activity);
-		checkIfLoggedInProjectLeader(a.getProject());
-		
-		company.checkForInvalidDate(year, month-1, date);
-		GregorianCalendar end = new GregorianCalendar();
-		end.set(year, month-1, date, 0, 0, 0);
-		a.setEnd(end);
-	}
-
-	private Activity getActivity(String activity) throws OperationNotAllowedException {
-		Activity a = null;
-		for (Project p: company.getProjects()){
-			a = p.getActivity(activity);
-			if(a!=null){
-				break;
-			}
-		}
-		if (a == null){
-			throw new OperationNotAllowedException("Activity does not exist", "Edit activity");
-		}
-		return a;
-	}
-	
-	public void editProjectStart(String project, int year, int month, int date) throws OperationNotAllowedException {
-		Project p = company.getProject(project);
-		checkIfLoggedInProjectLeader(p);
-		
-		company.checkForInvalidDate(year, month-1, date);
-		GregorianCalendar start = new GregorianCalendar();
-		start.set(year, month-1, date, 0, 0, 0);
-		p.setStart(start);
-	}
-
-	public void editProjectEnd(String project, int year, int month, int date) throws OperationNotAllowedException {
-		Project p = company.getProject(project);
-		checkIfLoggedInProjectLeader(p);
-		
-		company.checkForInvalidDate(year, month-1, date);
-		GregorianCalendar end = new GregorianCalendar();
-		end.set(year, month-1, date, 0, 0, 0);
-		p.setEnd(end);
-	}
-
-	public HashSet<Project> getProjects() {
-		return projects;
-	}
-	
 }

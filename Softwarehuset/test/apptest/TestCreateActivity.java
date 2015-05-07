@@ -95,8 +95,8 @@ public class TestCreateActivity {
 			projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end);
 			fail("OperationNotAllowedException exception should have been thrown");
 		} catch (OperationNotAllowedException e) {
-			assertEquals("Incorrect order of dates.",e.getMessage());
-			assertEquals("Create activity",e.getOperation());
+			assertEquals("The end date is set before the start date",e.getMessage());
+			assertEquals("Set project dates",e.getOperation());
 		}
 		
 		assertEquals(0, company.getProject("Project01").getActivities().size());

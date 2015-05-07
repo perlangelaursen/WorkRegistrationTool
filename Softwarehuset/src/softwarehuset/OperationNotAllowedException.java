@@ -1,7 +1,5 @@
 package softwarehuset;
 
-
-@SuppressWarnings("serial")
 public class OperationNotAllowedException extends Exception {
 
 	private String errorOpr;

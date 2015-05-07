@@ -133,8 +133,8 @@ public class WRTcmdinterface {
 
 			if (choice.toLowerCase().equals("yes")) {
 				repeat = false;
-				GregorianCalendar start = checkStartDate();
-				GregorianCalendar end = checkEndDate();
+				GregorianCalendar start = getStartDate();
+				GregorianCalendar end = getEndDate();
 
 				try {
 					Project p = company.createProject(projectName, start, end);
@@ -342,21 +342,23 @@ public class WRTcmdinterface {
 		}
 	}
 
-	private void changeActivityDates(Project project) throws IOException,
-			OperationNotAllowedException {
-		System.out.print("Enter Activity ID: ");
-		String activityName = input.readLine();
-		String activity = project.getActivity(activityName).getName();
-
-		GregorianCalendar start = checkStartDate();
-		GregorianCalendar end = checkEndDate();
-
-		company.getLoggedInEmployee().editActivityStart(activity,
-				start.get(Calendar.YEAR), start.get(Calendar.MONTH),
-				start.get(Calendar.DAY_OF_MONTH));
-		company.getLoggedInEmployee().editActivityEnd(activity,
-				end.get(Calendar.YEAR), end.get(Calendar.MONTH),
-				end.get(Calendar.DAY_OF_MONTH));
+	private void changeActivityDates(Project project) throws IOException,OperationNotAllowedException {
+		boolean repeat = true;
+		while(repeat){
+			try{
+				System.out.print("Enter Activity ID: ");
+				String activityName = input.readLine();
+				String activity = project.getActivity(activityName).getName();
+				GregorianCalendar start = getStartDate();
+				GregorianCalendar end = getEndDate();
+				company.getLoggedInEmployee().changeActivityStart(activity, start);
+				company.getLoggedInEmployee().changeActivityEnd(activity, end);
+				repeat = false;
+			} catch(Exception e){
+				System.out.println(e.getMessage());
+				System.out.println();
+			}
+		}
 
 		manageProjectScreen(p);
 	}
@@ -365,15 +367,11 @@ public class WRTcmdinterface {
 			OperationNotAllowedException {
 		String project = p.getName();
 
-		GregorianCalendar start = checkStartDate();
-		GregorianCalendar end = checkEndDate();
+		GregorianCalendar start = getStartDate();
+		GregorianCalendar end = getEndDate();
 
-		company.getLoggedInEmployee().editProjectStart(project,
-				start.get(Calendar.YEAR), start.get(Calendar.MONTH),
-				start.get(Calendar.DAY_OF_MONTH));
-		company.getLoggedInEmployee().editProjectEnd(project,
-				end.get(Calendar.YEAR), end.get(Calendar.MONTH),
-				end.get(Calendar.DAY_OF_MONTH));
+		company.getLoggedInEmployee().changeProjectStart(project, start);
+		company.getLoggedInEmployee().changeProjectEnd(project, end);
 
 		manageProjectScreen(p);
 	}
@@ -387,8 +385,7 @@ public class WRTcmdinterface {
 		manageProjectScreen(p);
 	}
 
-	private void reportsOnProjectMeetings(Project p) throws IOException,
-			OperationNotAllowedException {
+	private void reportsOnProjectMeetings(Project p) throws IOException, OperationNotAllowedException {
 		System.out.print("Enter Report Name: ");
 		String report = input.readLine();
 
@@ -408,46 +405,21 @@ public class WRTcmdinterface {
 		String content = input.readLine();
 
 		company.getLoggedInEmployee().editReport(p.getReport(report), content);
-
+		
 		manageProjectScreen(p);
 	}
 
-	private void seeAvailableEmployees() throws IOException,
-			OperationNotAllowedException {
-		System.out.print("Enter Period Start Date: ");
-		int startDate = Integer.parseInt(input.readLine());
-
-		System.out.print("Enter Period Start Month: ");
-		int startMonth = Integer.parseInt(input.readLine());
-
-		System.out.print("Enter Period Start Year: ");
-		int startYear = Integer.parseInt(input.readLine());
-
-		GregorianCalendar start = new GregorianCalendar(startYear, startMonth,
-				startDate);
-
-		System.out.print("Enter Period End Date: ");
-		int endDate = Integer.parseInt(input.readLine());
-
-		System.out.print("Enter Period End Month: ");
-		int endMonth = Integer.parseInt(input.readLine());
-
-		System.out.print("Enter Period End Year: ");
-		int endYear = Integer.parseInt(input.readLine());
-
-		GregorianCalendar end = new GregorianCalendar(endYear, endMonth,
-				endDate);
+	private void seeAvailableEmployees() throws IOException, OperationNotAllowedException {
+		GregorianCalendar start = getStartDate();
+		GregorianCalendar end = getEndDate();
 
 		List<Employee> employees = company.getAvailableEmployees(start, end);
 
-		System.out.println("Available Employees with period:" + startDate + "/"
-				+ startMonth + "/" + startYear + " " + endDate + "/" + endMonth
-				+ "/" + endYear);
+		System.out.println("Available Employees within the given period:");
 		for (Employee e : employees) {
-			System.out.println("ID: " + e.getID() + " Department: "
-					+ e.getDepartment());
+			System.out.println("- ID: " + e.getID() + " Department: "	+ e.getDepartment());
 		}
-
+		System.out.println();
 		manageProjectScreen(p);
 	}
 
@@ -461,29 +433,33 @@ public class WRTcmdinterface {
 		employeeScreen();
 	}
 
-	private void removeAssistingColleague() throws IOException,
-			OperationNotAllowedException {
-		System.out.print("Enter Project Name: ");
-		String project = input.readLine();
+	private void removeAssistingColleague() throws IOException, OperationNotAllowedException {
+		boolean repeat = true;
+		while(repeat){
+			System.out.print("Enter Project Name: ");
+			String project = input.readLine();
 
-		System.out.print("Enter Activity Name: ");
-		String activity = input.readLine();
+			System.out.print("Enter Activity Name: ");
+			String activity = input.readLine();
 
-		System.out.print("Enter Employee ID: ");
-		String id = input.readLine();
-		Employee em = company.getEmployee(id);
-
-		if (em != null) {
-			company.getLoggedInEmployee().removeAssistingEmployee(em,
-					company.getProject(project).getActivity(activity));
-			System.out.println("Assisting Employee Removed");
+			System.out.print("Enter Employee ID: ");
+			String id = input.readLine();
+			Employee em = company.getEmployee(id);
+		
+			try{
+				company.getLoggedInEmployee().removeAssistingEmployee(em,company.getProject(project).getActivity(activity));
+				System.out.println("Assisting Employee Removed");
+				repeat = false;
+			} catch (Exception e){
+				System.out.println(""+e.getMessage());
+				System.out.println();
+			}
 		}
 
 		employeeScreen();
 	}
 
-	private void askColleagueForAssistance() throws IOException,
-			OperationNotAllowedException {
+	private void askColleagueForAssistance() throws IOException,OperationNotAllowedException {
 		System.out.print("Enter Project Name: ");
 		String project = input.readLine();
 
@@ -560,8 +536,7 @@ public class WRTcmdinterface {
 		employeeScreen();
 	}
 
-	private void registerSpentTime() throws IOException,
-			OperationNotAllowedException {
+	private void registerSpentTime() throws IOException, OperationNotAllowedException {
 		boolean repeat = true;
 		while (repeat) {
 			System.out.print("Enter Activity ID: ");
@@ -588,8 +563,7 @@ public class WRTcmdinterface {
 		employeeScreen();
 	}
 
-	private void relieveEmployeeProject(Project p) throws IOException,
-			OperationNotAllowedException {
+	private void relieveEmployeeProject(Project p) throws IOException,	OperationNotAllowedException {
 		System.out.print("Enter Employee ID: ");
 		String id = input.readLine();
 		Employee em = company.getEmployee(id);
@@ -601,14 +575,13 @@ public class WRTcmdinterface {
 		manageProjectScreen(p);
 	}
 
-	private void getStatistics(Project p) throws OperationNotAllowedException,
-			IOException {
-		List<String> statistics = company.getLoggedInEmployee()
-				.getStatisticsProject(company.getProject(p.getID()));
+	private void getStatistics(Project p) throws OperationNotAllowedException,	IOException {
+		List<String> statistics = company.getLoggedInEmployee().getStatisticsProject(company.getProject(p.getID()));
 
 		for (String s : statistics) {
 			System.out.println(s);
 		}
+		System.out.println();
 		manageProjectScreen(p);
 	}
 
@@ -619,14 +592,12 @@ public class WRTcmdinterface {
 			System.out.print("Enter activity title: ");
 			String activity = input.readLine();
 
-			GregorianCalendar start = checkStartDate();
-			GregorianCalendar end = checkEndDate();
+			GregorianCalendar start = getStartDate();
+			GregorianCalendar end = getEndDate();
 
 			try {
-				company.getLoggedInEmployee().createActivity(p, activity,
-						start, end);
-				System.out.println("The activity " + p.getID() + "-" + activity
-						+ " has been created");
+				company.getLoggedInEmployee().createActivity(p, activity,start, end);
+				System.out.println("The activity " + p.getID() + "-" + activity+ " has been created");
 				System.out.println();
 				repeat = false;
 			} catch (Exception e) {
@@ -637,8 +608,7 @@ public class WRTcmdinterface {
 		manageProjectScreen(p);
 	}
 
-	private void assignEmployeeActivity() throws IOException,
-			OperationNotAllowedException {
+	private void assignEmployeeActivity() throws IOException,OperationNotAllowedException {
 		boolean repeat = true;
 		while (repeat) {
 			System.out.print("Enter Employee ID: ");
@@ -648,10 +618,8 @@ public class WRTcmdinterface {
 			String activity = input.readLine();
 
 			try {
-				company.getLoggedInEmployee().assignEmployeeActivity(id,
-						activity);
-				System.out.println(id + " has been assigned to the activity "
-						+ activity);
+				company.getLoggedInEmployee().assignEmployeeActivity(id,activity);
+				System.out.println(id + " has been assigned to the activity "+ activity);
 				System.out.println();
 				repeat = false;
 			} catch (Exception e) {
@@ -662,15 +630,12 @@ public class WRTcmdinterface {
 		manageProjectScreen(p);
 	}
 
-	private void assignEmployeeProject(Project p)
-			throws OperationNotAllowedException, IOException {
+	private void assignEmployeeProject(Project p)throws OperationNotAllowedException, IOException {
 		Employee employee = findEmployee();
 
 		try {
-			company.getLoggedInEmployee().assignEmployeeProject(
-					employee.getID(), p.getName());
-			System.out.println(employee.getID()
-					+ " has been assigned to project " + p.getID());
+			company.getLoggedInEmployee().assignEmployeeProject(employee.getID(), p.getName());
+			System.out.println(employee.getID()+ " has been assigned to project " + p.getID());
 			System.out.println();
 		} catch (Exception e) {
 			System.out.println("" + e.getMessage());
@@ -695,8 +660,7 @@ public class WRTcmdinterface {
 		}
 	}
 
-	private Project findProject() throws IOException,
-			OperationNotAllowedException {
+	private Project findProject() throws IOException, OperationNotAllowedException {
 		Project project = null;
 		while (true) {
 			System.out.print("Enter Project ID: ");
@@ -723,15 +687,13 @@ public class WRTcmdinterface {
 						|| company.executiveIsLoggedIn()) {
 					return project;
 				}
-				System.out
-						.println("You are not allowed to manage the chosen project");
+				System.out.println("You are not allowed to manage the chosen project");
 				System.out.println();
 			}
 		}
 	}
 
-	private GregorianCalendar checkEndDate() throws IOException,
-			OperationNotAllowedException {
+	private GregorianCalendar getEndDate() throws IOException, OperationNotAllowedException {
 		GregorianCalendar end = null;
 		int endYear, endWeek;
 		boolean repeat = true;
@@ -764,7 +726,7 @@ public class WRTcmdinterface {
 		return end;
 	}
 
-	private GregorianCalendar checkStartDate() throws IOException {
+	private GregorianCalendar getStartDate() throws IOException {
 		GregorianCalendar start = null;
 		int startYear, startWeek;
 		boolean repeat = true;

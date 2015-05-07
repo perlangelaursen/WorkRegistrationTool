@@ -25,7 +25,7 @@ public class Activity {
 		this.project = project;
 	}
 
-	public void addEmployeeToActivity(Employee e) {
+	public void addEmployee(Employee e) {
 		employees.put(e, 0);
 		assignedEmployees.add(e);
 	}

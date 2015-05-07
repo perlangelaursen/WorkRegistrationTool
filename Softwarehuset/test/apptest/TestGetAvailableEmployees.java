@@ -21,7 +21,6 @@ public class TestGetAvailableEmployees {
 		add = new Address("City", "Street", 1);
 		com = new Company("SoftwareHuset", add);
 		ex = new Executive("name","Department1", com, "password");
-		com.setExecutive(ex);
 		em = com.createEmployee("ANDS", "password", "Project Department");
 		em2 = com.createEmployee("HENR", "password", "Project Department");
 		em3 = com.createEmployee("KLIS", "password", "Project Department");
@@ -48,10 +47,10 @@ public class TestGetAvailableEmployees {
 		ex.assignProjectLeader("ANDS", p1.getID());
 		assertEquals(p1.getProjectLeader(), em);
 		
-		d1.set(2000, 3, 1);
-		d2.set(2000, 4, 1);
-		d3.set(2000, 5, 1);
-		d4.set(2000, 6, 1);
+		d1.set(2016, 3, 1);
+		d2.set(2016, 4, 1);
+		d3.set(2016, 5, 1);
+		d4.set(2016, 6, 1);
 		
 		em.createActivity(p1, "activity1", d1, d2);
 		em.createActivity(p1, "activity2", d3, d4);
@@ -72,10 +71,10 @@ public class TestGetAvailableEmployees {
 		ex.assignProjectLeader("ANDS", p1.getID());
 		assertEquals(p1.getProjectLeader(), em);
 		
-		d1.set(2000, 3, 1);
-		d2.set(2000, 4, 1);
-		d3.set(2000, 5, 1);
-		d4.set(2000, 6, 1);
+		d1.set(2016, 3, 1);
+		d2.set(2016, 4, 1);
+		d3.set(2016, 5, 1);
+		d4.set(2016, 6, 1);
 		em.createActivity(p1, "activity1", d1, d2);
 		em.createActivity(p1, "activity2", d3, d4);
 		em.assignEmployeeActivity(em2.getID(), p1.getID() + "-activity1");
@@ -96,21 +95,27 @@ public class TestGetAvailableEmployees {
 		ex.assignProjectLeader("ANDS", p1.getID());
 		assertEquals(p1.getProjectLeader(), em);
 		
-		d1.set(2000, 3, 1);
-		d2.set(2000, 4, 1);
-		d3.set(2000, 5, 1);
-		d4.set(2000, 6, 1);
+		d1.set(2016, 3, 1);
+		d2.set(2016, 4, 1);
+		d3.set(2016, 5, 1);
+		d4.set(2016, 6, 1);
 		
-		em.createActivity(p1, "activity1", d1, d2);
-		em.createActivity(p1, "activity2", d3, d4);
+		//Create 20 activities
+		for(int i = 1; i<=20; i++){
+			em.createActivity(p1, "activity"+i, d1, d2);
+		}
+		assertEquals(20, p1.getActivities().size());
 		
-		em.assignEmployeeActivity(em2.getID(), p1.getID() + "-activity1");
-		assertTrue(em2.getActivities().contains(p1.getActivity(p1.getID() + "-activity1")));
-		em.assignEmployeeActivity(em2.getID(), p1.getID() + "-activity2");
-		assertTrue(em2.getActivities().contains(p1.getActivity(p1.getID() + "-activity2")));
+		assertTrue(com.getAvailableEmployees(d1, d2).contains(em2));
+		//Assign employee to 20 activities
+		for(Activity a: p1.getActivities()){
+			em.assignEmployeeActivity(em2.getID(), a.getName());
+		}
+		assertEquals(20, em2.getActivities().size());
+		assertFalse(com.getAvailableEmployees(d1, d2).contains(em2));
 		
-		d5.set(2000, 5, 5);
-		d6.set(2000, 5, 20);
+		d5.set(2016, 5, 5);
+		d6.set(2016, 5, 20);
 		
 		assertFalse(com.getAvailableEmployees(d5, d6).contains(em2));
 		

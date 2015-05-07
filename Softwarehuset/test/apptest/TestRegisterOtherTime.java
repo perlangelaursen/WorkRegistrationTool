@@ -95,8 +95,8 @@ public class TestRegisterOtherTime {
 			employee.registerCourseTime(2016, 5, 2, 2016, 5, 1);
 			fail("OperationNotAllowedException exception should have been thrown");
 		} catch (OperationNotAllowedException e) {
-			assertEquals("End date cannot be before start date", e.getMessage());
-			assertEquals("Register other time", e.getOperation());
+			assertEquals("The end date is set before the start date", e.getMessage());
+			assertEquals("Set project dates", e.getOperation());
 		}
 		assertEquals(0, employee.getTimeForPersonalActivity("Course"));
 		
@@ -327,7 +327,7 @@ public class TestRegisterOtherTime {
 	public void testRegisterOtherTime2() throws OperationNotAllowedException {
 		Activity vacation = employee.createPersonalActivity(2015, 12, 23, 2016, 1, 3, "Vacation");
 		Activity course = employee.createPersonalActivity(2016, 5, 1, 2016, 5, 1, "Course");
-		employee.updateOldPlans(course, vacation);
-		employee.updateOldPlans(vacation, course);
+		employee.overWriteOverlappingActivities(course, vacation);
+		employee.overWriteOverlappingActivities(vacation, course);
 	}
 }

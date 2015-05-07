@@ -19,7 +19,6 @@ public class TestGetProgressForProjectAndActivity {
 		Address address = new Address("City", "Street", 1);
 		company = new Company("Company", address);
 		Executive executive = new Executive("Name", "Department1", company, "password");
-		company.setExecutive(executive);
 		company.executiveLogin("password");
 		
 		GregorianCalendar start = new GregorianCalendar();
@@ -52,48 +51,6 @@ public class TestGetProgressForProjectAndActivity {
 	@Test
 	public void testProgressProject() throws OperationNotAllowedException {
 		assertEquals(100, projectLeader.viewProgress("Project01"));
-	}
-	
-	@Test
-	public void testProgressNotLoggedIn() throws OperationNotAllowedException {
-		company.employeeLogout();
-		
-		try{
-			projectLeader.viewProgress("Project01", "Activity01");
-			fail("OperationNotAllowedException expected");
-		} catch (OperationNotAllowedException e){
-			assertEquals("Operation is not allowed if not project leader",e.getMessage());
-			assertEquals("Project leader operation",e.getOperation());
-		}
-		try{
-			projectLeader.viewProgress("Project01");
-			fail("OperationNotAllowedException expected");
-		} catch (OperationNotAllowedException e){
-			assertEquals("Operation is not allowed if not project leader",e.getMessage());
-			assertEquals("Project leader operation",e.getOperation());
-		}
-	}
-	
-	@Test
-	public void testProgressNotProjectLeader() throws OperationNotAllowedException {
-		Employee em = company.createEmployee("JLBD", "password", "Department");
-		company.employeeLogin("JLBD", "password");
-		
-		try{
-			em.viewProgress("Project01", "Activity01");
-			fail("OperationNotAllowedException expected");
-		} catch (OperationNotAllowedException e){
-			assertEquals("Operation is not allowed if not project leader",e.getMessage());
-			assertEquals("Project leader operation",e.getOperation());
-		}
-		
-		try{
-			em.viewProgress("Project01");
-			fail("OperationNotAllowedException expected");
-		} catch (OperationNotAllowedException e){
-			assertEquals("Operation is not allowed if not project leader",e.getMessage());
-			assertEquals("Project leader operation",e.getOperation());
-		}
 	}
 }
 

@@ -22,13 +22,11 @@ public class TestEditData {
 		Address address = new Address("City", "Street", 1);
 		company = new Company("Company", address);
 		Executive executive = new Executive("Name", "Department1", company, "password");
-		company.setExecutive(executive);
 
 		// Log in as executive
 		company.executiveLogin("password");
 		
-		//Set date
-		
+		//Set date	
 		GregorianCalendar start = new GregorianCalendar();
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(2016, Calendar.JANUARY, 23);
@@ -43,53 +41,36 @@ public class TestEditData {
 		executive.assignProjectLeader("ABCD",p1.getID());
 		
 		company.employeeLogin(projectLeader.getID(), "password");
-		company.getProject("Project01").createActivity("Activity01", start, end, company.getProject("Project01"));
+		p1.createActivity("Activity01", start, end, company.getProject("Project01"));
 		projectLeader.assignEmployeeProject(projectLeader.getID(), p1.getName());
 		projectLeader.assignEmployeeActivity(projectLeader.getID(),p1.getID()+"-Activity01");
 		
 		}
 	@Test
 	public void testEditData() throws OperationNotAllowedException {
-		projectLeader.editActivityStart(p1.getID()+"-Activity01", 2016, 1, 25);
-		projectLeader.editActivityEnd(p1.getID()+"-Activity01", 2016, 1, 30);
-		
 		GregorianCalendar date = new GregorianCalendar();
 		date.set(2016, Calendar.JANUARY, 25, 0, 0, 0);
+		
+		projectLeader.changeActivityStart(p1.getID()+"-Activity01", date);
 		assertEquals(date.getTime(), p1.getActivity(p1.getID()+"-Activity01").getStart().getTime());
+		
 		date.set(2016, Calendar.JANUARY, 30, 0, 0, 0);
+		projectLeader.changeActivityEnd(p1.getID()+"-Activity01", date);
 		assertEquals(date.getTime(), p1.getActivity(p1.getID()+"-Activity01").getEnd().getTime());
 	}
 
 	@Test
 	public void testEditDataWrongActivity() throws OperationNotAllowedException {
+		GregorianCalendar date = new GregorianCalendar();
+		date.set(2016, Calendar.JANUARY, 25, 0, 0, 0);
+		
 		//If there is no activity with the given name
 		try {
-			projectLeader.editActivityStart(p1.getID()+"-Activity02", 2016, 1, 25);
+			projectLeader.changeActivityStart(p1.getID()+"-Activity02", date);
 			fail("OperationNotAllowedException exception should have been thrown");
 		} catch (OperationNotAllowedException e) {
-			assertEquals("Activity does not exist", e.getMessage());
+			assertEquals("Activity could not be found", e.getMessage());
 			assertEquals("Edit activity", e.getOperation());
-		}
-		
-		//If there are no projects
-		company.clearProjects();
-		try {
-			projectLeader.editActivityEnd(p1.getID()+"-Activity01", 2016, 1, 25);
-			fail("OperationNotAllowedException exception should have been thrown");
-		} catch (OperationNotAllowedException e) {
-			assertEquals("Activity does not exist", e.getMessage());
-			assertEquals("Edit activity", e.getOperation());
-		}
-	}
-	
-	@Test
-	public void testEditDataInvalidDate() {
-		try {
-			projectLeader.editActivityStart(p1.getID()+"-Activity01", 2016, 1, 35);
-			fail("OperationNotAllowedException exception should have been thrown");
-		} catch (OperationNotAllowedException e) {
-			assertEquals("Invalid time input", e.getMessage());
-			assertEquals("Choose date", e.getOperation());
 		}
 	}
 	
@@ -98,14 +79,14 @@ public class TestEditData {
 		company.employeeLogin(projectLeader.getID(), "password");
 		assertEquals(company.getLoggedInEmployee(), projectLeader);
 		
-		GregorianCalendar start = new GregorianCalendar(2015, Calendar.JANUARY, 3);
-		projectLeader.editProjectStart("Project01", 2015, 1, 3);
+		GregorianCalendar start = new GregorianCalendar(2016, Calendar.JANUARY, 3);
+		projectLeader.changeProjectStart("Project01", start);
 		assertEquals(company.getProject("Project01").getStart().get(Calendar.DAY_OF_MONTH), start.get(Calendar.DAY_OF_MONTH));
 		assertEquals(company.getProject("Project01").getStart().get(Calendar.MONTH), start.get(Calendar.MONTH));
 		assertEquals(company.getProject("Project01").getStart().get(Calendar.YEAR), start.get(Calendar.YEAR));
 		
-		GregorianCalendar end = new GregorianCalendar(2015, Calendar.APRIL, 3);
-		projectLeader.editProjectEnd("Project01", 2015, 4, 3);
+		GregorianCalendar end = new GregorianCalendar(2016, Calendar.APRIL, 3);
+		projectLeader.changeProjectEnd("Project01", end);
 		assertEquals(company.getProject("Project01").getEnd().get(Calendar.DAY_OF_MONTH), end.get(Calendar.DAY_OF_MONTH));
 		assertEquals(company.getProject("Project01").getEnd().get(Calendar.MONTH), end.get(Calendar.MONTH));
 		assertEquals(company.getProject("Project01").getEnd().get(Calendar.YEAR), end.get(Calendar.YEAR));

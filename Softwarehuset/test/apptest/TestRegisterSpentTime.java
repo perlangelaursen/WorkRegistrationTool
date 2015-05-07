@@ -104,6 +104,8 @@ public class TestRegisterSpentTime {
 	
 	@Test
 	public void testRegisterWithoutLoggingIn() throws Exception {
+		//Unsuccessful login
+		company.employeeLogin("LAND", "wrongPassword");
 		try {
 			employee.registerSpentTime(project.getID()+"-Designing", 100);
 			fail("OperationNotAllowedException exception should have been thrown");

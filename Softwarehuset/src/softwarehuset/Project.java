@@ -78,7 +78,7 @@ public class Project {
 		}
 		return null;
 	}
-	public int getSpentTime() {
+	public int getTotalSpentTime() {
 		int sum = 0;
 		for(Activity a : activities) {
 			sum=+a.getAllSpentTime();
@@ -87,17 +87,18 @@ public class Project {
 	}
 
 	public Activity getActivity(String activityName) throws OperationNotAllowedException {
-		for(Activity a : activities){
+		for (Activity a: activities){
 			if(a.getName().equals(activityName)){
 				return a;
 			}
 		}
-		return null;
+		throw new OperationNotAllowedException("Activity could not be found", "Edit activity");
 	}
 
 	public void addReport(Report report){
 		reports.add(report);
 	}
+	
 	public void getProjectDetails(List<String> statistics) {
 		statistics.add("Project Name: " + name);
 		statistics.add("Project Leader ID: " + projectLeader.getID() +" Department " + projectLeader.getDepartment());
@@ -131,9 +132,7 @@ public class Project {
 	}
 
 	public void setStart(GregorianCalendar start2) {
-		if(projectLeader.getID().equals(com.getLoggedInEmployee().getID())) {
-			start = start2;
-		}
+		start = start2;
 	}
 	
 	public GregorianCalendar getStart() {
@@ -141,9 +140,7 @@ public class Project {
 	}
 
 	public void setEnd(GregorianCalendar end2) {
-		if(projectLeader.getID().equals(com.getLoggedInEmployee().getID())) {
 			end = end2; 
-		}
 	}
 	
 	public GregorianCalendar getEnd() {
