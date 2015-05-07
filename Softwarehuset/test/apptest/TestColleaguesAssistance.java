@@ -9,7 +9,15 @@ import org.junit.Test;
 import softwarehuset.*;
 
 public class TestColleaguesAssistance {
-
+	/**
+	 * Tests the scenario where a employee requires the assistance from
+	 * another employee
+	 * <ol>
+	 * <li>An employee is requesting support from another employee in a activity
+	 * </ol>
+	 * @throws OperationNotAllowedException 
+	 */
+	
 	Company company;
 	Employee projectLeader;
 	Project p1;
