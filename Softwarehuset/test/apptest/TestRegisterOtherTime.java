@@ -3,12 +3,9 @@ package apptest;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import org.junit.Before;
-import org.junit.Test;
+import java.util.*;
+import org.junit.*;
 import softwarehuset.*;
-
 
 
 public class TestRegisterOtherTime {
@@ -50,7 +47,7 @@ public class TestRegisterOtherTime {
 	}
 
 	/**
-	 * Tests the scenario where an employee registers invalid times
+	 * Tests the scenario where an employee registers invalid times (wrong order, or wrong time)
 	 * <ol>
 	 * <li>The employee is logged in
 	 * <li>The employee registers invalid times
@@ -232,7 +229,7 @@ public class TestRegisterOtherTime {
 	}
 	
 	/**
-	 * Tests the scenario where an employee registers vacation or course
+	 * Tests the scenarios where an employee registers vacation or course
 	 * attendance on occupied dates
 	 * <ol>
 	 * <li>The employee is logged in

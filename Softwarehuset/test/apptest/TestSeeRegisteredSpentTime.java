@@ -16,18 +16,18 @@ public class TestSeeRegisteredSpentTime {
 	
 	@Before
 	public void setUp() throws OperationNotAllowedException {
-		// Create company, executive, project leader for a project and employee
+		// Create company, executive, project leader for a project and an employee
 		// assigned to the project
 		Address address = new Address("City", "Street", 1);
 		company = new Company("Softwarehuset", address);
 		executive = new Executive("Name", "Department", company, "password");
+		company.executiveLogin("password");
 		projectLeader = company.createEmployee("HABU", "empassword1", "Department1");
 		employee = company.createEmployee("JANK", "empassword2", "Department1");
 
 		// Create project and assign project leader
-		company.executiveLogin("password");
 		project = company.createProject("Project01");
-		project.assignProjectLeader(projectLeader);
+		executive.assignProjectLeader("HABU", project.getID());
 
 		// Create activity
 		GregorianCalendar start = new GregorianCalendar();
@@ -38,6 +38,7 @@ public class TestSeeRegisteredSpentTime {
 		activity2 = project.createActivity("Refactoring", start, end,	project);
 		activity3 = project.createActivity("Programming", start, end,	project);
 		
+		//Log in as project leader
 		company.employeeLogin("HABU", "empassword1");
 		
 		// Add employee to project and activity

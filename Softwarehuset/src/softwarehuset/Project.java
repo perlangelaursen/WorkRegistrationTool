@@ -40,7 +40,7 @@ public class Project {
 		return ID;
 	}
 	
-	public void assignProjectLeader(Employee e) {
+	protected void assignProjectLeader(Employee e) {
 		this.projectLeader = e;
 	}
 	
@@ -100,8 +100,7 @@ public class Project {
 	}
 	public void getProjectDetails(List<String> statistics) {
 		statistics.add("Project Name: " + name);
-		statistics.add("Project Leader ID: " + projectLeader.getID() +
-				" Department " + projectLeader.getDepartment());
+		statistics.add("Project Leader ID: " + projectLeader.getID() +" Department " + projectLeader.getDepartment());
 		statistics.add("No. of employees assigned: " + assignedEmployees.size());
 		assignedEmployeesInProject(statistics);
 		activitiesInProject(statistics);

@@ -39,17 +39,27 @@ public class Company {
 	public Project createProject(String name) throws OperationNotAllowedException {
 		if (!executiveIsLoggedIn()) {
 			throw new OperationNotAllowedException("Create project operation is not allowed if not executive.", "Create project");
-		}
+		}	
+		checkIfValidProjectName(name);
 		counter++;
 		Project p = new Project(name, this);
 		projects.add(p);
 		return p;
+	}
+	private void checkIfValidProjectName(String name) throws OperationNotAllowedException {
+		for (Project p : projects) {
+			if (name.equals(p.getName())) {
+				throw new OperationNotAllowedException("Name already exists","Create project");
+			}
+		}
 	}
 	
 	public Project createProject(String name, GregorianCalendar start, GregorianCalendar end) throws OperationNotAllowedException {
 		if (!executiveIsLoggedIn()) {
 			throw new OperationNotAllowedException("Create project operation is not allowed if not executive.", "Create project");
 		}
+		
+		checkIfValidProjectName(name);
 		
 		if (!start.after(getCurrentTime())){
 			throw new OperationNotAllowedException("The start date has already been passed", "Create project");
@@ -63,6 +73,7 @@ public class Company {
 		projects.add(p);
 		return p;
 	}
+	
 	public Employee createEmployee(String id, String password, String department) throws OperationNotAllowedException {
 		if (id.length() != 4) {
 			throw new OperationNotAllowedException("Employee ID must be the length of 4 letters","Create employee");
@@ -74,42 +85,34 @@ public class Company {
 		employees.add(e);
 		return e;
 	}
+	
 	public List<Project> getProjects() {
 		return projects;
 	}
 	
 	public Project getProject(String name) throws OperationNotAllowedException{
-		Project project = null;
-		int counter = 0;
 		for (Project p : projects) {
 			if (p.getName().equals(name)) {
-				counter++;
-				project = p;
+				return p;
 			}
 		}
-		if(counter>1){
-			throw new OperationNotAllowedException("Several projects have the requested title. Search by ID instead.","Get project");
-		}
-		if (project == null){
-			throw new OperationNotAllowedException("Project could not be found","Get project"); 
-		}
-		return project;
+		throw new OperationNotAllowedException("Project could not be found","Get project"); 
 	}
 	
-	public Project getProject(int ID){
+	public Project getProject(int ID) throws OperationNotAllowedException{
 		for (Project p : projects) {
 			if (p.getID() == ID) {
 				return p;
 			}
 		}
-		return null;
+		throw new OperationNotAllowedException("Project could not be found","Get project"); 
 	}
 	
 	public void employeeLogin(String id, String password) {
 		for(Employee e: employees){
 			if (e.getID().equals(id)){
 				if(e.getPassword().equals(password)){
-					executiveLoggedIn = false;
+					employeeLogout();
 					loggedInEmployee = e;
 					break;
 				}
@@ -181,6 +184,56 @@ public class Company {
 		int daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 		if (date < 1 || date > daysInMonth){
 			throw new OperationNotAllowedException("Invalid time input", "Choose date");
+		}
+	}
+	
+	public GregorianCalendar convertEndToDate(int year, int week) throws OperationNotAllowedException {
+		checkValidWeek(year, week);
+		
+		GregorianCalendar g = new GregorianCalendar();
+		g.clear();
+		g.set(Calendar.YEAR, year);
+		g.set(Calendar.WEEK_OF_YEAR, week);
+		g.add(Calendar.DAY_OF_YEAR, 6); //end of the week
+		int month = g.get(Calendar.MONTH);
+		int date = g.get(Calendar.DAY_OF_MONTH);
+		if(week== getMaxWeeks(year, week) && date < 7){
+			year++;
+		}
+		checkForInvalidDate(year, month, date);
+		GregorianCalendar day = new GregorianCalendar();
+		day.set(year, month, date, 0, 0, 0);
+		return day;
+	}
+	
+	public GregorianCalendar convertStartToDate(int year, int week) throws OperationNotAllowedException {
+		checkValidWeek(year, week);
+		
+		GregorianCalendar g = new GregorianCalendar();
+		g.clear();
+		g.set(Calendar.YEAR, year);
+		g.set(Calendar.WEEK_OF_YEAR, week);
+		int month = g.get(Calendar.MONTH);
+		int date = g.get(Calendar.DAY_OF_MONTH);
+		if(week==1 && date > 1){
+			year--;
+		}
+		
+		checkForInvalidDate(year, month, date);
+		GregorianCalendar day = new GregorianCalendar();
+		day.set(year, month, date, 0, 0, 0);
+		return day;
+	}
+	private int getMaxWeeks(int year, int week){
+		GregorianCalendar weeksInYear = new GregorianCalendar();
+		weeksInYear.set(Calendar.YEAR, year);
+		return weeksInYear.getActualMaximum(Calendar.WEEK_OF_YEAR);
+		
+	}
+	private void checkValidWeek(int year, int week)	throws OperationNotAllowedException {
+		int maxWeeks = getMaxWeeks(year, week);
+		if (week > maxWeeks || week < 1) {
+			throw new OperationNotAllowedException("Invalid week", "Choose week");
 		}
 	}
 }

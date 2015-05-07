@@ -53,6 +53,7 @@ public class Activity {
 	public int getSpentTime(Employee e) {
 		return employees.get(e);
 	}
+	
 	public int getAllSpentTime() {
 		int sum = 0;
 			for(Employee e : assignedEmployees){
@@ -60,9 +61,11 @@ public class Activity {
 			}
 		return sum;
 	}
+	
 	public void setTime(Employee e, int time) {
 		employees.put(e, time);
 	}
+	
 	public boolean isOverlapping(Activity activity) {
 		return (activity.getStart().after(start) && activity.getEnd().before(end)||
 				activity.getStart().before(start) && activity.getEnd().after(end)||

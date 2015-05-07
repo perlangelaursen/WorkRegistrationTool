@@ -74,17 +74,16 @@ public class TestStatistics {
 				" Department " + company.getProject("Project01").getProjectLeader().getDepartment(), 
 				statistics.get(1));
 		assertEquals("No. of employees assigned: " + company.getProject("Project01").getEmployees().size(), statistics.get(2));
-		assertEquals("ID: " + test1.getID() + " Department: " + test1.getDepartment(), statistics.get(3));
-		assertEquals("ID: " + test2.getID() + " Department: " + test2.getDepartment(), statistics.get(4));
-		assertEquals("No. of activities: " + company.getProject("Project01").getActivities().size(), statistics.get(5));
-		assertEquals("Activity name: " + a1.getName() +
-				" No. of employees: " + a1.getEmployees().size(),
-				statistics.get(6));
-		assertEquals("ID: " + test1.getID() + " Department: " + test1.getDepartment(), statistics.get(7));
+		assertEquals("ID: " + projectLeader.getID() + " Department: " + test1.getDepartment(), statistics.get(3));
+		assertEquals("ID: " + test1.getID() + " Department: " + test2.getDepartment(), statistics.get(4));
+		assertEquals("No. of activities: " + company.getProject("Project01").getActivities().size(), statistics.get(6));
+		assertEquals("Activity name: " + a1.getName() +" No. of employees: " + a1.getEmployees().size(),
+				statistics.get(7));
+		assertEquals("ID: " + test1.getID() + " Department: " + test1.getDepartment(), statistics.get(8));
 		assertEquals("Activity name: " + a2.getName() +
 				" No. of employees: " + a2.getEmployees().size(),
-				statistics.get(8));
-		assertEquals("ID: " + test2.getID() + " Department: " + test2.getDepartment(), statistics.get(9));
+				statistics.get(9));
+		assertEquals("ID: " + test2.getID() + " Department: " + test2.getDepartment(), statistics.get(10));
 	}
 	
 	@Test

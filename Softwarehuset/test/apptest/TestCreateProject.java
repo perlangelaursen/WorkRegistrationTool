@@ -2,11 +2,8 @@
 package apptest;
 
 import static org.junit.Assert.*;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
+import java.util.*;
+import org.junit.*;
 import softwarehuset.*;
 
 public class TestCreateProject {
@@ -35,7 +32,9 @@ public class TestCreateProject {
 	
 	@Test
 	public void testNewProjectSuccess() throws OperationNotAllowedException {
-		// Create a project
+		assertTrue(company.executiveIsLoggedIn());
+		
+		// Create a project with start and end date
 		GregorianCalendar start = new GregorianCalendar();
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(2016, Calendar.JANUARY, 23);
@@ -43,7 +42,7 @@ public class TestCreateProject {
 		company.createProject("Project01", start, end);
 		company.createProject("Project02");
 
-		// See projects
+		// Check number of projects
 		List<Project> projects = (List<Project>) company.getProjects();
 		int numberOfProjects = projects.size();
 		assertEquals(2, numberOfProjects);
@@ -89,7 +88,7 @@ public class TestCreateProject {
 			assertEquals("Create project",e.getOperation());
 		}
 		
-		// See projects
+		// Check number of projects
 		List<Project> projects = (List<Project>) company.getProjects();
 		int numberOfProjects = projects.size();
 		assertEquals(0, numberOfProjects);
@@ -107,6 +106,8 @@ public class TestCreateProject {
 	
 	@Test
 	public void testNewProjectDateOrder() throws Exception {
+		assertTrue(company.executiveIsLoggedIn());
+		
 		// Create a project
 		GregorianCalendar start = new GregorianCalendar();
 		GregorianCalendar end = new GregorianCalendar();
@@ -122,7 +123,7 @@ public class TestCreateProject {
 			assertEquals("Create project",e.getOperation());
 		}
 
-		// See projects
+		// Check number of projects
 		List<Project> projects = (List<Project>) company.getProjects();
 		int numberOfProjects = projects.size();
 		assertEquals(0, numberOfProjects);
@@ -139,6 +140,8 @@ public class TestCreateProject {
 	
 	@Test
 	public void testNewProjectPassedDates() throws Exception {
+		assertTrue(company.executiveIsLoggedIn());
+		
 		// Create dates
 		GregorianCalendar start = new GregorianCalendar();
 		GregorianCalendar end = new GregorianCalendar();
@@ -154,14 +157,24 @@ public class TestCreateProject {
 			assertEquals("Create project",e.getOperation());
 		}
 
-		// See projects
+		// Check number of projects
 		List<Project> projects = (List<Project>) company.getProjects();
 		int numberOfProjects = projects.size();
 		assertEquals(0, numberOfProjects);
 	}
 	
+	/**
+	 * Tests the scenario where the executive tries to create a project with an already used project name
+	 * <ol>
+	 * <li>The executive is logged in
+	 * <li>The employee tries to create a project with a name that already exists 
+	 * <li>An exception is thrown
+	 * </ol>
+	 */
 	@Test
-	public void testCreateAndGetProjectsWithSameTitle() throws Exception {
+	public void testCreateProjectsWithSameTitle() throws Exception {
+		assertTrue(company.executiveIsLoggedIn());
+		
 		// Create dates
 		GregorianCalendar start = new GregorianCalendar();
 		GregorianCalendar end = new GregorianCalendar();
@@ -169,15 +182,42 @@ public class TestCreateProject {
 		end.set(2016, Calendar.FEBRUARY, 23);
 		company.createProject("Project01", start, end);
 		
-		// Create project with the same name:
-		company.createProject("Project01", start, end);
-
-		//Try to get the project
+		//Try to create another "Project01"
 		try {
-			company.getProject("Project01");
+			company.createProject("Project01", start, end);
 			fail("OperationNotAllowedException exception should have been thrown");
 		} catch (OperationNotAllowedException e) {
-			assertEquals("Several projects have the requested title. Search by ID instead.",e.getMessage());
+			assertEquals("Name already exists",e.getMessage());
+			assertEquals("Create project",e.getOperation());
+		}
+	}
+	
+	/**
+	 * Tests the scenario where the executive tries to get a project by ID that does not exist
+	 * <ol>
+	 * <li>The executive is logged in
+	 * <li>The employee tries to get a project with non-existing ID 
+	 * <li>An exception is thrown
+	 * </ol>
+	 */
+	@Test
+	public void testGetNonExistingProject() throws Exception {
+		assertTrue(company.executiveIsLoggedIn());
+		
+		// Create a project that will get the ID 150001
+		GregorianCalendar start = new GregorianCalendar();
+		GregorianCalendar end = new GregorianCalendar();
+		start.set(2016, Calendar.JANUARY, 23);
+		end.set(2016, Calendar.FEBRUARY, 23);
+		company.createProject("Project01", start, end);
+		company.getProject(150001); //possible
+		
+		//Try to get a non-existing project
+		try {
+			company.getProject(150002);
+			fail("OperationNotAllowedException exception should have been thrown");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("Project could not be found",e.getMessage());
 			assertEquals("Get project",e.getOperation());
 		}
 	}

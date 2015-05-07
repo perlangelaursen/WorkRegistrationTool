@@ -37,7 +37,7 @@ public class TestGetProgressForProjectAndActivity {
 		company.employeeLogin(projectLeader.getID(), "password");
 		
 		company.getProject("Project01").createActivity("Activity01", start, end, company.getProject("Project01"));
-		projectLeader.assignEmployeeProject(projectLeader.getID(), "Project01");
+		projectLeader.assignEmployeeProject(projectLeader.getID(), p1.getName());
 
 		projectLeader.assignEmployeeActivity(projectLeader.getID(), p1.getID()+"-Activity01");
 		projectLeader.registerSpentTime(p1.getID()+"-Activity01", 100);

@@ -51,11 +51,11 @@ public class TestRelieveEmployee {
 	
 	@Test
 	public void testRelieveEmployee01() throws OperationNotAllowedException {
-		assertEquals(1, company.getProject("Project01").getEmployees().size());
+		assertEquals(2, company.getProject("Project01").getEmployees().size());
 		
 		projectLeader.relieveEmployeeProject(test1, company.getProject("Project01"));
 		
-		assertEquals(0, company.getProject("Project01").getEmployees().size());
+		assertEquals(1, company.getProject("Project01").getEmployees().size());
 	}
 	
 	@Test
@@ -73,7 +73,6 @@ public class TestRelieveEmployee {
 	
 	@Test
 	public void testNotProjectLeader() throws OperationNotAllowedException {
-		assertEquals(1, company.getProject("Project01").getEmployees().size());
 		Employee test2 = company.createEmployee("HANS", "password", "RandD");
 		company.employeeLogin(test2.getID(), "password");
 		try {
