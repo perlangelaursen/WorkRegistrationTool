@@ -107,18 +107,13 @@ public class TestGetAvailableEmployees {
 		assertEquals(20, p1.getActivities().size());
 		
 		assertTrue(com.getAvailableEmployees(d1, d2).contains(em2));
+		
 		//Assign employee to 20 activities
 		for(Activity a: p1.getActivities()){
 			em.assignEmployeeActivity(em2.getID(), a.getName());
 		}
 		assertEquals(20, em2.getActivities().size());
 		assertFalse(com.getAvailableEmployees(d1, d2).contains(em2));
-		
-		d5.set(2016, 5, 5);
-		d6.set(2016, 5, 20);
-		
-		assertFalse(com.getAvailableEmployees(d5, d6).contains(em2));
-		
 	}
 
 }
