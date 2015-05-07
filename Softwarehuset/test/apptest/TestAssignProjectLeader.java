@@ -1,4 +1,4 @@
-//Anna Ølgaard Nielsen - s144437
+//Anna ï¿½lgaard Nielsen - s144437
 
 package apptest;
 
@@ -10,6 +10,14 @@ import org.junit.Test;
 import softwarehuset.*;
 
 public class TestAssignProjectLeader {
+	/**
+	 * Tests the scenario where a project is assigned a projectleader
+	 * <ol>
+	 * <li>Projectleader is assigned
+	 * </ol>
+	 * @throws OperationNotAllowedException 
+	 */
+	
 	private Address add;
 	private Company com;
 	private Executive ex;

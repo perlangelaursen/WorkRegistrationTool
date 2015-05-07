@@ -11,6 +11,16 @@ import org.junit.Test;
 import softwarehuset.*;
 
 public class TestStatistics {
+	/**
+	 * Tests the scenario where statistics for project is requested
+	 * <ol>
+	 * <li>Projectleader is logged in and request statistics
+	 * <li>Projectleader is not logged in and request statistics
+	 * <li>Employee is logged in and request statistics
+	 * </ol>
+	 * @throws OperationNotAllowedException 
+	 */
+	
 	Employee projectLeader;
 	Employee test1, test2;
 	Company company;

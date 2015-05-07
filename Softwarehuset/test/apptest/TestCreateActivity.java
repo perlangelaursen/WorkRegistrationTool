@@ -9,6 +9,14 @@ import org.junit.Test;
 import softwarehuset.*;
 
 public class TestCreateActivity {
+	/**
+	 * Tests the scenario where an activity is created
+	 * <ol>
+	 * <li>Projectleader creates an activity
+	 * </ol>
+	 * @throws OperationNotAllowedException 
+	 */
+	
 	Employee projectLeader;
 	Employee test1;
 	Company company;
