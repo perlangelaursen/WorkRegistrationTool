@@ -2,20 +2,13 @@
 package apptest;
 
 import static org.junit.Assert.*;
-
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-
+import java.util.*;
+import org.junit.*;
 import softwarehuset.*;
 
 public class TestWeekConverter {
 	private Address address;
 	private Company company;
-	private Executive ex;
 
 	@Before
 	public void setUp() throws OperationNotAllowedException {

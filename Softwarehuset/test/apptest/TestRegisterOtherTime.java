@@ -3,12 +3,9 @@ package apptest;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import org.junit.Before;
-import org.junit.Test;
+import java.util.*;
+import org.junit.*;
 import softwarehuset.*;
-
 
 
 public class TestRegisterOtherTime {
