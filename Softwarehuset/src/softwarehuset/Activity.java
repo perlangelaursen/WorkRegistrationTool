@@ -34,6 +34,10 @@ public class Activity {
 		return activityName;
 	}
 
+	protected void setName(String name) {
+		activityName = project.getID()+"-"+name;
+	}
+	
 	public GregorianCalendar getStart() {
 		return start;
 	}

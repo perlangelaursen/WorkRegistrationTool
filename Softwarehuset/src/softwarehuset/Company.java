@@ -229,7 +229,7 @@ public class Company {
 		}
 	}
 	
-	private void checkIfValidProjectName(String name) throws OperationNotAllowedException {
+	protected void checkIfValidProjectName(String name) throws OperationNotAllowedException {
 		for (Project p : projects) {
 			if (name.equals(p.getName())) {
 				throw new OperationNotAllowedException("Name already exists","Create project");

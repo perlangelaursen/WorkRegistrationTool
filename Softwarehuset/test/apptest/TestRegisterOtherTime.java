@@ -327,7 +327,7 @@ public class TestRegisterOtherTime {
 	public void testRegisterOtherTime2() throws OperationNotAllowedException {
 		Activity vacation = employee.createPersonalActivity(2015, 12, 23, 2016, 1, 3, "Vacation");
 		Activity course = employee.createPersonalActivity(2016, 5, 1, 2016, 5, 1, "Course");
-		employee.overWriteOverlappingActivities(course, vacation);
-		employee.overWriteOverlappingActivities(vacation, course);
+		employee.addNewActivity(course, vacation);
+		employee.addNewActivity(vacation, course);
 	}
 }

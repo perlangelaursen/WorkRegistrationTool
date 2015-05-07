@@ -182,24 +182,25 @@ public class Employee {
 	}
 
 	private void addActivityToCalendar(Activity a) {
-		ArrayList<Activity> removes = new ArrayList<>();
-		getOverlappingActivities(a, removes);
-		removeAndAddOverlappingActivities(a, removes);
+		ArrayList<Activity> removes = getOverlappingActivities(a);
+		reAddOverlappingActivities(a, removes);
 	}
 
-	private void removeAndAddOverlappingActivities(Activity a,ArrayList<Activity> removes) {
+	private void reAddOverlappingActivities(Activity a,ArrayList<Activity> removes) {
 		for(Activity activity: removes){
 			calendar.remove(activity);
-			overWriteOverlappingActivities(a, activity);
+			addNewActivity(a, activity);
 		}
 	}
 
-	private void getOverlappingActivities(Activity a,ArrayList<Activity> removes) {
+	private ArrayList<Activity> getOverlappingActivities(Activity a) {
+		ArrayList<Activity> removes = new ArrayList<>();
 		for(Activity activity: calendar.keySet()){
 			if(a.isOverlapping(activity)){
             	removes.add(activity);
             }
 		}
+		return removes;
 	}
 
 	public Activity createPersonalActivity(int year, int month, int date, int year2, int month2, int date2, String type)throws OperationNotAllowedException {
@@ -212,7 +213,7 @@ public class Employee {
 		return activity;
 	}
 
-	public void overWriteOverlappingActivities(Activity newActivity, Activity oldActivity) {
+	public void addNewActivity(Activity newActivity, Activity oldActivity) {
 		GregorianCalendar newStart = new GregorianCalendar();
 		GregorianCalendar newEnd = new GregorianCalendar();
 		GregorianCalendar start = newActivity.getStart();
@@ -345,5 +346,16 @@ public class Employee {
 		if(company.getLoggedInEmployee() != this ){
 			throw new OperationNotAllowedException("Operation is not allowed if not project leader", "Project leader operation");
 		}
+	}
+
+	public void changeActivityName(Activity a, String name) throws OperationNotAllowedException {
+		checkIfLoggedInProjectLeader(a.getProject());
+		a.setName(name);
+	}
+
+	public void changeProjectName(Project project, String name) throws OperationNotAllowedException {
+		checkIfLoggedInProjectLeader(project);
+		company.checkIfValidProjectName(name);
+		project.setName(name);
 	}
 }

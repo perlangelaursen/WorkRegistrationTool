@@ -30,6 +30,10 @@ public class Project {
 	public String getName() {
 		return name;
 	}
+
+	protected void setName(String newName) {
+		name = newName;
+	}
 	
 	private void setID() {
 		int year = com.getCurrentTime().get(Calendar.YEAR) % 100 * 10000;
@@ -146,4 +150,5 @@ public class Project {
 	public GregorianCalendar getEnd() {
 		return end;
 	}
+
 }

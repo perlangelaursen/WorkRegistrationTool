@@ -57,6 +57,13 @@ public class TestEditData {
 		date.set(2016, Calendar.JANUARY, 30, 0, 0, 0);
 		projectLeader.changeActivityEnd(p1.getID()+"-Activity01", date);
 		assertEquals(date.getTime(), p1.getActivity(p1.getID()+"-Activity01").getEnd().getTime());
+		
+		//Change name of project
+		projectLeader.changeProjectName(p1, "new project name");
+		assertEquals("new project name", p1.getName());
+		//Change name of activity
+		projectLeader.changeActivityName(p1.getActivity(p1.getID()+"-Activity01"), "new name");
+		assertTrue(p1.getActivities().contains(p1.getActivity(p1.getID()+"-new name")));
 	}
 
 	@Test
