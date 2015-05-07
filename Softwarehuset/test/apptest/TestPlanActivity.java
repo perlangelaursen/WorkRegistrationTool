@@ -53,7 +53,7 @@ public class TestPlanActivity {
 		end.set(2016, Calendar.JANUARY, 25);
 		
 		company.employeeLogin(projectLeader.getID(), "password");
-		projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end);
+		projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end,3);
 		
 		assertEquals(1, company.getProject("Project01").getActivities().size());
 		Activity a = p1.getActivity(p1.getID()+"-TestActivity");
@@ -71,7 +71,7 @@ public class TestPlanActivity {
 		
 		company.employeeLogin(projectLeader.getID(), "password");
 		try {
-			projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end);
+			projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end,3);
 			fail("OperationNotAllowedException exception should have been thrown");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("The end date is set before the start date",e.getMessage());
@@ -92,7 +92,7 @@ public class TestPlanActivity {
 		company.employeeLogin(test2.getID(), test2.getPassword());
 
 		try {
-			test2.createActivity(company.getProject("Project01"), "TestActivity", start, end);
+			test2.createActivity(company.getProject("Project01"), "TestActivity", start, end,3);
 			fail("OperationNotAllowedException exception should have been thrown");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("Operation is not allowed if not project leader", e.getMessage());

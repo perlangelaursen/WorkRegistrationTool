@@ -35,7 +35,7 @@ public class TestGetProgressForProjectAndActivity {
 		test1 = company.createEmployee("ABCD", "password", "RandD");
 		company.employeeLogin(projectLeader.getID(), "password");
 		
-		company.getProject("Project01").createActivity("Activity01", start, end, company.getProject("Project01"));
+		projectLeader.createActivity(company.getProject("Project01"), "Activity01", start, end, 3);
 		projectLeader.assignEmployeeProject(projectLeader.getID(), p1.getName());
 
 		projectLeader.assignEmployeeActivity(projectLeader.getID(), p1.getID()+"-Activity01");
@@ -45,7 +45,6 @@ public class TestGetProgressForProjectAndActivity {
 	
 	@Test
 	public void testProgressActivity() throws OperationNotAllowedException {
-		
 		assertEquals(100, projectLeader.viewProgress("Project01", p1.getID()+"-Activity01"));
 	}
 	@Test

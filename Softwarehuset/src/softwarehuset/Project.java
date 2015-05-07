@@ -55,12 +55,6 @@ public class Project {
 	public Employee getProjectLeader() {
 		return projectLeader;
 	}
-
-	public Activity createActivity(String activityName, GregorianCalendar start, GregorianCalendar end, Project project) {
-		Activity a = new Activity(activityName, start, end, project);
-		activities.add(a);
-		return a;
-	}
 	
 	public List<Activity> getActivities() {
 		return activities;
@@ -149,6 +143,10 @@ public class Project {
 	
 	public GregorianCalendar getEnd() {
 		return end;
+	}
+
+	public void addActivity(Activity a) {
+		activities.add(a);
 	}
 
 }

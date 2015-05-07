@@ -138,8 +138,7 @@ public class TestAssignEmployeeToProjectAndActivity {
 		end.set(2016, Calendar.JANUARY, 25);
 
 		company.employeeLogin(projectLeader.getID(), "password");
-		projectLeader.createActivity(company.getProject("Project01"),
-				"TestActivity", start, end);
+		projectLeader.createActivity(company.getProject("Project01"),"TestActivity", start, end,3);
 
 		Activity a = p1.getActivity(p1.getID() + "-TestActivity");
 		projectLeader.assignEmployeeActivity(test1.getID(), a.getName());
@@ -153,7 +152,7 @@ public class TestAssignEmployeeToProjectAndActivity {
 		end.set(2016, Calendar.JANUARY, 25);
 
 		company.employeeLogin(projectLeader.getID(), "password");
-		projectLeader.createActivity(p1, "TestActivity", start, end);
+		projectLeader.createActivity(p1, "TestActivity", start, end,3);
 
 		company.employeeLogout();
 
@@ -177,8 +176,7 @@ public class TestAssignEmployeeToProjectAndActivity {
 		end.set(2016, Calendar.JANUARY, 25);
 
 		company.employeeLogin(projectLeader.getID(), "password");
-		projectLeader.createActivity(company.getProject("Project01"),
-				"TestActivity", start, end);
+		projectLeader.createActivity(company.getProject("Project01"),"TestActivity", start, end,3);
 
 		Employee test2 = company.createEmployee("KKKK", "password",
 				"Department1");
@@ -202,8 +200,7 @@ public class TestAssignEmployeeToProjectAndActivity {
 		end.set(2016, Calendar.JANUARY, 25);
 
 		company.employeeLogin(projectLeader.getID(), "password");
-		projectLeader.createActivity(company.getProject("Project01"),
-				"TestActivity", start, end);
+		projectLeader.createActivity(company.getProject("Project01"),"TestActivity", start, end,3);
 
 		Activity a = p1.getActivity(p1.getID() + "-TestActivity");
 

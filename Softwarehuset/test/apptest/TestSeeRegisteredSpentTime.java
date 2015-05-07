@@ -32,11 +32,11 @@ public class TestSeeRegisteredSpentTime {
 		// Create activity
 		GregorianCalendar start = new GregorianCalendar();
 		GregorianCalendar end = new GregorianCalendar();
-		start.set(2015, Calendar.JANUARY, 23);
-		end.set(2015, Calendar.FEBRUARY, 23);
-		activity = project.createActivity("Designing", start, end,	project);
-		activity2 = project.createActivity("Refactoring", start, end,	project);
-		activity3 = project.createActivity("Programming", start, end,	project);
+		start.set(2016, Calendar.JANUARY, 23);
+		end.set(2016, Calendar.FEBRUARY, 23);
+		activity = projectLeader.createActivity(project, "Designing", start, end,3 );
+		activity2 = projectLeader.createActivity(project, "Refactoring", start, end, 3);
+		activity3 = projectLeader.createActivity(project, "Programming", start, end, 3);
 		
 		//Log in as project leader
 		company.employeeLogin("HABU", "empassword1");

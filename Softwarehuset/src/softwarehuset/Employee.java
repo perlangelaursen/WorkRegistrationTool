@@ -72,11 +72,13 @@ public class Employee {
 		e.addProject(p);
 	}
 
-	public void createActivity(Project project, String activityName, GregorianCalendar start, GregorianCalendar end) throws OperationNotAllowedException {
+	public Activity createActivity(Project project, String activityName, GregorianCalendar start, GregorianCalendar end, int time) throws OperationNotAllowedException {
 		checkIfLoggedInProjectLeader(project);
 		company.checkDateOrder(start, end);
 		company.checkStartDateInFuture(start);
-		project.createActivity(activityName, start, end, project);
+		Activity a = new Activity(activityName, start, end, time, project);
+		project.addActivity(a);
+		return a;
 	}
 	
 	private Activity getActivity(String activity) throws OperationNotAllowedException {
@@ -320,6 +322,19 @@ public class Employee {
 		a.setEnd(end);
 	}
 	
+	public void changeActivityExpectedTime(String activity, int time) throws OperationNotAllowedException {
+		Activity a = getActivity(activity);
+		checkIfLoggedInProjectLeader(a.getProject());
+		checkValidTime(time);
+		a.setExpectedTime(time);
+	}
+	
+	private void checkValidTime(int time) throws OperationNotAllowedException {
+		if(time<1){
+			throw new OperationNotAllowedException("The expected time cannot be less than 1 week", "Set expected time");
+		}
+	}
+
 	public void changeProjectStart(String project, GregorianCalendar start) throws OperationNotAllowedException {
 		Project p = company.getProject(project);
 		checkIfLoggedInProjectLeader(p);

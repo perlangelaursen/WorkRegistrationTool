@@ -49,7 +49,7 @@ public class WRTcmdinterface {
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(2016, Calendar.JANUARY, 23);
 		end.set(2016, Calendar.FEBRUARY, 23);
-		e1.createActivity(p1, "Testing", start, end);
+		e1.createActivity(p1, "Testing", start, end, 3);
 		e1.assignEmployeeActivity("AKMU", "150001-Testing");
 		company.employeeLogout();
 
@@ -256,7 +256,8 @@ public class WRTcmdinterface {
 		System.out.println("- Change project name");
 		System.out.println("- Change project dates");
 		System.out.println("- Change activity name");
-		System.out.println("- Change activity dates"+"\n");
+		System.out.println("- Change activity dates");
+		System.out.println("- Change expected time on activity"+"\n");
 		
 		System.out.println("- Assign employee to project");
 		System.out.println("- Assign employee to activity");
@@ -264,6 +265,7 @@ public class WRTcmdinterface {
 		
 		System.out.println("- See spent time on project");
 		System.out.println("- See spent time on activity");
+		System.out.println("- See expected time on activity");
 		System.out.println("- Get Project Statistics");
 		System.out.println("- Create reports on project meetings");
 		System.out.println("- View report from project meeting");
@@ -290,12 +292,16 @@ public class WRTcmdinterface {
 			changeActivityDates(project);
 		} else if (userChoice.toLowerCase().equals("change activity name")) {
 			changeActivityName(project);
+		} else if (userChoice.toLowerCase().equals("change expected time on activity")) {
+			changeExpectedTime(project);
 		} else if (userChoice.toLowerCase().equals("relieve employee from project")) {
 			relieveEmployeeProject(project);
 		}else if (userChoice.toLowerCase().equals("see spent time on project")) {
 			seeSpentTimeOnProject(project);
 		}else if (userChoice.toLowerCase().equals("see spent time on activity")) {
 			seeSpentTimeOnActivity(project);
+		}else if (userChoice.toLowerCase().equals("see expected time on activity")) {
+			seeExpectedTime(project);
 		} else if (userChoice.toLowerCase().equals("see available employees")) {
 			seeAvailableEmployees(project);
 		} else if (userChoice.toLowerCase().equals("create reports on project meetings")) {
@@ -309,6 +315,7 @@ public class WRTcmdinterface {
 			manageProjectScreen(project);
 		}
 	}
+
 
 	private void seeProjects() throws IOException, OperationNotAllowedException {
 		HashSet<Project> projects = company.getLoggedInEmployee().getProjects();
@@ -364,6 +371,7 @@ public class WRTcmdinterface {
 		manageProjectScreen(p);
 	}
 
+	
 	private void changeProjectName(Project p) throws IOException, OperationNotAllowedException {
 		boolean repeat = true;
 		while(repeat){
@@ -425,6 +433,35 @@ public class WRTcmdinterface {
 			}
 		}
 
+		manageProjectScreen(p);
+	}
+	
+
+	private void changeExpectedTime(Project p) throws IOException, OperationNotAllowedException {
+		Activity a = findActivity(p);
+		
+		System.out.print("Enter expected time (in weeks): ");
+		String timeInput = input.readLine();
+		while (!timeInput.matches("[0-9]+")) {
+			System.out.println("Expected time must be a number greater than 0");
+			System.out.print("Enter expected time (in weeks): ");
+			timeInput = input.readLine();
+		}
+		int time = Integer.parseInt(timeInput);
+		try{
+			company.getLoggedInEmployee().changeActivityExpectedTime(a.getName(), time);
+			System.out.println("Expected time has been changed");
+		} catch (Exception e){
+			System.out.println(""+e.getMessage());
+			System.out.println();
+		}
+
+		manageProjectScreen(p);
+	}
+	
+	private void seeExpectedTime(Project p) throws IOException, OperationNotAllowedException{
+		Activity a = findActivity(p);
+		System.out.println("Expected time: "+a.getExpectedTime()+" weeks");
 		manageProjectScreen(p);
 	}
 
@@ -636,8 +673,7 @@ public class WRTcmdinterface {
 		manageProjectScreen(p);
 	}
 
-	private void createActivity(Project p) throws NumberFormatException,
-			IOException, OperationNotAllowedException {
+	private void createActivity(Project p) throws NumberFormatException, IOException, OperationNotAllowedException {
 		boolean repeat = true;
 		while (repeat) {
 			System.out.print("Enter activity title: ");
@@ -646,8 +682,16 @@ public class WRTcmdinterface {
 			GregorianCalendar start = getStartDate();
 			GregorianCalendar end = getEndDate();
 
+			System.out.print("Enter expected time: ");
+			String timeInput = input.readLine();
+			while (!timeInput.matches("[0-9]+")) {
+				System.out.println("Expected time must be a number");
+				System.out.print("Enter expected time: ");
+				timeInput = input.readLine();
+			}
+			int time = Integer.parseInt(timeInput);
 			try {
-				company.getLoggedInEmployee().createActivity(p, activity,start, end);
+				company.getLoggedInEmployee().createActivity(p, activity,start, end, time);
 				System.out.println("The activity " + p.getID() + "-" + activity+ " has been created");
 				System.out.println();
 				repeat = false;
@@ -746,14 +790,18 @@ public class WRTcmdinterface {
 
 
 	private Activity findActivity(Project p) throws IOException {
-		System.out.print("Enter Activity ID: ");
-		String activityName = input.readLine();
 		Activity a = null;
-		try{
-			a = p.getActivity(activityName);
-		} catch(Exception e){
-			System.out.println(e.getMessage());
-			System.out.println();
+		boolean repeat = true;
+		while(repeat){
+			System.out.print("Enter Activity ID: ");
+			String activityName = input.readLine();
+			try{
+				a = p.getActivity(activityName);
+				repeat = false;
+			} catch(Exception e){
+				System.out.println(e.getMessage());
+				System.out.println();
+			}
 		}
 		return a;
 	}

@@ -52,8 +52,8 @@ public class TestGetAvailableEmployees {
 		d3.set(2016, 5, 1);
 		d4.set(2016, 6, 1);
 		
-		em.createActivity(p1, "activity1", d1, d2);
-		em.createActivity(p1, "activity2", d3, d4);
+		em.createActivity(p1, "activity1", d1, d2, 3);
+		em.createActivity(p1, "activity2", d3, d4,3);
 		em.assignEmployeeActivity(em2.getID(), p1.getID() + "-activity1");
 		em.assignEmployeeActivity(em2.getID(), p1.getID() + "-activity2");
 		
@@ -75,8 +75,8 @@ public class TestGetAvailableEmployees {
 		d2.set(2016, 4, 1);
 		d3.set(2016, 5, 1);
 		d4.set(2016, 6, 1);
-		em.createActivity(p1, "activity1", d1, d2);
-		em.createActivity(p1, "activity2", d3, d4);
+		em.createActivity(p1, "activity1", d1, d2,3);
+		em.createActivity(p1, "activity2", d3, d4,3);
 		em.assignEmployeeActivity(em2.getID(), p1.getID() + "-activity1");
 		em.assignEmployeeActivity(em3.getID(), p1.getID() + "-activity2");
 		em.assignEmployeeActivity(em4.getID(), p1.getID() + "-activity2");
@@ -102,7 +102,7 @@ public class TestGetAvailableEmployees {
 		
 		//Create 20 activities
 		for(int i = 1; i<=20; i++){
-			em.createActivity(p1, "activity"+i, d1, d2);
+			em.createActivity(p1, "activity"+i, d1, d2,3);
 		}
 		assertEquals(20, p1.getActivities().size());
 		

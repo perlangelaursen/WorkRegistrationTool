@@ -41,7 +41,7 @@ public class TestEditData {
 		executive.assignProjectLeader("ABCD",p1.getID());
 		
 		company.employeeLogin(projectLeader.getID(), "password");
-		p1.createActivity("Activity01", start, end, company.getProject("Project01"));
+		projectLeader.createActivity(company.getProject("Project01"), "Activity01", start, end, 3);
 		projectLeader.assignEmployeeProject(projectLeader.getID(), p1.getName());
 		projectLeader.assignEmployeeActivity(projectLeader.getID(),p1.getID()+"-Activity01");
 		
@@ -61,6 +61,20 @@ public class TestEditData {
 		//Change name of project
 		projectLeader.changeProjectName(p1, "new project name");
 		assertEquals("new project name", p1.getName());
+		//Change expected time
+		assertEquals(3, p1.getActivity(p1.getID()+"-Activity01").getExpectedTime());
+		projectLeader.changeActivityExpectedTime(p1.getID()+"-Activity01", 5);
+		assertEquals(5, p1.getActivity(p1.getID()+"-Activity01").getExpectedTime());
+		//Try to change expected time to 0
+		try {
+			projectLeader.changeActivityExpectedTime(p1.getID()+"-Activity01", 0);
+			fail("OperationNotAllowedException exception should have been thrown");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("The expected time cannot be less than 1 week", e.getMessage());
+			assertEquals("Set expected time", e.getOperation());
+		}
+		assertEquals(5, p1.getActivity(p1.getID()+"-Activity01").getExpectedTime());
+		
 		//Change name of activity
 		projectLeader.changeActivityName(p1.getActivity(p1.getID()+"-Activity01"), "new name");
 		assertTrue(p1.getActivities().contains(p1.getActivity(p1.getID()+"-new name")));

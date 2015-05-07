@@ -55,7 +55,7 @@ public class TestColleaguesAssistance {
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(2016, Calendar.JANUARY, 23);
 		end.set(2016, Calendar.JANUARY, 24);
-		projectLeader.createActivity(company.getProject("Project01"), "A", start, end);
+		projectLeader.createActivity(company.getProject("Project01"), "A", start, end,3);
 		projectLeader.assignEmployeeActivity(asker.getID(), p1.getID()+"-A");
 		
 		company.employeeLogin(asker.getID(), "password");
@@ -77,7 +77,7 @@ public class TestColleaguesAssistance {
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(2016, Calendar.JANUARY, 23);
 		end.set(2016, Calendar.JANUARY, 24);
-		projectLeader.createActivity(company.getProject("Project01"), "A", start, end);
+		projectLeader.createActivity(company.getProject("Project01"), "A", start, end,3);
 		projectLeader.assignEmployeeActivity(asker.getID(), p1.getID()+"-A");
 		
 		try {
@@ -100,7 +100,7 @@ public class TestColleaguesAssistance {
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(2016, Calendar.JANUARY, 23);
 		end.set(2016, Calendar.JANUARY, 24);
-		projectLeader.createActivity(company.getProject("Project01"), "A", start, end);
+		projectLeader.createActivity(company.getProject("Project01"), "A", start, end,3);
 		projectLeader.assignEmployeeActivity(asker.getID(),p1.getID()+"-A");
 		
 		company.employeeLogin(asker.getID(), "password");
@@ -125,7 +125,7 @@ public class TestColleaguesAssistance {
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(2016, Calendar.JANUARY, 23);
 		end.set(2016, Calendar.JANUARY, 24);
-		projectLeader.createActivity(company.getProject("Project01"), "A", start, end);
+		projectLeader.createActivity(company.getProject("Project01"), "A", start, end,3);
 		projectLeader.assignEmployeeActivity(asker.getID(), p1.getID()+"-A");
 		
 		try {
@@ -149,7 +149,7 @@ public class TestColleaguesAssistance {
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(2016, Calendar.JANUARY, 23);
 		end.set(2016, Calendar.JANUARY, 24);
-		projectLeader.createActivity(company.getProject("Project01"), "A", start, end);
+		projectLeader.createActivity(company.getProject("Project01"), "A", start, end,3);
 		projectLeader.assignEmployeeActivity(asker.getID(), p1.getID()+"-A");
 		
 		company.employeeLogin(asker.getID(), "password");
@@ -168,7 +168,7 @@ public class TestColleaguesAssistance {
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(2016, Calendar.JANUARY, 23);
 		end.set(2016, Calendar.JANUARY, 24);
-		projectLeader.createActivity(company.getProject("Project01"), "A", start, end);
+		projectLeader.createActivity(company.getProject("Project01"), "A", start, end,3);
 		projectLeader.assignEmployeeActivity(asker.getID(), p1.getID()+"-A");
 		
 		company.employeeLogin(asker.getID(), asker.getPassword());

@@ -9,6 +9,7 @@ public class Activity {
 	private String activityName, type, description;
 	private GregorianCalendar start, end;
 	private Project project;
+	private int expectedTime;
 	private HashMap<Employee, Integer> employees = new HashMap<>();
 	private List<Employee> assignedEmployees = new ArrayList<Employee>();
 	private List<Employee> assistingEmployees = new ArrayList<Employee>();
@@ -19,10 +20,11 @@ public class Activity {
 		this.type = type;
 	}
 	
-	public Activity(String activityName, GregorianCalendar start, GregorianCalendar end, Project project) {
+	public Activity(String activityName, GregorianCalendar start, GregorianCalendar end, int time, Project project) {
 		this(start, end, "Work");
 		this.activityName = project.getID()+"-"+activityName;
 		this.project = project;
+		this.expectedTime = time;
 	}
 
 	public void addEmployee(Employee e) {
@@ -68,6 +70,16 @@ public class Activity {
 	
 	public void setTime(Employee e, int time) {
 		employees.put(e, time);
+	}
+	
+
+	protected void setExpectedTime(int time) {
+		this.expectedTime = time;
+	}
+	
+
+	public Object getExpectedTime() {
+		return expectedTime;
 	}
 	
 	public boolean isOverlapping(Activity activity) {
@@ -123,4 +135,6 @@ public class Activity {
 			statistics.add("ID: " + e.getID() + " Department: " + e.getDepartment());
 		}
 	}
+
+
 }

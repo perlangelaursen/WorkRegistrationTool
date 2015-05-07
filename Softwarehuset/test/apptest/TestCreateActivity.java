@@ -56,7 +56,7 @@ public class TestCreateActivity {
 		
 		assertEquals(0, company.getProject("Project01").getActivities().size());
 		company.employeeLogin("BAMS", "password");
-		projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end);
+		projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end,3);
 		assertEquals(1, company.getProject("Project01").getActivities().size());
 	}
 
@@ -73,7 +73,7 @@ public class TestCreateActivity {
 		Employee test2 = company.createEmployee("JANU", "password", "RanD");
 		company.employeeLogin("JANU", "password");
 		try {
-			test2.createActivity(company.getProject("Project01"), "TestActivity", start, end);
+			test2.createActivity(company.getProject("Project01"), "TestActivity", start, end,3);
 			fail("OperationNotAllowedException exception should have been thrown");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("Operation is not allowed if not project leader", e.getMessage());
@@ -92,7 +92,7 @@ public class TestCreateActivity {
 		assertEquals(0, company.getProject("Project01").getActivities().size());
 		company.employeeLogin("BAMS", "password");
 		try {
-			projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end);
+			projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end,3);
 			fail("OperationNotAllowedException exception should have been thrown");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("The end date is set before the start date",e.getMessage());
@@ -111,7 +111,7 @@ public class TestCreateActivity {
 		end.set(2016, Calendar.JANUARY, 25);
 		company.employeeLogout();
 		try {
-			projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end);
+			projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end,3);
 			fail("OperationNotAllowedException exception should have been thrown");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("Operation is not allowed if not project leader", e.getMessage());

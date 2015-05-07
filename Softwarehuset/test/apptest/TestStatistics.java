@@ -57,8 +57,8 @@ public class TestStatistics {
 		projectLeader.assignEmployeeProject(test1.getID(), "Project01");
 		projectLeader.assignEmployeeProject(test2.getID(), "Project01");
 		
-		projectLeader.createActivity(company.getProject("Project01"), "AO1", start, end);
-		projectLeader.createActivity(company.getProject("Project01"), "AO2", start, end);
+		projectLeader.createActivity(company.getProject("Project01"), "AO1", start, end,3);
+		projectLeader.createActivity(company.getProject("Project01"), "AO2", start, end,3);
 		
 		a1 = company.getProject("Project01").getActivity(p1.getID()+"-AO1");
 		a2 = company.getProject("Project01").getActivity(p1.getID()+"-AO2");

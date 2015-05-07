@@ -35,7 +35,7 @@ public class TestMakeReport {
 		executive.assignProjectLeader("Test",p1.getID());
 		employee = company.createEmployee("Tess", "password", "RandD");
 		company.employeeLogin(projectLeader.getID(), "password");
-		p1.createActivity("Activity01", start, end, p1);
+		projectLeader.createActivity(p1, "Activity01", start, end, 3);
 		projectLeader.assignEmployeeProject(projectLeader.getID(), p1.getName());
 		projectLeader.assignEmployeeActivity(projectLeader.getID(), p1.getID()+"-Activity01");
 		projectLeader.registerSpentTime(p1.getID()+"-Activity01", 100);
