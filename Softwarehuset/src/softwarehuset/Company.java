@@ -221,7 +221,7 @@ public class Company {
 		}
 	}
 
-	protected void checkDateOrder(GregorianCalendar start, GregorianCalendar end)	throws OperationNotAllowedException {
+	public void checkDateOrder(GregorianCalendar start, GregorianCalendar end)	throws OperationNotAllowedException {
 		if (start.after(end)){
 			throw new OperationNotAllowedException("The end date is set before the start date", "Set project dates");
 		}

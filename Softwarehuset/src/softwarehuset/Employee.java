@@ -89,7 +89,7 @@ public class Employee {
 	//Anna Oelgaard Nielsen - s144437
 	private void checkValidName(Project project, String activityName) throws OperationNotAllowedException {
 		for(Activity a: project.getActivities()){
-			if(a.getName().equals(a.getProject().getID()+"-"+activityName)){
+			if(a.getName().equals(project.getID()+"-"+activityName)){
 				throw new OperationNotAllowedException("The project already has an activity by that name", "Set activity name");
 			}
 		}
@@ -112,6 +112,7 @@ public class Employee {
 	public void relieveEmployeeProject(Employee e, Project project) throws OperationNotAllowedException {
 		checkIfLoggedInProjectLeader(project);
 		project.relieveEmployee(e);
+		e.getProjects().remove(project);
 	}
 
 	//Van Anh Thi Trinh - s144449
@@ -289,11 +290,11 @@ public class Employee {
 		company.checkDateOrder(start, end);
 		Activity act = new Activity(start, end, "work");
 		for (Activity a : activities.keySet()) {
-			if (a.isOverlapping(act)) {
+			if (a.isOverlapping(act)) {				
 				overlaps++; 
 			}
 		}
-		if (overlaps == 20){
+		if (overlaps >= 20){
 			return false;
 		}
 		return true;
