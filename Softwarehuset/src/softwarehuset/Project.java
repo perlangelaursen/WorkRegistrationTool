@@ -1,3 +1,4 @@
+//Anna Oelgaard Nielsen - s144437
 package softwarehuset;
 
 import java.util.ArrayList;
@@ -97,6 +98,7 @@ public class Project {
 		reports.add(report);
 	}
 	
+	//Per Lange Laursen - s144486
 	public void getProjectDetails(List<String> statistics) {
 		statistics.add("Project Name: " + name);
 		statistics.add("Project Leader ID: " + projectLeader.getID() +" Department " + projectLeader.getDepartment());
@@ -105,12 +107,14 @@ public class Project {
 		activitiesInProject(statistics);
 	}
 
+	//Per Lange Laursen - s144486
 	public void assignedEmployeesInProject(List<String> statistics) {
 		for(Employee e : assignedEmployees) {
 			statistics.add("ID: " + e.getID() + " Department: " + e.getDepartment());
 		}
 	}
 
+	//Per Lange Laursen - s144486
 	public void activitiesInProject(List<String> statistics) {
 		statistics.add("No. of activities: "+ activities.size());
 		for(Activity a : activities) {
@@ -119,6 +123,7 @@ public class Project {
 		}
 	}
 
+	//Mathias Enggrob Boon - s144484
 	public Report getReport(String name) throws OperationNotAllowedException {
 		if(com.getLoggedInEmployee() == null){
 			throw new OperationNotAllowedException("Get report is not allowed if not logged in", "Get report"); 

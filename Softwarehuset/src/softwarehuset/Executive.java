@@ -1,3 +1,4 @@
+//Anna Oelgaard Nielsen - s144437
 package softwarehuset;
 
 public class Executive {

@@ -1,4 +1,3 @@
-//To be deleted
 package softwarehuset;
 
 public class Address {

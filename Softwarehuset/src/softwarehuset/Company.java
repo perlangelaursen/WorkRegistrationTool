@@ -1,3 +1,4 @@
+//Van Anh Thi Trinh - s144449
 package softwarehuset;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class Company {
 		this.address = address;
 		dateServer = new DateServer();
 	}
+	
 	protected void setExecutive(Executive executive) {
 		this.executive = executive;
 	}
@@ -55,6 +57,7 @@ public class Company {
 		return p;
 	}
 	
+	//Anna Oelgaard Nielsen - s144437
 	public Employee createEmployee(String id, String password, String department) throws OperationNotAllowedException {
 		if (id.length() != 4) {
 			throw new OperationNotAllowedException("Employee ID must be the length of 4 letters","Create employee");
@@ -113,7 +116,8 @@ public class Company {
 		this.dateServer = dateServer;
 	}
 
-	public List<Employee> getAvailableEmployees(GregorianCalendar start, GregorianCalendar end) {
+	//Anna Oelgaard Nielsen - s144437
+	public List<Employee> getAvailableEmployees(GregorianCalendar start, GregorianCalendar end) throws OperationNotAllowedException {
 		List<Employee> availableEmployees = new ArrayList<>();
 		for (Employee e : employees) {
 			if (e.isAvailable(start,end)) {

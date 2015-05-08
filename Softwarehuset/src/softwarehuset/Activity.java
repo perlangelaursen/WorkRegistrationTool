@@ -1,3 +1,4 @@
+//Per Lange Laursen - s144486
 package softwarehuset;
 
 import java.util.ArrayList;
@@ -82,6 +83,7 @@ public class Activity {
 		return expectedTime;
 	}
 	
+	//Van Anh Thi Trinh - s144449
 	public boolean isOverlapping(Activity activity) {
 		return (activity.getStart().after(start) && activity.getEnd().before(end)||
 				activity.getStart().before(start) && activity.getEnd().after(end)||

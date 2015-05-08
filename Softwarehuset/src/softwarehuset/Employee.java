@@ -51,6 +51,7 @@ public class Employee {
 		activities.put(a, 0);
 	}
 	
+	//Per Lange Laursen - s144486
 	public void assignEmployeeProject(String employee, String project) throws OperationNotAllowedException {
 		Employee e = company.getEmployee(employee);
 		Project p = company.getProject(project);
@@ -61,6 +62,7 @@ public class Employee {
 		}
 	}
 	
+	//Per Lange Laursen - s144486
 	public void assignEmployeeActivity(String employee, String activity) throws OperationNotAllowedException {
 		Activity a = getActivity(activity);
 		Employee e = company.getEmployee(employee);
@@ -71,7 +73,8 @@ public class Employee {
 		e.addActivity(a);
 		e.addProject(p);
 	}
-
+	
+	//Per Lange Laursen - s144486
 	public Activity createActivity(Project project, String activityName, GregorianCalendar start, GregorianCalendar end, int time) throws OperationNotAllowedException {
 		checkIfLoggedInProjectLeader(project);
 		company.checkDateOrder(start, end);
@@ -83,6 +86,7 @@ public class Employee {
 		return a;
 	}
 	
+	//Anna Oelgaard Nielsen - s144437
 	private void checkValidName(Project project, String activityName) throws OperationNotAllowedException {
 		for(Activity a: project.getActivities()){
 			if(a.getName().equals(a.getProject().getID()+"-"+activityName)){
@@ -91,6 +95,7 @@ public class Employee {
 		}
 	}
 
+	//Per Lange Laursen - s144486
 	private Activity getActivity(String activity) throws OperationNotAllowedException {
 		Activity a = null;
 		for (Project p: company.getProjects()){
@@ -102,12 +107,14 @@ public class Employee {
 		}
 		return a;
 	}
-
+	
+	//Per Lange Laursen - s144486
 	public void relieveEmployeeProject(Employee e, Project project) throws OperationNotAllowedException {
 		checkIfLoggedInProjectLeader(project);
 		project.relieveEmployee(e);
 	}
 
+	//Van Anh Thi Trinh - s144449
 	public void registerSpentTime(String activity, int time) throws OperationNotAllowedException {
 		Activity a = getActivity(activity);
 		if(company.getLoggedInEmployee() != this){
@@ -125,7 +132,7 @@ public class Employee {
 		a.setTime(this, newTime);
 	}
 
-	
+	//Mathias Enggrob Boon - s144484
 	public Object viewProgress(String p, String a) throws OperationNotAllowedException {
 		Project project = company.getProject(p);
 		Activity activity = company.getProject(p).getActivity(a);
@@ -133,18 +140,14 @@ public class Employee {
 		return activity.getAllSpentTime();
 	}
 	
+	//Mathias Enggrob Boon - s144484
 	public int viewProgress(String p) throws OperationNotAllowedException {
 		Project project = company.getProject(p);
 		checkIfLoggedInProjectLeader(project);
 		return project.getTotalSpentTime();
 	}
-
-	public List<String> getStatisticsProject(Project project) throws OperationNotAllowedException {
-		checkIfLoggedInProjectLeader(project);
-		List<String> statistics = new ArrayList<String>();
-		project.getProjectDetails(statistics);
-		return statistics;
-	}
+	
+	//Mathias Enggrob Boon - s144484
 	public void writeReport(Project project, String name, int year, int month, int date) throws OperationNotAllowedException{
 		checkIfLoggedInProjectLeader(project);
 		company.checkForInvalidDate(year, month-1, date);
@@ -154,6 +157,15 @@ public class Employee {
 		project.addReport(report);
 	}
 	
+	//Per Lange Laursen - s144486
+	public List<String> getStatisticsProject(Project project) throws OperationNotAllowedException {
+		checkIfLoggedInProjectLeader(project);
+		List<String> statistics = new ArrayList<String>();
+		project.getProjectDetails(statistics);
+		return statistics;
+	}
+	
+	//Van Anh Thi Trinh - s144449
 	public void registerVacationTime(int year, int month, int date, int year2, int month2, int date2) throws OperationNotAllowedException {
 		company.checkForInvalidDate(year, month-1, date);
 		company.checkForInvalidDate(year2, month2-1, date2);
@@ -167,6 +179,7 @@ public class Employee {
 		calendar.put(vacation, "Vacation");
 	}
 
+	//Van Anh Thi Trinh - s144449
 	public void registerSickTime(int year, int month, int date, int year2, int month2, int date2) throws OperationNotAllowedException {
 		company.checkForInvalidDate(year, month-1, date);
 		company.checkForInvalidDate(year2, month2-1, date2);
@@ -180,6 +193,7 @@ public class Employee {
 		calendar.put(sick, "Sick");
 	}
 	
+	//Van Anh Thi Trinh - s144449
 	public void registerCourseTime(int year, int month, int date, int year2, int month2, int date2) throws OperationNotAllowedException {
 		company.checkForInvalidDate(year, month-1, date);
 		company.checkForInvalidDate(year2, month2-1, date2);
@@ -193,11 +207,13 @@ public class Employee {
 		calendar.put(course, "Course");
 	}
 
+	//Van Anh Thi Trinh - s144449
 	private void addActivityToCalendar(Activity a) {
 		ArrayList<Activity> removes = getOverlappingActivities(a);
 		reAddOverlappingActivities(a, removes);
 	}
 
+	//Van Anh Thi Trinh - s144449
 	private void reAddOverlappingActivities(Activity a,ArrayList<Activity> removes) {
 		for(Activity activity: removes){
 			calendar.remove(activity);
@@ -205,6 +221,7 @@ public class Employee {
 		}
 	}
 
+	//Van Anh Thi Trinh - s144449
 	private ArrayList<Activity> getOverlappingActivities(Activity a) {
 		ArrayList<Activity> removes = new ArrayList<>();
 		for(Activity activity: calendar.keySet()){
@@ -215,6 +232,7 @@ public class Employee {
 		return removes;
 	}
 
+	//Van Anh Thi Trinh - s144449
 	public Activity createPersonalActivity(int year, int month, int date, int year2, int month2, int date2, String type)throws OperationNotAllowedException {
 		GregorianCalendar start = new GregorianCalendar();
 		GregorianCalendar end = new GregorianCalendar();
@@ -224,7 +242,8 @@ public class Employee {
 		Activity activity = new Activity(start, end, type);
 		return activity;
 	}
-
+	
+	//Van Anh Thi Trinh - s144449
 	public void addNewActivity(Activity newActivity, Activity oldActivity) {
 		GregorianCalendar newStart = new GregorianCalendar();
 		GregorianCalendar newEnd = new GregorianCalendar();
@@ -253,6 +272,7 @@ public class Employee {
 		}
 	}
 	
+	//Van Anh Thi Trinh - s144449
 	public int getTimeForPersonalActivity(String type) {
 		int time = 0;
 		for(Activity activity: calendar.keySet()){
@@ -263,8 +283,10 @@ public class Employee {
 		return time;
 	}
 
-	public boolean isAvailable(GregorianCalendar start, GregorianCalendar end) {
+	//Anna Oelgaard Nielsen - s144437
+	public boolean isAvailable(GregorianCalendar start, GregorianCalendar end) throws OperationNotAllowedException {
 		int overlaps = 0;
+		company.checkDateOrder(start, end);
 		Activity act = new Activity(start, end, "work");
 		for (Activity a : activities.keySet()) {
 			if (a.isOverlapping(act)) {
@@ -277,6 +299,7 @@ public class Employee {
 		return true;
 	}
 	
+	//Per Lange Laursen - s144486
 	public void requestAssistance(Employee selected, Activity specificActivity) throws OperationNotAllowedException {
 		if(company.getLoggedInEmployee() != this){
 			throw new OperationNotAllowedException("User not logged in", "Need For Assistance");
@@ -287,6 +310,7 @@ public class Employee {
 		specificActivity.assignAssistingEmployee(selected);
 	}
 
+	//Per Lange Laursen - s144486
 	public void removeAssistingEmployee(Employee selected, Activity a) throws OperationNotAllowedException {
 		if(company.getLoggedInEmployee() == this) {
 			a.removeAssistingEmployee(selected);
@@ -295,6 +319,7 @@ public class Employee {
 		}
 	}
 
+	//Van Anh Thi Trinh - s144449
 	public int getSpentTime(String activityName) throws OperationNotAllowedException {
 		int time = -1;
 		for(Activity a: activities.keySet()){
@@ -308,6 +333,7 @@ public class Employee {
 		return time;
 		}
 
+	//Mathias Enggrob Boon - s144484
 	public void editReport(Report report, String content) throws OperationNotAllowedException {
 		if(report==null){
 			throw new OperationNotAllowedException("Report does not exist", "Edit report");
@@ -317,6 +343,7 @@ public class Employee {
 	}
 	
 
+	//Anna Oelgaard Nielsen - s144437
 	public void changeActivityStart(String activity, GregorianCalendar start) throws OperationNotAllowedException {
 		Activity a = getActivity(activity);
 		checkIfLoggedInProjectLeader(a.getProject());
@@ -325,6 +352,7 @@ public class Employee {
 		a.setStart(start);
 	}
 
+	//Anna Oelgaard Nielsen - s144437
 	public void changeActivityEnd(String activity, GregorianCalendar end) throws OperationNotAllowedException {
 		Activity a = getActivity(activity);
 		checkIfLoggedInProjectLeader(a.getProject());
@@ -332,6 +360,7 @@ public class Employee {
 		a.setEnd(end);
 	}
 	
+	//Van Anh Thi Trinh - s144449
 	public void changeActivityExpectedTime(String activity, int time) throws OperationNotAllowedException {
 		Activity a = getActivity(activity);
 		checkIfLoggedInProjectLeader(a.getProject());
@@ -345,6 +374,7 @@ public class Employee {
 		}
 	}
 
+	//Per Lange Laursen - s144486
 	public void changeProjectStart(String project, GregorianCalendar start) throws OperationNotAllowedException {
 		Project p = company.getProject(project);
 		checkIfLoggedInProjectLeader(p);
@@ -354,6 +384,7 @@ public class Employee {
 		
 	}
 
+	//Per Lange Laursen - s144486
 	public void changeProjectEnd(String project, GregorianCalendar end) throws OperationNotAllowedException {
 		Project p = company.getProject(project);
 		checkIfLoggedInProjectLeader(p);
@@ -361,6 +392,7 @@ public class Employee {
 		p.setEnd(end);
 	}
 	
+	//Van Anh Thi Trinh - s144449
 	private void checkIfLoggedInProjectLeader(Project project) throws OperationNotAllowedException {
 		if(company.executiveIsLoggedIn()){
 			return;
@@ -373,12 +405,14 @@ public class Employee {
 		}
 	}
 
+	//Van Anh Thi Trinh - s144449
 	public void changeActivityName(Activity a, String name) throws OperationNotAllowedException {
 		checkIfLoggedInProjectLeader(a.getProject());
 		checkValidName(a.getProject(), name);
 		a.setName(name);
 	}
 
+	//Van Anh Thi Trinh - s144449
 	public void changeProjectName(Project project, String name) throws OperationNotAllowedException {
 		checkIfLoggedInProjectLeader(project);
 		company.checkIfValidProjectName(name);
