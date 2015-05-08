@@ -648,35 +648,73 @@ public class WRTcmdinterface {
 	
 	private int getSpecificStartDate() throws NumberFormatException, IOException{
 		System.out.print("Enter start date: ");
-		int date = Integer.parseInt(input.readLine());
+		String inputString = input.readLine();
+		while (!inputString.matches("[0-9]+")) {
+			System.out.println("Date must be a number");
+			System.out.print("Enter start date: ");
+			inputString = input.readLine();
+		}
+		int date = Integer.parseInt(inputString);
 		return date;
 	}
+	
 	private int getSpecificStartMonth() throws NumberFormatException, IOException{
 		System.out.print("Enter start month: ");
-		int month = Integer.parseInt(input.readLine());
+		String inputString = input.readLine();
+		while (!inputString.matches("[0-9]+")) {
+			System.out.println("Month must be a number");
+			System.out.print("Enter start month: ");
+			inputString = input.readLine();
+		}
+		int month = Integer.parseInt(inputString);
 		return month;
 	}
+	
 	private int getSpecificStartYear() throws NumberFormatException, IOException{
 		System.out.print("Enter start year: ");
-		int year = Integer.parseInt(input.readLine());
+		String inputString = input.readLine();
+		while (!inputString.matches("[0-9]+")) {
+			System.out.println("Year must be a number");
+			System.out.print("Enter start year: ");
+			inputString = input.readLine();
+		}
+		int year = Integer.parseInt(inputString);
 		return year;
 	}	 
 
 	private int getSpecificEndDate() throws NumberFormatException, IOException{
 		System.out.print("Enter end date: ");
-		int date = Integer.parseInt(input.readLine());
+		String inputString = input.readLine();
+		while (!inputString.matches("[0-9]+")) {
+			System.out.println("Date must be a number");
+			System.out.print("Enter end date: ");
+			inputString = input.readLine();
+		}
+		int date = Integer.parseInt(inputString);
 		return date;
 	}
 
 	private int getSpecificEndMonth() throws NumberFormatException, IOException{
 		System.out.print("Enter end month: ");
-		int month = Integer.parseInt(input.readLine());
+		String inputString = input.readLine();
+		while (!inputString.matches("[0-9]+")) {
+			System.out.println("Month must be a number");
+			System.out.print("Enter end month: ");
+			inputString = input.readLine();
+		}
+		int month = Integer.parseInt(inputString);
 		return month;
 	}
 
 	private int getSpecificEndYear() throws NumberFormatException, IOException{
 		System.out.print("Enter end year: ");
-		int year = Integer.parseInt(input.readLine());
+		String inputString = input.readLine();
+		while (!inputString.matches("[0-9]+")) {
+			System.out.println("Year must be a number");
+			System.out.print("Enter end year: ");
+			inputString = input.readLine();
+		}
+		int year = Integer.parseInt(inputString);
 		return year;
 	}
 	
