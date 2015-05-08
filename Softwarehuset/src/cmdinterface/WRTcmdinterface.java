@@ -208,7 +208,7 @@ public class WRTcmdinterface {
 		
 		System.out.println("- Register spent time");
 		System.out.println("- See registered spent time");
-		System.out.println("- Register vacation, sick-days and course attendance"+"\n");
+		System.out.println("- Register other activites"+"\n");
 		
 		System.out.println("- Ask colleague for assistance");
 		System.out.println("- Remove assisting colleague"+"\n");
@@ -225,7 +225,7 @@ public class WRTcmdinterface {
 			askColleagueForAssistance();
 		} else if (userChoice.toLowerCase().equals("remove assisting colleague")) {
 			removeAssistingColleague();
-		} else if (userChoice.toLowerCase().equals("register vacation, sick-days and course attendance")) {
+		} else if (userChoice.toLowerCase().equals("register other activites")) {
 			registerVSC();
 		} else if (userChoice.toLowerCase().equals("see registered spent time")) {
 			registeredSpentTime();
@@ -610,7 +610,6 @@ public class WRTcmdinterface {
 			company.getLoggedInEmployee().registerVacationTime(startYear,
 					startMonth, startDate, endYear, endMonth, endDate);
 		}
-<<<<<<< Updated upstream
 		employeeScreen();
 	}
 	
@@ -684,20 +683,6 @@ public class WRTcmdinterface {
 		}
 		int year = Integer.parseInt(inputString);
 		return year;
-=======
-
-		if (type.toLowerCase().equals("sick")) {
-			company.getLoggedInEmployee().registerSickTime(startYear,
-					startMonth, startDate, endYear, endMonth, endDate);
-		}
-
-		if (type.toLowerCase().equals("course")) {
-			company.getLoggedInEmployee().registerCourseTime(startYear,
-					startMonth, startDate, endYear, endMonth, endDate);
-		}
-
-		employeeScreen();
->>>>>>> Stashed changes
 	}
 
 	private void registerSpentTime() throws IOException, OperationNotAllowedException {
