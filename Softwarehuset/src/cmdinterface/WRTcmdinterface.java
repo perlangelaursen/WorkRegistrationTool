@@ -71,6 +71,7 @@ public class WRTcmdinterface {
 		System.out.println("- Add Employee (Company Database)");
 		System.out.println("- Create Project");
 		System.out.println("- Assign Project Leader");
+		System.out.println("- Change Password");
 		System.out.println("- Log out");
 		System.out.println("- Shut down the system");
 		System.out.println();
@@ -82,6 +83,8 @@ public class WRTcmdinterface {
 			createProject();
 		} else if (commands[0].toLowerCase().equals("assign")&& commands[1].toLowerCase().equals("project")	&& commands[2].toLowerCase().equals("leader")) {
 			assignProjectLeader();
+		} else if (commands[0].toLowerCase().equals("change") && commands[1].toLowerCase().equals("password")) {
+			changeExecutivePassword();
 		} else if (commands[0].toLowerCase().equals("log")	&& commands[1].toLowerCase().equals("out")) {
 			company.employeeLogout();
 			initialScreen();
@@ -93,6 +96,28 @@ public class WRTcmdinterface {
 			executiveScreen();
 		}
 
+	}
+
+	private void changeExecutivePassword() throws IOException,OperationNotAllowedException {
+		boolean isRunning = true;
+		while(isRunning) {
+			System.out.print("Enter Current Password: ");
+			String password = input.readLine();
+			if(password.equals(executive.getPassword())) {
+				try {
+					System.out.print("Enter new password: ");
+					String newPassword = input.readLine();
+					executive.changePassword(newPassword);
+					System.out.println("Password changed");
+					isRunning = false;
+				} catch (Exception e) {
+					System.out.println("" + e.getMessage());
+					System.out.println("Password could not be changed");
+					System.out.println();
+				}
+			}
+		}
+		executiveScreen();
 	}
 
 	private void assignProjectLeader() throws IOException,OperationNotAllowedException {
@@ -220,6 +245,8 @@ public class WRTcmdinterface {
 		System.out.println("- Ask colleague for assistance");
 		System.out.println("- Remove assisting colleague"+"\n");
 		
+		System.out.println("- Change Password" + "\n");
+		
 		System.out.println("- Manage projects (for project leader)"+"\n");
 		System.out.println();
 		System.out.println("Log out");
@@ -234,6 +261,8 @@ public class WRTcmdinterface {
 			removeAssistingColleague();
 		} else if (userChoice.toLowerCase().equals("register other activites")) {
 			registerVSC();
+		} else if (userChoice.toLowerCase().equals("change password")) {
+			changeEmployeePassword();
 		} else if (userChoice.toLowerCase().equals("see registered spent time")) {
 			registeredSpentTime();
 		} else if (userChoice.toLowerCase().equals("manage projects")) {
@@ -249,6 +278,29 @@ public class WRTcmdinterface {
 			System.out.println("Incorrect command. Try Again.\n");
 			employeeScreen();
 		}
+	}
+
+	private void changeEmployeePassword() throws IOException, OperationNotAllowedException {
+		// TODO Auto-generated method stub
+		boolean isRunning = true;
+		while(isRunning) {
+			System.out.print("Enter Current Password: ");
+			String password = input.readLine();
+			if(password.equals(company.getLoggedInEmployee().getPassword())) {
+				try {
+					System.out.print("Enter new password: ");
+					String newPassword = input.readLine();
+					company.getLoggedInEmployee().changePassword(newPassword);
+					System.out.println("Password changed");
+					isRunning = false;
+				} catch (Exception e) {
+					System.out.println("" + e.getMessage());
+					System.out.println("Password could not be changed");
+					System.out.println();
+				}
+			}
+		}
+		employeeScreen();
 	}
 
 	private void manageProject() throws IOException, OperationNotAllowedException {

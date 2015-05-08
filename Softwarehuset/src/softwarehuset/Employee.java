@@ -419,4 +419,13 @@ public class Employee {
 		company.checkIfValidProjectName(name);
 		project.setName(name);
 	}
+
+	// Per Lange Laursen - s144456
+	public void changePassword(String password) throws OperationNotAllowedException {
+		if(company.getLoggedInEmployee() == this) {
+			this.password = password;
+		} else {
+			throw new OperationNotAllowedException("Employee Not Logged In", "Employee Change Password");
+		}
+	}
 }

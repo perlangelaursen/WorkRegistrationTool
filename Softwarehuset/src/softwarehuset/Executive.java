@@ -26,4 +26,12 @@ public class Executive {
 		e.assignEmployeeProject(employee, company.getProject(project).getName());
 		p.assignProjectLeader(e);
 	}
+
+	// Per Lange Laursen - s144456
+	public void changePassword(String password) throws OperationNotAllowedException {
+		if(!company.executiveIsLoggedIn()) {
+			throw new OperationNotAllowedException("Executive Not Logged In", "Executive Change Password");
+		}
+		this.password = password;
+	}
 }
