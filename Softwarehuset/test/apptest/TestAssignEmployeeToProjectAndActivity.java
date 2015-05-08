@@ -39,13 +39,15 @@ public class TestAssignEmployeeToProjectAndActivity {
 		company.executiveLogin("password");
 		assertTrue(company.executiveIsLoggedIn());
 
+		//Project Creation
 		GregorianCalendar start = new GregorianCalendar();
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(2016, Calendar.JANUARY, 23);
 		end.set(2016, Calendar.FEBRUARY, 23);
 		p1 = company.createProject("Project01", start, end);
 		p2 = company.createProject("Project02");
-
+		
+		//ProjectLeader is created and assigned
 		projectLeader = company.createEmployee("ABCD", "password",
 				"Department1");
 
@@ -56,6 +58,7 @@ public class TestAssignEmployeeToProjectAndActivity {
 	@Test
 	public void testAssignEmployeeProject() throws OperationNotAllowedException {
 
+		//Testing employee creation according to specifications
 		try {
 			company.createEmployee("Anders", "password", "department");
 			fail("OperationNotAllowedException exception should have been thrown");
@@ -74,6 +77,7 @@ public class TestAssignEmployeeToProjectAndActivity {
 			assertEquals("Create employee", e.getOperation());
 		}
 
+		//Employee login
 		company.employeeLogin("ABCD", "password");
 		Employee test3 = company.createEmployee("ANDS", "password",
 				"department");
@@ -104,6 +108,7 @@ public class TestAssignEmployeeToProjectAndActivity {
 
 		company.employeeLogout();
 		
+		//Trying to assign employee without being logged in
 		try {
 			test2.assignEmployeeProject(test1.getID(), p1.getName());
 			fail("OperationNotAllowedException exception should have been thrown");
@@ -119,6 +124,7 @@ public class TestAssignEmployeeToProjectAndActivity {
 		Employee test2 = company.createEmployee("KKKK", "password",
 				"Department1");
 		company.employeeLogin("KKKK", "password");
+		//Trying to assign employee without being project leader
 		try {
 			test2.assignEmployeeProject(test1.getID(), p1.getName());
 			fail("OperationNotAllowedException exception should have been thrown");
@@ -156,6 +162,7 @@ public class TestAssignEmployeeToProjectAndActivity {
 
 		company.employeeLogout();
 
+		//Trying to assign employee without being logged in
 		try {
 			Activity a = p1.getActivity(p1.getID() + "-TestActivity");
 			projectLeader.assignEmployeeActivity(test1.getID(), a.getName());
@@ -181,6 +188,7 @@ public class TestAssignEmployeeToProjectAndActivity {
 		Employee test2 = company.createEmployee("KKKK", "password",
 				"Department1");
 		company.employeeLogin("KKKK", "password");
+		// Not Project leader
 		try {
 			Activity a = p1.getActivity(p1.getID() + "-TestActivity");
 			test2.assignEmployeeActivity(test1.getID(), a.getName());

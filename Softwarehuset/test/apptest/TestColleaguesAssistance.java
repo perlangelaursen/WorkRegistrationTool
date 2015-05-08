@@ -67,7 +67,7 @@ public class TestColleaguesAssistance {
 	}
 	
 	@Test
-	public void testEmployeeNotLoggedIn() throws OperationNotAllowedException {
+	public void testEmployeeNotLoggedInAskColleague() throws OperationNotAllowedException {
 		company.employeeLogin(projectLeader.getID(), "password");
 		Employee asker = company.createEmployee("HABC", "password", "RandD");
 		Employee selected = company.createEmployee("SJKO", "password", "RandD");
