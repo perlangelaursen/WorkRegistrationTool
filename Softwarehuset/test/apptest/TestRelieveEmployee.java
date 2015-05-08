@@ -34,13 +34,15 @@ public class TestRelieveEmployee {
 		company.executiveLogin("password");
 		assertTrue(company.executiveIsLoggedIn());
 				
+		// Project creation
 		GregorianCalendar start = new GregorianCalendar();
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(2016, Calendar.JANUARY, 23);
 		end.set(2016, Calendar.FEBRUARY, 23);
 		Project p1 = company.createProject("Project01", start, end);
 		Project p2 = company.createProject("Project02");
-				
+			
+		// Project Leader assigned and an employee is added
 		projectLeader = company.createEmployee("BENR", "password", "RandD");
 				
 		executive.assignProjectLeader("BENR",p1.getID());

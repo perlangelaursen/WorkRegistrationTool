@@ -40,6 +40,7 @@ public class TestCreateActivity {
 		Project p1 = company.createProject("Project01", start, end);
 		Project p2 = company.createProject("Project02");
 		
+		// Project Leader assigned
 		projectLeader = company.createEmployee("BAMS", "password", "RanD");
 		
 		executive.assignProjectLeader("BAMS",p1.getID());

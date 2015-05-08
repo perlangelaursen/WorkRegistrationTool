@@ -12,10 +12,10 @@ import softwarehuset.*;
 public class TestAssignEmployeeToProjectAndActivity {
 	/**
 	 * Tests the scenario where a project or activity is created then a
-	 * projectleader or activityleader is assigned.
+	 * projectleader is assigned.
 	 * <ol>
-	 * <li>Projectleader is assigned and a employee is added to a project
-	 * <li>Activityleader is assigned and a employee is added to a activity
+	 * <li>Projectleader is assigned and an employee is added to a project
+	 * <li>Projectleader is assigned and an employee is added to a activity
 	 * </ol>
 	 * 
 	 * @throws OperationNotAllowedException
@@ -136,16 +136,17 @@ public class TestAssignEmployeeToProjectAndActivity {
 	}
 
 	@Test
-	public void testAssignEmployeeActivity()
-			throws OperationNotAllowedException {
+	public void testAssignEmployeeActivity() throws OperationNotAllowedException {
 		GregorianCalendar start = new GregorianCalendar();
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(2016, Calendar.JANUARY, 23);
 		end.set(2016, Calendar.JANUARY, 25);
 
+		// Creates an activity
 		company.employeeLogin(projectLeader.getID(), "password");
 		projectLeader.createActivity(company.getProject("Project01"),"TestActivity", start, end,3);
-
+		
+		// Employee assigned to activity
 		Activity a = p1.getActivity(p1.getID() + "-TestActivity");
 		projectLeader.assignEmployeeActivity(test1.getID(), a.getName());
 	}
@@ -175,8 +176,7 @@ public class TestAssignEmployeeToProjectAndActivity {
 	}
 
 	@Test
-	public void testNotProjectLeaderActivity()
-			throws OperationNotAllowedException {
+	public void testNotProjectLeaderActivity() throws OperationNotAllowedException {
 		GregorianCalendar start = new GregorianCalendar();
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(2016, Calendar.JANUARY, 23);
@@ -188,7 +188,7 @@ public class TestAssignEmployeeToProjectAndActivity {
 		Employee test2 = company.createEmployee("KKKK", "password",
 				"Department1");
 		company.employeeLogin("KKKK", "password");
-		// Not Project leader
+		// Not Project leader for project
 		try {
 			Activity a = p1.getActivity(p1.getID() + "-TestActivity");
 			test2.assignEmployeeActivity(test1.getID(), a.getName());

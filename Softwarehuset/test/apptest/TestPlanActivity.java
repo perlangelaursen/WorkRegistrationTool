@@ -34,7 +34,8 @@ public class TestPlanActivity {
 		assertFalse(company.executiveIsLoggedIn());
 		company.executiveLogin("password");
 		assertTrue(company.executiveIsLoggedIn());
-				
+			
+		// Project created and project leader assigned
 		GregorianCalendar start = new GregorianCalendar();
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(2016, Calendar.JANUARY, 23);
