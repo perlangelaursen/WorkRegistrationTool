@@ -1,0 +1,43 @@
+Software Engineering 02161 - May 11, 2015			
+Group 25
+Anna Ølgaard Nielsen (s144437)
+Mathias Enggrob Boon (s144484)
+Per Lange Laursen (s144456)
+Van Anh Thi Trinh (s144449)
+______________________________________
+
+//////USER INTERFACE: WRTcmdinterface
+1. Login as executive by writing "Login [password]"
+2. Login as an employee by writing "Login [ID] [password]"
+
+
+//////PRE-DEFINED EXECUTIVE:
+Password: password
+
+
+/////PRE-DEFINED EMPLOYEES
+ID: PRLR 
+Password: password
+- Is project leader of Project 3 (150001)
+
+ID: AKMU 
+Password: password
+- Is assigned to Project 3's activity 
+150001-Testing, 150001-activity1...150001-activity20
+
+
+/////PRE-MADE PROJECTS:
+- 150001 Project 3 (project leader: PRLR)
+	Activities: 150001-Testing, 150001-activity1...150001-activity20
+
+- 150002 Project 4 (no project leader)
+	Activities: none
+
+
+//////NOTES:
+- Interact with the system by writing the appropriate command specified on the screen
+	E.g.: type "register spent time" to register spent time
+- To access the project leader menu, type "manage projects" in the employee menu
+- When asked for a project ID, it is possile to write either the ID (e.g. 150001), or the name (e.g. Project 3)
+- Note that the activity name (e.g. Testing) and the activity ID (e.g. 150001-Testing) is not the same
+- Project names and activity names are case-sensitive
