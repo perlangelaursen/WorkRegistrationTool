@@ -12,7 +12,7 @@ public class TestGetAvailableEmployees {
 	private Address address;
 	private Company company;
 	private Executive executive;
-	private GregorianCalendar date1, date2, date3, date4, date5, date6;
+	private GregorianCalendar date1, date2, date3, date4, date5, date6, date7;
 	private Employee employee1, employee2, employee3, employee4;
 	private Project project;
 	
