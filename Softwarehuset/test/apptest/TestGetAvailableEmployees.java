@@ -1,4 +1,4 @@
-//Anna Ølgaard Nielsen - s144437
+//Anna Oelgaard Nielsen - s144437
 
 package apptest;
 
@@ -9,111 +9,125 @@ import org.junit.Test;
 import softwarehuset.*;
 
 public class TestGetAvailableEmployees {
-	private Address add;
-	private Company com;
-	private Executive ex;
-	private GregorianCalendar d1, d2, d3, d4, d5, d6, d7;
-	private Employee em, em2, em3, em4;
-	private Project p1;
+	private Address address;
+	private Company company;
+	private Executive executive;
+	private GregorianCalendar date1, date2, date3, date4, date5, date6;
+	private Employee employee1, employee2, employee3, employee4;
+	private Project project;
 	
 	@Before
 	public void setUp() throws OperationNotAllowedException {
-		add = new Address("City", "Street", 1);
-		com = new Company("SoftwareHuset", add);
-		ex = new Executive("name","Department1", com, "password");
-		em = com.createEmployee("ANDS", "password", "Project Department");
-		em2 = com.createEmployee("HENR", "password", "Project Department");
-		em3 = com.createEmployee("KLIS", "password", "Project Department");
-		em4 = com.createEmployee("HSNF", "password", "Project Department");
+		address = new Address("City", "Street", 1);
+		company = new Company("SoftwareHuset", address);
+		executive = new Executive("name","Department1", company, "password");
+		employee1 = company.createEmployee("ANDS", "password", "Project Department");
+		employee2 = company.createEmployee("HENR", "password", "Project Department");
+		employee3 = company.createEmployee("KLIS", "password", "Project Department");
+		employee4 = company.createEmployee("HSNF", "password", "Project Department");
 		
-		d1 = new GregorianCalendar();
-		d2 = new GregorianCalendar();
-		d3 = new GregorianCalendar();
-		d4 = new GregorianCalendar();
-		d5 = new GregorianCalendar();
-		d6 = new GregorianCalendar();
-		d7 = new GregorianCalendar();
+		date1 = new GregorianCalendar();
+		date2 = new GregorianCalendar();
+		date3 = new GregorianCalendar();
+		date4 = new GregorianCalendar();
+		date5 = new GregorianCalendar();
+		date6 = new GregorianCalendar();
 		
-		com.executiveLogin(ex.getPassword());
-		p1 = com.createProject("p1");
+		company.executiveLogin(executive.getPassword());
+		project = company.createProject("Project 1");
 
-		com.employeeLogin(em.getID(),em.getPassword());
-		
+		//company.employeeLogin(employee1.getID(),employee1.getPassword());
+		company.employeeLogout();
 	}
 	
 	@Test
 	public void testAvaiableEmployeesOnePerson() throws OperationNotAllowedException {
-		com.executiveLogin("password");
-		ex.assignProjectLeader("ANDS", p1.getID());
-		assertEquals(p1.getProjectLeader(), em);
+		//Executive assigns employee1 as project leader
+		company.executiveLogin("password");
+		executive.assignProjectLeader("ANDS", project.getID());
+		assertEquals(project.getProjectLeader(), employee1);
 		
-		d1.set(2016, 3, 1);
-		d2.set(2016, 4, 1);
-		d3.set(2016, 5, 1);
-		d4.set(2016, 6, 1);
+		//dates initializes
+		date1.set(2016, 3, 1);
+		date2.set(2016, 4, 1);
+		date3.set(2016, 5, 1);
+		date4.set(2016, 6, 1);
 		
-		em.createActivity(p1, "activity1", d1, d2, 3);
-		em.createActivity(p1, "activity2", d3, d4,3);
-		em.assignEmployeeActivity(em2.getID(), p1.getID() + "-activity1");
-		em.assignEmployeeActivity(em2.getID(), p1.getID() + "-activity2");
+		//employee 1 and 2 assigns on different activities in Project 1
+		company.employeeLogin(employee1.getID(), employee1.getPassword());
+		employee1.createActivity(project, "activity1", date1, date2, 3);
+		employee1.createActivity(project, "activity2", date3, date4, 3);
+		employee1.assignEmployeeActivity(employee2.getID(), project.getID() + "-activity1");
+		employee1.assignEmployeeActivity(employee2.getID(), project.getID() + "-activity2");
 		
-		d5.set(2000, 1, 1);
-		d6.set(2000, 2, 1);
+		//time span for check initializes
+		date5.set(2000, 1, 1);
+		date6.set(2000, 2, 1);
 		
-		assertTrue(com.getAvailableEmployees(d5, d6).contains(em2));
-		
+		//Check if employee 2 is available in time span
+		assertTrue(company.getAvailableEmployees(date5, date6).contains(employee2));
 		
 	}
 	
 	@Test
 	public void testAvailableEmployeesThreePersons() throws OperationNotAllowedException {
-		com.executiveLogin("password");
-		ex.assignProjectLeader("ANDS", p1.getID());
-		assertEquals(p1.getProjectLeader(), em);
+		//Executive assigns employee1 as project leader
+		company.executiveLogin("password");
+		executive.assignProjectLeader(employee1.getID(), project.getID());
+		assertEquals(project.getProjectLeader(), employee1);
 		
-		d1.set(2016, 3, 1);
-		d2.set(2016, 4, 1);
-		d3.set(2016, 5, 1);
-		d4.set(2016, 6, 1);
-		em.createActivity(p1, "activity1", d1, d2,3);
-		em.createActivity(p1, "activity2", d3, d4,3);
-		em.assignEmployeeActivity(em2.getID(), p1.getID() + "-activity1");
-		em.assignEmployeeActivity(em3.getID(), p1.getID() + "-activity2");
-		em.assignEmployeeActivity(em4.getID(), p1.getID() + "-activity2");
+		//dates initializes
+		date1.set(2016, 3, 1);
+		date2.set(2016, 4, 1);
+		date3.set(2016, 5, 1);
+		date4.set(2016, 6, 1);
 		
-		d5.set(2000, 1, 1);
-		d6.set(2000, 2, 1);
+		//project leader creates two activities and assigns employees
+		employee1.createActivity(project, "activity1", date1, date2,3);
+		employee1.createActivity(project, "activity2", date3, date4,3);
+		employee1.assignEmployeeActivity(employee2.getID(), project.getID() + "-activity1");
+		employee1.assignEmployeeActivity(employee3.getID(), project.getID() + "-activity2");
+		employee1.assignEmployeeActivity(employee4.getID(), project.getID() + "-activity2");
 		
-		assertTrue(com.getAvailableEmployees(d5, d6).contains(em2));
-		assertTrue(com.getAvailableEmployees(d5, d7).contains(em2));
-		assertTrue(com.getAvailableEmployees(d5, d6).contains(em4));
+		date5.set(2000, 1, 1);
+		date6.set(2000, 2, 1);
+		
+		//Check if all employees is available in a time span before activities
+		assertTrue(company.getAvailableEmployees(date5, date6).contains(employee2));
+		assertTrue(company.getAvailableEmployees(date5, date6).contains(employee3));
+		assertTrue(company.getAvailableEmployees(date5, date6).contains(employee4));
 	}
 	
 	@Test
 	public void testAvailableEmployeesOverlap() throws OperationNotAllowedException {
-		com.executiveLogin("password");
-		ex.assignProjectLeader("ANDS", p1.getID());
-		assertEquals(p1.getProjectLeader(), em);
+		//Executive assigns employee1 as project leader
+		company.executiveLogin("password");
+		executive.assignProjectLeader("ANDS", project.getID());
+		assertEquals(project.getProjectLeader(), employee1);
 		
-		d1.set(2016, 3, 1);
-		d2.set(2016, 4, 1);
-		d3.set(2016, 5, 1);
-		d4.set(2016, 6, 1);
+		//dates initializes
+		date1.set(2016, 3, 1);
+		date2.set(2016, 4, 1);
+		date3.set(2016, 5, 1);
+		date4.set(2016, 6, 1);
 		
 		//Create 20 activities
 		for(int i = 1; i<=20; i++){
-			em.createActivity(p1, "activity"+i, d1, d2,3);
+			employee1.createActivity(project, "activity"+i, date1, date2,3);
 		}
-		assertEquals(20, p1.getActivities().size());
+		assertEquals(20, project.getActivities().size());
 		
-		assertTrue(com.getAvailableEmployees(d1, d2).contains(em2));
+		//Check employee2 is available
+		assertTrue(company.getAvailableEmployees(date1, date2).contains(employee2));
 		
-		//Assign employee to 20 activities
-		for(Activity a: p1.getActivities()){
-			em.assignEmployeeActivity(em2.getID(), a.getName());
+		//Assign employee2 to 20 activities
+		for(Activity a: project.getActivities()){
+			employee1.assignEmployeeActivity(employee2.getID(), a.getName());
 		}
-		assertEquals(20, em2.getActivities().size());
-		assertFalse(com.getAvailableEmployees(d1, d2).contains(em2));
+		assertEquals(20, employee2.getActivities().size());
+		
+		//Check if employee2 is not available in time span
+		assertFalse(company.getAvailableEmployees(date1, date2).contains(employee2));
 	}
 
 }

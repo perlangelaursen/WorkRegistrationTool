@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="TestAssignProjectLeader" project="Softwarehuset" tests="5" started="5" failures="0" errors="0" ignored="0">
+  <testsuite name="apptest.TestAssignProjectLeader" time="0.0">
+    <testcase name="testChangeProjectLeader" classname="apptest.TestAssignProjectLeader" time="0.0"/>
+    <testcase name="testAssignProjectLeader" classname="apptest.TestAssignProjectLeader" time="0.0"/>
+    <testcase name="testProjectNotFound" classname="apptest.TestAssignProjectLeader" time="0.0"/>
+    <testcase name="testEmployeeNotFound" classname="apptest.TestAssignProjectLeader" time="0.0"/>
+    <testcase name="testNotLoggedIn" classname="apptest.TestAssignProjectLeader" time="0.0"/>
+  </testsuite>
+</testrun>
