@@ -82,7 +82,7 @@ public class TestPlanActivity {
 	}
 	
 	@Test
-	public void testNotProjectLeader() throws OperationNotAllowedException {
+	public void testNotProjectLeaderPlanActivityRightDate() throws OperationNotAllowedException {
 		GregorianCalendar start = new GregorianCalendar();
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(2016, Calendar.JANUARY, 23);

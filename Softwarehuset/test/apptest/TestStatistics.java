@@ -39,6 +39,7 @@ public class TestStatistics {
 		company.executiveLogin("password");
 		assertTrue(company.executiveIsLoggedIn());
 		
+		// Project Setup
 		GregorianCalendar start = new GregorianCalendar();
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(2016, Calendar.JANUARY, 23);
@@ -46,6 +47,7 @@ public class TestStatistics {
 		p1 = company.createProject("Project01", start, end);
 		p2 = company.createProject("Project02");
 		
+		// ProjectLeader creation and assignment
 		projectLeader = company.createEmployee("LISN", "password", "RandD");
 		
 		executive.assignProjectLeader("LISN", p1.getID());
@@ -54,12 +56,15 @@ public class TestStatistics {
 		
 		company.employeeLogin(projectLeader.getID(), "password");
 		
+		// Assign employees to project
 		projectLeader.assignEmployeeProject(test1.getID(), "Project01");
 		projectLeader.assignEmployeeProject(test2.getID(), "Project01");
 		
+		// Create activity
 		projectLeader.createActivity(company.getProject("Project01"), "AO1", start, end,3);
 		projectLeader.createActivity(company.getProject("Project01"), "AO2", start, end,3);
 		
+		// Assign employees to activity
 		a1 = company.getProject("Project01").getActivity(p1.getID()+"-AO1");
 		a2 = company.getProject("Project01").getActivity(p1.getID()+"-AO2");
 		projectLeader.assignEmployeeActivity(test1.getID(), a1.getName());
@@ -67,7 +72,7 @@ public class TestStatistics {
 	}
 	
 	@Test
-	public void testgetStatisticsPL() throws OperationNotAllowedException {
+	public void testgetStatisticsProjectLeader() throws OperationNotAllowedException {
 		List<String> statistics = projectLeader.getStatisticsProject(company.getProject("Project01"));
 		assertEquals("Project Name: " + company.getProject("Project01").getName(), statistics.get(0));
 		assertEquals("Project Leader ID: " + company.getProject("Project01").getProjectLeader().getID() +
@@ -87,7 +92,7 @@ public class TestStatistics {
 	}
 	
 	@Test
-	public void testgetStatisticsNotLoggedIn() throws OperationNotAllowedException {
+	public void testgetStatisticsProjectLeaderNotLoggedIn() throws OperationNotAllowedException {
 		company.employeeLogout();
 		
 		try {
@@ -100,7 +105,7 @@ public class TestStatistics {
 	}
 	
 	@Test
-	public void testgetStatisticsNotPL() throws OperationNotAllowedException {
+	public void testgetStatisticsNotProjectLeader() throws OperationNotAllowedException {
 		Employee test3 = company.createEmployee("HAMB", "password", "RandD");
 		company.employeeLogin(test3.getID(), "password");
 		try {
