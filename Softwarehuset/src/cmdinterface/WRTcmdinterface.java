@@ -208,7 +208,7 @@ public class WRTcmdinterface {
 		
 		System.out.println("- Register spent time");
 		System.out.println("- See registered spent time");
-		System.out.println("- Register vacation, sick-days and course attendance"+"\n");
+		System.out.println("- Register other activities"+"\n");
 		
 		System.out.println("- Ask colleague for assistance");
 		System.out.println("- Remove assisting colleague"+"\n");
@@ -225,7 +225,7 @@ public class WRTcmdinterface {
 			askColleagueForAssistance();
 		} else if (userChoice.toLowerCase().equals("remove assisting colleague")) {
 			removeAssistingColleague();
-		} else if (userChoice.toLowerCase().equals("register vacation, sick-days and course attendance")) {
+		} else if (userChoice.toLowerCase().equals("register other activities")) {
 			registerVSC();
 		} else if (userChoice.toLowerCase().equals("see registered spent time")) {
 			registeredSpentTime();
@@ -584,46 +584,102 @@ public class WRTcmdinterface {
 		System.out.println("- Sick");
 		System.out.println("- Course");
 		System.out.println();
-		System.out.print("Enter type of Activity: ");
-
-		String type = input.readLine();
-
-		System.out.print("Enter Start Date: ");
-		int startDate = Integer.parseInt(input.readLine());
-
-		System.out.print("Enter Start Month: ");
-		int startMonth = Integer.parseInt(input.readLine());
-
-		System.out.print("Enter Start Year: ");
-		int startYear = Integer.parseInt(input.readLine());
-
-		System.out.print("Enter End Date: ");
-		int endDate = Integer.parseInt(input.readLine());
-
-		System.out.print("Enter End Month: ");
-		int endMonth = Integer.parseInt(input.readLine());
-
-		System.out.print("Enter End Year: ");
-		int endYear = Integer.parseInt(input.readLine());
-
-		if (type.toLowerCase().equals("vacation")) {
-			company.getLoggedInEmployee().registerVacationTime(startYear,
-					startMonth, startDate, endYear, endMonth, endDate);
+		boolean repeat = true;
+		
+		while(repeat){
+			System.out.print("Enter type of Activity: ");
+			String type = input.readLine();
+		
+			int startDate, startMonth, startYear, endDate, endMonth, endYear;
+		
+			if (type.toLowerCase().equals("vacation")) {
+				startDate = getSpecificStartDate();
+				startMonth = getSpecificStartMonth();
+				startYear = getSpecificStartYear();
+				endDate = getSpecificEndDate();
+				endMonth = getSpecificEndMonth();
+				endYear = getSpecificEndYear();
+				
+				try{
+				company.getLoggedInEmployee().registerVacationTime(startYear, startMonth, startDate, endYear, endMonth, endDate);
+				System.out.println("Vacation has successfully been registered");
+				System.out.println();
+				repeat = false;
+				} catch(Exception e){
+					System.out.println(""+e.getMessage());
+					System.out.println();
+				}
+			} else if (type.toLowerCase().equals("sick")) {
+				startDate = getSpecificStartDate();
+				startMonth = getSpecificStartMonth();
+				startYear = getSpecificStartYear();
+				endDate = getSpecificEndDate();
+				endMonth = getSpecificEndMonth();
+				endYear = getSpecificEndYear();
+				try {
+				company.getLoggedInEmployee().registerSickTime(startYear,startMonth, startDate, endYear, endMonth, endDate);
+				System.out.println("Sick days have successfully been registered");
+				System.out.println();
+				repeat = false;
+				} catch(Exception e){
+					System.out.println(""+e.getMessage());
+					System.out.println();
+				}
+			} else if (type.toLowerCase().equals("course")) {
+				startDate = getSpecificStartDate();
+				startMonth = getSpecificStartMonth();
+				startYear = getSpecificStartYear();
+				endDate = getSpecificEndDate();
+				endMonth = getSpecificEndMonth();
+				endYear = getSpecificEndYear();
+				try {
+				company.getLoggedInEmployee().registerCourseTime(startYear,startMonth, startDate, endYear, endMonth, endDate);
+				System.out.println("Course attendance has successfully been registered");
+				System.out.println();
+				repeat = false;
+				} catch(Exception e){
+					System.out.println(""+e.getMessage());
+					System.out.println();
+				}
+			}
 		}
-
-		if (type.toLowerCase().equals("sick")) {
-			company.getLoggedInEmployee().registerSickTime(startYear,
-					startMonth, startDate, endYear, endMonth, endDate);
-		}
-
-		if (type.toLowerCase().equals("course")) {
-			company.getLoggedInEmployee().registerCourseTime(startYear,
-					startMonth, startDate, endYear, endMonth, endDate);
-		}
-
 		employeeScreen();
 	}
+	
+	private int getSpecificStartDate() throws NumberFormatException, IOException{
+		System.out.print("Enter start date: ");
+		int date = Integer.parseInt(input.readLine());
+		return date;
+	}
+	private int getSpecificStartMonth() throws NumberFormatException, IOException{
+		System.out.print("Enter start month: ");
+		int month = Integer.parseInt(input.readLine());
+		return month;
+	}
+	private int getSpecificStartYear() throws NumberFormatException, IOException{
+		System.out.print("Enter start year: ");
+		int year = Integer.parseInt(input.readLine());
+		return year;
+	}	 
 
+	private int getSpecificEndDate() throws NumberFormatException, IOException{
+		System.out.print("Enter end date: ");
+		int date = Integer.parseInt(input.readLine());
+		return date;
+	}
+
+	private int getSpecificEndMonth() throws NumberFormatException, IOException{
+		System.out.print("Enter end month: ");
+		int month = Integer.parseInt(input.readLine());
+		return month;
+	}
+
+	private int getSpecificEndYear() throws NumberFormatException, IOException{
+		System.out.print("Enter end year: ");
+		int year = Integer.parseInt(input.readLine());
+		return year;
+	}
+	
 	private void registerSpentTime() throws IOException, OperationNotAllowedException {
 		boolean repeat = true;
 		while (repeat) {
