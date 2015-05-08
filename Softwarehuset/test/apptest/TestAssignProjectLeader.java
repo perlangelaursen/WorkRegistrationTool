@@ -1,4 +1,4 @@
-//Anna �lgaard Nielsen - s144437
+//Anna Oelgaard Nielsen - s144437
 
 package apptest;
 
@@ -11,53 +11,59 @@ import softwarehuset.*;
 
 public class TestAssignProjectLeader {
 	/**
-	 * Tests the scenario where a project is assigned a projectleader
+	 * Tests the scenario where a project is assigned a project leader
 	 * <ol>
-	 * <li>Projectleader is assigned
+	 * <li>Project leader is assigned
 	 * </ol>
 	 * @throws OperationNotAllowedException 
 	 */
 	
-	private Address add;
-	private Company com;
-	private Executive ex;
-	private GregorianCalendar d1, d2;
-	private Employee em;
-	private Project p1;
+	private Address address;
+	private Company company;
+	private Executive executive;
+	private GregorianCalendar startDate, endDate;
+	private Employee employee;
 	
 	@Before
 	public void setUp() throws OperationNotAllowedException {
-		add = new Address("City", "Street", 1);
-		com = new Company("SoftwareHuset", add);
-		ex = new Executive("name","Department1", com, "password");
-		em = com.createEmployee("ANDE", "password", "Project Department");
-		d1 = new GregorianCalendar();
-		d2 = new GregorianCalendar();
-		d1.add(Calendar.YEAR, 1);
-		d2.add(Calendar.YEAR, 1);
+		address = new Address("City", "Street", 1);
+		company = new Company("SoftwareHuset", address);
+		executive = new Executive("name","Department1", company, "password");
+		employee = company.createEmployee("ANDE", "password", "Project Department");
+		startDate = new GregorianCalendar();
+		endDate = new GregorianCalendar();
+		startDate.add(Calendar.YEAR, 2015);
+		endDate.add(Calendar.YEAR, 2015);
 	}
 	
 	@Test
 	public void testAssignProjectLeader() throws OperationNotAllowedException {
-		assertFalse(com.executiveIsLoggedIn());
-		com.executiveLogin("password");
-		assertTrue(com.executiveIsLoggedIn());
-		com.createProject("p1", d1, d2);
-		p1 = com.getProject("p1");
-		assertEquals(com.getProjects().size(), 1);
-		p1 = com.getProject(150001);
-		assertEquals(com.getProjects().size(), 1);
-		ex.assignProjectLeader("ANDE", p1.getID());
-		assertEquals(p1.getProjectLeader(), em);
+		//Check for executive is logged in
+		assertFalse(company.executiveIsLoggedIn());
+		company.executiveLogin("password");
+		assertTrue(company.executiveIsLoggedIn());
+		
+		//The project ID is set to 150001 automatically (first project in year '15)
+		company.createProject("Project 1", startDate, endDate);
+		Project project = company.getProject("Project 1");
+		//Check for createProject is implemented properly
+		assertEquals(company.getProjects().size(), 1);
+		
+		project = company.getProject(150001);
+		executive.assignProjectLeader("ANDE", project.getID());
+		assertEquals(project.getProjectLeader(), employee);
 	}
 
 	@Test
 	public void testNotLoggedIn() throws OperationNotAllowedException {
-		com.executiveLogin("password");
-		Project p1 = com.createProject("p1", d1, d2);
-		com.employeeLogout();
+		//Create Project 1
+		company.executiveLogin("password");
+		Project project = company.createProject("Project 1", startDate, endDate); 
+		
+		//Catch Exception when executive is not logged in
+		company.employeeLogout();
 		try {
-			ex.assignProjectLeader("ANDE", p1.getID());
+			executive.assignProjectLeader("ANDE", project.getID());
 			fail("OperationNotAllowedOperationNotAllowedException OperationNotAllowedException should have been thrown");
 		} catch (OperationNotAllowedException e) {
 			assertEquals("Assign project leader is not allowed if not executive", e.getMessage());
@@ -67,16 +73,17 @@ public class TestAssignProjectLeader {
 	
 	@Test
 	public void testEmployeeNotFound() throws OperationNotAllowedException {
-		assertFalse(com.executiveIsLoggedIn());
-		com.executiveLogin("password");
-		assertTrue(com.executiveIsLoggedIn());
+		//Executive create Project 1
+		company.executiveLogin("password");
+		company.createProject("Project 1", startDate, endDate);
+		Project p1 = company.getProject("Project 1");
 		
-		com.createProject("p1", d1, d2);
-		Project p1 = com.getProject("p1");
-		assertEquals(com.getProjects().size(),1);
+		//Check for createProject is implemented properly
+		assertEquals(company.getProjects().size(),1);
 		
+		//Catch exception when wrong employee-ID is used
 		try {
-			ex.assignProjectLeader("ENDE", p1.getID());
+			executive.assignProjectLeader("ENDE", p1.getID());
 			fail("OperationNotAllowedException expected");
 		} catch(OperationNotAllowedException e) {
 			assertEquals("Employee not found", e.getMessage());
@@ -86,28 +93,37 @@ public class TestAssignProjectLeader {
 
 	@Test
 	public void testProjectNotFound() throws OperationNotAllowedException {
-		com.executiveLogin("password");
+		//Executive login
+		company.executiveLogin("password");
+		
+		//Catch exception when project does not exist
 		try {
-			ex.assignProjectLeader("em", 150502);
+			executive.assignProjectLeader("ANDE", 150502);
 			fail("OperationNotAllowedException expected");
 		} catch(OperationNotAllowedException e) {
-			assertEquals("Employee not found", e.getMessage());
-			assertEquals("Get employee", e.getOperation());
+			assertEquals("Project could not be found", e.getMessage());
+			assertEquals("Get project", e.getOperation());
 		}
 	}
 
 	@Test
 	public void testChangeProjectLeader() throws OperationNotAllowedException {
-		assertFalse(com.executiveIsLoggedIn());
-		com.executiveLogin("password");
-		assertTrue(com.executiveIsLoggedIn());
-		com.createProject("p1", d1, d2);
-		Project p1 = com.getProject("p1");
-		assertEquals(com.getProjects().size(),1);
-		ex.assignProjectLeader("ANDE", p1.getID());
-		assertEquals(p1.getProjectLeader(), em);
-		Employee em2 = com.createEmployee("KAND", "password", "Project 2 Department");
-		ex.assignProjectLeader("KAND", p1.getID());
-		assertEquals(p1.getProjectLeader(), em2);
+		//Executive create Project 1
+		company.executiveLogin("password");
+		company.createProject("Project 1", startDate, endDate);
+		Project p1 = company.getProject("Project 1");
+		
+		//Check for createProject is implemented properly
+		assertEquals(company.getProjects().size(),1);
+		
+		//Executive assign project leader
+		executive.assignProjectLeader("ANDE", p1.getID());
+		assertEquals(p1.getProjectLeader(), employee);
+		
+		Employee employee2 = company.createEmployee("KAND", "password", "Project 2 Department");
+		
+		//Executive change project leader
+		executive.assignProjectLeader("KAND", p1.getID());
+		assertEquals(p1.getProjectLeader(), employee2);
 	}
 }
