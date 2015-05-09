@@ -112,9 +112,15 @@ public class WRTcmdinterface {
 	private void assignProjectLeader() throws IOException,OperationNotAllowedException {
 		Employee projectLeader = findEmployee();
 		Project currentProject = findProject();
-		executive.assignProjectLeader(projectLeader.getID(),currentProject.getID());
-		System.out.println(projectLeader.getID()+ " is now project leader for project "+ currentProject.getID());
-		System.out.println();
+		try {
+			executive.assignProjectLeader(projectLeader.getID(),currentProject.getID());
+			System.out.println(projectLeader.getID()+ " is now project leader for project "+ currentProject.getID());
+			System.out.println();
+		} catch(Exception e) {
+			System.out.println("" + e.getMessage());
+			System.out.println("Project leader could not be assigned");
+			System.out.println();
+		}
 		executiveScreen();
 	}
 
@@ -270,7 +276,6 @@ public class WRTcmdinterface {
 	}
 
 	private void changeEmployeePassword() throws IOException, OperationNotAllowedException {
-		// TODO Auto-generated method stub
 		boolean isRunning = true;
 		while(isRunning) {
 			System.out.print("Enter Current Password: ");
@@ -696,10 +701,10 @@ public class WRTcmdinterface {
 				endYear = getSpecificEndYear();
 				
 				try{
-				company.getLoggedInEmployee().registerVacationTime(startYear, startMonth, startDate, endYear, endMonth, endDate);
-				System.out.println("Vacation has successfully been registered");
-				System.out.println();
-				repeat = false;
+					company.getLoggedInEmployee().registerVacationTime(startYear, startMonth, startDate, endYear, endMonth, endDate);
+					System.out.println("Vacation has successfully been registered");
+					System.out.println();
+					repeat = false;
 				} catch(Exception e){
 					System.out.println(""+e.getMessage());
 					System.out.println();
@@ -712,10 +717,10 @@ public class WRTcmdinterface {
 				endMonth = getSpecificEndMonth();
 				endYear = getSpecificEndYear();
 				try {
-				company.getLoggedInEmployee().registerSickTime(startYear,startMonth, startDate, endYear, endMonth, endDate);
-				System.out.println("Sick days have successfully been registered");
-				System.out.println();
-				repeat = false;
+					company.getLoggedInEmployee().registerSickTime(startYear,startMonth, startDate, endYear, endMonth, endDate);
+					System.out.println("Sick days have successfully been registered");
+					System.out.println();
+					repeat = false;
 				} catch(Exception e){
 					System.out.println(""+e.getMessage());
 					System.out.println();
@@ -728,10 +733,10 @@ public class WRTcmdinterface {
 				endMonth = getSpecificEndMonth();
 				endYear = getSpecificEndYear();
 				try {
-				company.getLoggedInEmployee().registerCourseTime(startYear,startMonth, startDate, endYear, endMonth, endDate);
-				System.out.println("Course attendance has successfully been registered");
-				System.out.println();
-				repeat = false;
+					company.getLoggedInEmployee().registerCourseTime(startYear,startMonth, startDate, endYear, endMonth, endDate);
+					System.out.println("Course attendance has successfully been registered");
+					System.out.println();
+					repeat = false;
 				} catch(Exception e){
 					System.out.println(""+e.getMessage());
 					System.out.println();
