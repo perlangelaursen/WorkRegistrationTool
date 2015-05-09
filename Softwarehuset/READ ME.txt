@@ -1,10 +1,14 @@
 Software Engineering 02161 - May 11, 2015			
 Group 25
-Anna Ølgaard Nielsen (s144437)
+Anna ï¿½lgaard Nielsen (s144437)
 Mathias Enggrob Boon (s144484)
 Per Lange Laursen (s144456)
 Van Anh Thi Trinh (s144449)
 ______________________________________
+
+//////USE OF SOFTWARE without Eclipse
+1. Execute the WorkRegistrationTool.jar from the command line:
+- "java -jar WorkRegistrationTool.jar"
 
 //////USER INTERFACE: WRTcmdinterface
 1. Login as executive by writing "Login [password]"
