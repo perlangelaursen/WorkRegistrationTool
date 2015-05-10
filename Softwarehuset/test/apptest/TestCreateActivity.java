@@ -81,10 +81,27 @@ public class TestCreateActivity {
 			assertEquals("Project leader operation", e.getOperation());
 		}
 	}
-	
-	//End date before start date
+	//Not logged in
 	@Test
 	public void testCreateActivity03() throws OperationNotAllowedException {
+		GregorianCalendar start = new GregorianCalendar();
+		GregorianCalendar end = new GregorianCalendar();
+		start.set(2016, Calendar.JANUARY, 23);
+		end.set(2016, Calendar.JANUARY, 25);
+		company.employeeLogout();
+		try {
+			projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end,3);
+			fail("OperationNotAllowedException exception should have been thrown");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("Operation is not allowed if not project leader", e.getMessage());
+			assertEquals("Project leader operation", e.getOperation());
+		}
+		assertEquals(0, company.getProject("Project01").getActivities().size());
+	}
+
+	//End date before start date
+	@Test
+	public void testCreateActivity04() throws OperationNotAllowedException {
 		GregorianCalendar start = new GregorianCalendar();
 		GregorianCalendar end = new GregorianCalendar();
 		start.set(2016, Calendar.JANUARY, 29);
@@ -102,22 +119,60 @@ public class TestCreateActivity {
 		
 		assertEquals(0, company.getProject("Project01").getActivities().size());
 	}
-	
-	//Not logged in
 	@Test
-	public void testCreateActivity04() throws OperationNotAllowedException {
+	public void testCreateActivity05() throws OperationNotAllowedException {
 		GregorianCalendar start = new GregorianCalendar();
 		GregorianCalendar end = new GregorianCalendar();
-		start.set(2016, Calendar.JANUARY, 23);
-		end.set(2016, Calendar.JANUARY, 25);
-		company.employeeLogout();
+		start.set(2016, Calendar.JANUARY, 25);
+		end.set(2016, Calendar.JANUARY, 29);
+		
+		assertEquals(0, company.getProject("Project01").getActivities().size());
+		company.employeeLogin("BAMS", "password");
+		try {
+			projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end,-5);
+			fail("OperationNotAllowedException exception should have been thrown");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("The expected time cannot be less than 1 week",e.getMessage());
+			assertEquals("Set expected time",e.getOperation());
+		}
+		
+		assertEquals(0, company.getProject("Project01").getActivities().size());
+	}
+	@Test
+	public void testCreateActivity06() throws OperationNotAllowedException {
+		GregorianCalendar start = new GregorianCalendar();
+		GregorianCalendar end = new GregorianCalendar();
+		start.set(2016, Calendar.JANUARY, 25);
+		end.set(2016, Calendar.JANUARY, 29);
+		
+		assertEquals(0, company.getProject("Project01").getActivities().size());
+		company.employeeLogin("BAMS", "password");
+		projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start,end,3);
 		try {
 			projectLeader.createActivity(company.getProject("Project01"), "TestActivity", start, end,3);
 			fail("OperationNotAllowedException exception should have been thrown");
 		} catch (OperationNotAllowedException e) {
-			assertEquals("Operation is not allowed if not project leader", e.getMessage());
-			assertEquals("Project leader operation", e.getOperation());
+			assertEquals("The project already has an activity by that name",e.getMessage());
+			assertEquals("Set activity name",e.getOperation());
 		}
+	
+		assertEquals(1, company.getProject("Project01").getActivities().size());
+	}
+	@Test
+	public void testCreateActivity07() throws OperationNotAllowedException {
+		GregorianCalendar start = new GregorianCalendar();
+		GregorianCalendar end = new GregorianCalendar();
+		start.set(2016, Calendar.JANUARY, 25);
+		end.set(2016, Calendar.JANUARY, 29);
+		company.employeeLogin("BAMS", "password");
+		try {
+			projectLeader.createActivity(company.getProject("Projectxx"), "TestActivity", start, end,3);
+			fail("OperationNotAllowedException exception should have been thrown");
+		} catch (OperationNotAllowedException e) {
+			assertEquals("Project could not be found",e.getMessage());
+			assertEquals("Get project",e.getOperation());
+		}
+	
 		assertEquals(0, company.getProject("Project01").getActivities().size());
 	}
 }
