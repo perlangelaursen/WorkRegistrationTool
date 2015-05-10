@@ -532,11 +532,11 @@ public class WRTcmdinterface {
 	private void changeExpectedTime(Project p) throws IOException, OperationNotAllowedException {
 		Activity a = findActivity(p);
 		
-		System.out.print("Enter expected time (in weeks): ");
+		System.out.print("Enter expected time (in hours): ");
 		String timeInput = input.readLine();
 		while (!timeInput.matches("[0-9]+")) {
 			System.out.println("Expected time must be a positive number");
-			System.out.print("Enter expected time (in weeks): ");
+			System.out.print("Enter expected time (in hours): ");
 			timeInput = input.readLine();
 		}
 		int time = Integer.parseInt(timeInput);
@@ -553,7 +553,7 @@ public class WRTcmdinterface {
 	
 	private void seeExpectedTime(Project p) throws IOException, OperationNotAllowedException{
 		Activity a = findActivity(p);
-		System.out.println("Expected time: "+a.getExpectedTime()+" weeks");
+		System.out.println("Expected time: "+a.getExpectedTime()+" hours");
 		manageProjectScreen(p);
 	}
 
