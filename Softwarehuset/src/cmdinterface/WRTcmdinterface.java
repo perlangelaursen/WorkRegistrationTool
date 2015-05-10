@@ -536,7 +536,7 @@ public class WRTcmdinterface {
 		String timeInput = input.readLine();
 		while (!timeInput.matches("[0-9]+")) {
 			System.out.println("Expected time must be a positive number");
-			System.out.print("Enter expected time (in weeks): ");
+			System.out.print("Enter expected time (in hours): ");
 			timeInput = input.readLine();
 		}
 		int time = Integer.parseInt(timeInput);
