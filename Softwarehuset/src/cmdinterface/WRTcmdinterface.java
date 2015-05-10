@@ -940,8 +940,8 @@ public class WRTcmdinterface {
 			System.out.print("Enter Employee ID: ");
 			String id = input.readLine();
 			try {
-				Employee projectLeader = company.getEmployee(id);
-				return projectLeader;
+				Employee foundEmployee = company.getEmployee(id);
+				return foundEmployee;
 			} catch (Exception e) {
 				System.out.println("" + e.getMessage());
 				System.out.println();
