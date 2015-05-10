@@ -939,12 +939,14 @@ public class WRTcmdinterface {
 		while (true) {
 			System.out.print("Enter Employee ID: ");
 			String id = input.readLine();
-			try {
-				Employee foundEmployee = company.getEmployee(id);
-				return foundEmployee;
-			} catch (Exception e) {
-				System.out.println("" + e.getMessage());
-				System.out.println();
+			if(!id.equals("")) {
+				try {
+					Employee foundEmployee = company.getEmployee(id);
+					return foundEmployee;
+				} catch (Exception e) {
+					System.out.println("" + e.getMessage());
+					System.out.println();
+				}
 			}
 		}
 	}
